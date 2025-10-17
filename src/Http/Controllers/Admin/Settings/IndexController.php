@@ -1,11 +1,11 @@
 <?php
 
-namespace Jiny\Shop\Http\Controllers\Ecommerce\Settings;
+namespace Jiny\Store\Http\Controllers\Admin\Settings;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Jiny\Shop\Helpers\CurrencyHelper;
+use Jiny\Store\Helpers\CurrencyHelper;
 
 /**
  * 이커머스 설정 관리 컨트롤러
@@ -17,7 +17,7 @@ class IndexController extends Controller
     public function __construct()
     {
         $this->config = [
-            'view' => 'jiny-shop::ecommerce.settings.index',
+            'view' => 'jiny-store::admin.settings.index',
             'title' => '이커머스 설정',
             'subtitle' => '전체 이커머스 시스템 설정을 관리합니다.',
         ];

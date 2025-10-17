@@ -1,11 +1,11 @@
 <?php
 
-namespace Jiny\Shop\Http\Controllers\Site\Cart;
+namespace Jiny\Store\Http\Controllers\Site\Cart;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Jiny\Shop\Helpers\CurrencyHelper;
+use Jiny\Site\Helpers\CurrencyHelper;
 
 /**
  * 장바구니 목록 컨트롤러
@@ -121,7 +121,7 @@ class IndexController extends Controller
         // 다중 통화 가격 표시 (선택적)
         $multiCurrencyPrices = CurrencyHelper::getPriceDisplay($taxInfo['total'], $userCurrency);
 
-        return view('jiny-shop::www.cart.index', [
+        return view('jiny-store::www.cart.index', [
             'cartItems' => $cartItems,
             'summary' => [
                 'item_count' => $cartItems->count(),

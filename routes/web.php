@@ -10,19 +10,19 @@ use Illuminate\Support\Facades\Route;
  */
 Route::middleware('web')->prefix('products')->name('products.')->group(function () {
     // 상품 목록
-    Route::get('/', \Jiny\Shop\Http\Controllers\Site\Products\IndexController::class)
+    Route::get('/', \Jiny\Store\Http\Controllers\Site\Products\IndexController::class)
         ->name('index');
 
     // 상품 상세보기
-    Route::get('/{id}', \Jiny\Shop\Http\Controllers\Site\Products\ShowController::class)
+    Route::get('/{id}', \Jiny\Store\Http\Controllers\Site\Products\ShowController::class)
         ->name('show');
 
     // 상품 카테고리별 목록
-    Route::get('/category/{category}', \Jiny\Shop\Http\Controllers\Site\Products\CategoryController::class)
+    Route::get('/category/{category}', \Jiny\Store\Http\Controllers\Site\Products\CategoryController::class)
         ->name('category');
 
     // 상품 검색
-    Route::get('/search', \Jiny\Shop\Http\Controllers\Site\Products\SearchController::class)
+    Route::get('/search', \Jiny\Store\Http\Controllers\Site\Products\SearchController::class)
         ->name('search');
 });
 
@@ -34,27 +34,27 @@ Route::middleware('web')->prefix('products')->name('products.')->group(function 
  */
 Route::middleware('web')->prefix('cart')->name('cart.')->group(function () {
     // 장바구니 목록
-    Route::get('/', \Jiny\Shop\Http\Controllers\Site\Cart\IndexController::class)
+    Route::get('/', \Jiny\Store\Http\Controllers\Site\Cart\IndexController::class)
         ->name('index');
 
     // 장바구니에 상품 추가
-    Route::post('/add', \Jiny\Shop\Http\Controllers\Site\Cart\AddController::class)
+    Route::post('/add', \Jiny\Store\Http\Controllers\Site\Cart\AddController::class)
         ->name('add');
 
     // 장바구니 상품 수량 업데이트
-    Route::put('/{id}', \Jiny\Shop\Http\Controllers\Site\Cart\UpdateController::class)
+    Route::put('/{id}', \Jiny\Store\Http\Controllers\Site\Cart\UpdateController::class)
         ->name('update');
 
     // 장바구니에서 상품 제거
-    Route::delete('/{id}', \Jiny\Shop\Http\Controllers\Site\Cart\RemoveController::class)
+    Route::delete('/{id}', \Jiny\Store\Http\Controllers\Site\Cart\RemoveController::class)
         ->name('remove');
 
     // 장바구니 비우기
-    Route::delete('/', \Jiny\Shop\Http\Controllers\Site\Cart\ClearController::class)
+    Route::delete('/', \Jiny\Store\Http\Controllers\Site\Cart\ClearController::class)
         ->name('clear');
 
     // 장바구니 요약 정보 (AJAX)
-    Route::get('/summary', \Jiny\Shop\Http\Controllers\Site\Cart\SummaryController::class)
+    Route::get('/summary', \Jiny\Store\Http\Controllers\Site\Cart\SummaryController::class)
         ->name('summary');
 });
 
@@ -66,23 +66,23 @@ Route::middleware('web')->prefix('cart')->name('cart.')->group(function () {
  */
 Route::middleware(['web', 'auth'])->prefix('checkout')->name('checkout.')->group(function () {
     // 주문결제 시작
-    Route::get('/', \Jiny\Shop\Http\Controllers\Site\Orders\CheckoutController::class)
+    Route::get('/', \Jiny\Store\Http\Controllers\Site\Orders\CheckoutController::class)
         ->name('index');
 
     // 주문 정보 입력
-    Route::get('/step/{step}', \Jiny\Shop\Http\Controllers\Site\Orders\CheckoutStepController::class)
+    Route::get('/step/{step}', \Jiny\Store\Http\Controllers\Site\Orders\CheckoutStepController::class)
         ->name('step')->where('step', '[1-4]');
 
     // 주문 정보 저장
-    Route::post('/step/{step}', \Jiny\Shop\Http\Controllers\Site\Orders\CheckoutStepController::class)
+    Route::post('/step/{step}', \Jiny\Store\Http\Controllers\Site\Orders\CheckoutStepController::class)
         ->name('step.store')->where('step', '[1-4]');
 
     // 주문 완료
-    Route::post('/complete', \Jiny\Shop\Http\Controllers\Site\Orders\CompleteController::class)
+    Route::post('/complete', \Jiny\Store\Http\Controllers\Site\Orders\CompleteController::class)
         ->name('complete');
 
     // 주문 취소
-    Route::post('/cancel', \Jiny\Shop\Http\Controllers\Site\Orders\CancelController::class)
+    Route::post('/cancel', \Jiny\Store\Http\Controllers\Site\Orders\CancelController::class)
         ->name('cancel');
 });
 
@@ -94,19 +94,19 @@ Route::middleware(['web', 'auth'])->prefix('checkout')->name('checkout.')->group
  */
 Route::middleware(['web', 'auth'])->prefix('orders')->name('orders.')->group(function () {
     // 주문 목록
-    Route::get('/', \Jiny\Shop\Http\Controllers\Site\Orders\IndexController::class)
+    Route::get('/', \Jiny\Store\Http\Controllers\Site\Orders\IndexController::class)
         ->name('index');
 
     // 주문 상세보기
-    Route::get('/{id}', \Jiny\Shop\Http\Controllers\Site\Orders\ShowController::class)
+    Route::get('/{id}', \Jiny\Store\Http\Controllers\Site\Orders\ShowController::class)
         ->name('show');
 
     // 주문 취소 요청
-    Route::post('/{id}/cancel', \Jiny\Shop\Http\Controllers\Site\Orders\CancelRequestController::class)
+    Route::post('/{id}/cancel', \Jiny\Store\Http\Controllers\Site\Orders\CancelRequestController::class)
         ->name('cancel');
 
     // 주문 반품 요청
-    Route::post('/{id}/return', \Jiny\Shop\Http\Controllers\Site\Orders\ReturnRequestController::class)
+    Route::post('/{id}/return', \Jiny\Store\Http\Controllers\Site\Orders\ReturnRequestController::class)
         ->name('return');
 });
 
@@ -135,18 +135,18 @@ Route::middleware(['web', 'auth'])->prefix('wishlist')->name('wishlist.')->group
  */
 Route::middleware('web')->prefix('shop')->name('shop.')->group(function () {
     // 쇼핑몰 메인 페이지
-    Route::get('/', \Jiny\Shop\Http\Controllers\Site\ShopController::class)
+    Route::get('/', \Jiny\Store\Http\Controllers\Site\ShopController::class)
         ->name('index');
 
     // 특가 상품
-    Route::get('/deals', \Jiny\Shop\Http\Controllers\Site\DealsController::class)
+    Route::get('/deals', \Jiny\Store\Http\Controllers\Site\DealsController::class)
         ->name('deals');
 
     // 신상품
-    Route::get('/new-arrivals', \Jiny\Shop\Http\Controllers\Site\NewArrivalsController::class)
+    Route::get('/new-arrivals', \Jiny\Store\Http\Controllers\Site\NewArrivalsController::class)
         ->name('new-arrivals');
 
     // 베스트셀러
-    Route::get('/bestsellers', \Jiny\Shop\Http\Controllers\Site\BestsellersController::class)
+    Route::get('/bestsellers', \Jiny\Store\Http\Controllers\Site\BestsellersController::class)
         ->name('bestsellers');
 });

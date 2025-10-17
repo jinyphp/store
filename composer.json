@@ -1,6 +1,6 @@
 {
-    "name": "jiny/shop",
-    "description": "Jiny Shop Package - Complete ecommerce solution for Laravel applications including products, cart, orders, inventory, and payment processing",
+    "name": "jiny/store",
+    "description": "Jiny Store Package - Complete ecommerce solution for Laravel applications including products, cart, orders, inventory, and payment processing",
     "type": "library",
     "keywords": ["laravel", "ecommerce", "shop", "cart", "products", "orders", "inventory", "payment", "cms", "jiny"],
     "license": "MIT",
@@ -21,18 +21,18 @@
     },
     "autoload": {
         "psr-4": {
-            "Jiny\\Shop\\": "src/"
+            "Jiny\\Store\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Jiny\\Shop\\Tests\\": "tests/"
+            "Jiny\\Store\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Jiny\\Shop\\Providers\\JinyShopServiceProvider"
+                "Jiny\\Store\\Providers\\JinyStoreServiceProvider"
             ]
         }
     },

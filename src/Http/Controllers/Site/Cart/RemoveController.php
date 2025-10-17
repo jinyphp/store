@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Shop\Http\Controllers\Site\Cart;
+namespace Jiny\Store\Http\Controllers\Site\Cart;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;

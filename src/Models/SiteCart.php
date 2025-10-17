@@ -1,11 +1,11 @@
 <?php
 
-namespace Jiny\Shop\Models;
+namespace Jiny\Store\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Jiny\Shop\Services\ExchangeRateService;
+use Jiny\Store\Services\ExchangeRateService;
 
 class SiteCart extends Model
 {

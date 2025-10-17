@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Shop\Http\Controllers\Site;
+namespace Jiny\Store\Http\Controllers\Site\Products;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -224,7 +224,7 @@ class Product extends Controller
                 ->get();
         }
 
-        return view('jiny-shop::www.product.show', [
+        return view('jiny-store::www.product.show', [
             'product' => $product,
             'category' => $category,
             'pricingOptions' => $pricingOptions,
