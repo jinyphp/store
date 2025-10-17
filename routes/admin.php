@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
  * 고객 장바구니 내역을 관리하는 라우트입니다.
  * Single Action Controllers 방식으로 구현됨
  */
-Route::prefix('admin/cms/cart')->name('admin.cms.cart.')->middleware(['web', 'admin'])->group(function () {
+Route::prefix('cart')->name('admin.store.cart.')->group(function () {
     // 장바구니 목록
     Route::get('/', \Jiny\Store\Http\Controllers\Admin\Cart\IndexController::class)->name('index');
 
@@ -30,7 +30,7 @@ Route::prefix('admin/cms/cart')->name('admin.cms.cart.')->middleware(['web', 'ad
  * 이커머스 시스템 전체를 관리하는 라우트입니다.
  * Single Action Controllers 방식으로 구현됨
  */
-Route::prefix('admin/cms/ecommerce')->name('admin.cms.ecommerce.')->middleware(['web', 'admin'])->group(function () {
+Route::prefix('ecommerce')->name('admin.store.ecommerce.')->group(function () {
     // 이커머스 대시보드
     Route::get('/', \Jiny\Store\Http\Controllers\Admin\Dashboard\IndexController::class)->name('dashboard');
 
@@ -138,7 +138,7 @@ Route::prefix('admin/cms/ecommerce')->name('admin.cms.ecommerce.')->middleware([
  * @description
  * 국가별 세율 정보를 관리하는 라우트입니다.
  */
-Route::prefix('admin/cms/tax')->name('admin.cms.tax.')->middleware(['web', 'admin'])->group(function () {
+Route::prefix('tax')->name('admin.store.tax.')->group(function () {
     Route::get('/', \Jiny\Store\Http\Controllers\Admin\Tax\IndexController::class)->name('index');
     Route::post('/{id}/update', [\Jiny\Store\Http\Controllers\Admin\Tax\IndexController::class, 'updateTaxRate'])->name('update')->where(['id' => '[0-9]+']);
     Route::post('/bulk-update', [\Jiny\Store\Http\Controllers\Admin\Tax\IndexController::class, 'bulkUpdateTaxRate'])->name('bulkUpdate');
@@ -151,7 +151,7 @@ Route::prefix('admin/cms/tax')->name('admin.cms.tax.')->middleware(['web', 'admi
  * 상품 관리 시스템을 위한 라우트입니다.
  * 상품 CRUD 기능을 제공합니다.
  */
-Route::prefix('admin/site/products')->middleware(['web', 'admin'])->name('admin.site.products.')->group(function () {
+Route::prefix('products')->name('admin.store.products.')->group(function () {
     Route::get('/', \Jiny\Store\Http\Controllers\Admin\Products\IndexController::class)->name('index');
     Route::get('/create', \Jiny\Store\Http\Controllers\Admin\Products\CreateController::class)->name('create');
     Route::post('/', \Jiny\Store\Http\Controllers\Admin\Products\StoreController::class)->name('store');
@@ -201,9 +201,9 @@ Route::prefix('admin/site/products')->middleware(['web', 'admin'])->name('admin.
  * 사이트 이커머스 재고 관리 시스템을 위한 라우트입니다.
  * admin.site.ecommerce.inventory 네임스페이스로 접근 가능합니다.
  */
-Route::prefix('admin/site/ecommerce')->middleware(['web', 'admin'])->name('admin.site.ecommerce.')->group(function () {
+Route::prefix('inventory-mgmt')->name('admin.store.inventory.')->group(function () {
     // 재고 관리
-    Route::prefix('inventory')->name('inventory.')->group(function () {
+    Route::prefix('/')->name('')->group(function () {
         Route::get('/', \Jiny\Store\Http\Controllers\Admin\Inventory\IndexController::class)->name('index');
         Route::get('/create', \Jiny\Store\Http\Controllers\Admin\Inventory\CreateController::class)->name('create');
         Route::post('/', \Jiny\Store\Http\Controllers\Admin\Inventory\StoreController::class)->name('store');
@@ -221,7 +221,7 @@ Route::prefix('admin/site/ecommerce')->middleware(['web', 'admin'])->name('admin
  * 서비스 관리 시스템을 위한 라우트입니다.
  * 서비스 CRUD 기능을 제공합니다.
  */
-Route::prefix('admin/site/services')->middleware(['web', 'admin'])->name('admin.site.services.')->group(function () {
+Route::prefix('services')->name('admin.store.services.')->group(function () {
     Route::get('/', \Jiny\Store\Http\Controllers\Admin\Services\IndexController::class)->name('index');
     Route::get('/create', \Jiny\Store\Http\Controllers\Admin\Services\CreateController::class)->name('create');
     Route::post('/', \Jiny\Store\Http\Controllers\Admin\Services\StoreController::class)->name('store');
@@ -259,7 +259,7 @@ Route::prefix('admin/site/services')->middleware(['web', 'admin'])->name('admin.
  * 고객 후기 관리 시스템을 위한 라우트입니다.
  * 고객 후기 CRUD 기능을 제공합니다.
  */
-Route::prefix('admin/site/testimonials')->middleware(['web', 'admin'])->name('admin.site.testimonials.')->group(function () {
+Route::prefix('testimonials')->name('admin.store.testimonials.')->group(function () {
     Route::get('/', \Jiny\Store\Http\Controllers\Admin\Testimonials\IndexController::class)->name('index');
     Route::get('/create', \Jiny\Store\Http\Controllers\Admin\Testimonials\CreateController::class)->name('create');
     Route::post('/', \Jiny\Store\Http\Controllers\Admin\Testimonials\StoreController::class)->name('store');

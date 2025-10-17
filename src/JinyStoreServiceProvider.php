@@ -1,19 +1,20 @@
 <?php
 
-namespace Jiny\Store\Providers;
+namespace Jiny\Store;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
 class JinyStoreServiceProvider extends ServiceProvider
 {
+    private $package = "jiny-store";
     /**
      * Bootstrap any application services.
      */
     public function boot(): void
     {
         // Load package views
-        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'jiny-store');
+        $this->loadViewsFrom(__DIR__.'/../../resources/views', $this->package);
 
         // Load package migrations
         $this->loadMigrationsFrom(__DIR__.'/../../databases/migrations');
@@ -25,17 +26,17 @@ class JinyStoreServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../../config/store.php' => config_path('store.php'),
-            ], 'jiny-store-config');
+            ], $this->package.'-config');
 
             // Publish views
             $this->publishes([
-                __DIR__.'/../../resources/views' => resource_path('views/vendor/jiny-store'),
-            ], 'jiny-store-views');
+                __DIR__.'/../../resources/views' => resource_path('views/vendor/'.$this->package),
+            ], $this->package.'-views');
 
             // Publish migrations
             $this->publishes([
                 __DIR__.'/../../databases/migrations' => database_path('migrations'),
-            ], 'jiny-store-migrations');
+            ], $this->package.'-migrations');
         }
     }
 
@@ -55,6 +56,7 @@ class JinyStoreServiceProvider extends ServiceProvider
     {
         // Load admin routes with admin middleware
         Route::middleware(['web', 'admin'])
+            ->prefix('admin/store')
             ->group(__DIR__.'/../../routes/admin.php');
 
         // Load web routes
