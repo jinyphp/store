@@ -1,0 +1,47 @@
+{
+    "name": "jiny/shop",
+    "description": "Jiny Shop Package - Complete ecommerce solution for Laravel applications including products, cart, orders, inventory, and payment processing",
+    "type": "library",
+    "keywords": ["laravel", "ecommerce", "shop", "cart", "products", "orders", "inventory", "payment", "cms", "jiny"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jiny Team",
+            "email": "contact@jiny.dev"
+        }
+    ],
+    "require": {
+        "php": "^8.1|^8.2|^8.3",
+        "laravel/framework": "^10.0|^11.0|^12.0",
+        "jiny/admin": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0",
+        "orchestra/testbench": "^8.0|^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jiny\\Shop\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Jiny\\Shop\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Jiny\\Shop\\Providers\\JinyShopServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist",
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "version": "1.0.0"
+}
