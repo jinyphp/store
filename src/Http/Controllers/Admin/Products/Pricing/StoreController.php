@@ -24,7 +24,7 @@ class StoreController extends Controller
     public function __invoke(Request $request, $productId)
     {
         // 상품 존재 확인
-        $product = DB::table('site_products')
+        $product = DB::table('store_products')
             ->where('id', $productId)
             ->whereNull('deleted_at')
             ->first();

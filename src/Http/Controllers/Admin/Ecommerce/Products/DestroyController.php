@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Admin\Products;
+namespace Jiny\Store\Http\Controllers\Admin\Ecommerce\Products;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ class DestroyController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_products',
+            'table' => 'store_products',
             'redirect_route' => 'admin.site.products.index',
         ];
     }

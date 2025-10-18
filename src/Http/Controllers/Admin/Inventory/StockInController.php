@@ -29,14 +29,24 @@ class StockInController extends Controller
      */
     public function __invoke(Request $request)
     {
-        // 최근 입고 내역 조회
-        $stockInHistory = $this->getStockInHistory();
+        // Check if required tables exist
+        if (!DB::getSchemaBuilder()->hasTable('inventory') ||
+            !DB::getSchemaBuilder()->hasTable('products') ||
+            !DB::getSchemaBuilder()->hasTable('inventory_transactions')) {
 
-        // 상품 목록 (입고할 상품 선택용)
-        $products = $this->getProducts();
+            $stockInHistory = collect([]);
+            $products = collect([]);
+            $stats = $this->getEmptyStats();
+        } else {
+            // 최근 입고 내역 조회
+            $stockInHistory = $this->getStockInHistory();
 
-        // 통계 정보
-        $stats = $this->getStockInStats();
+            // 상품 목록 (입고할 상품 선택용)
+            $products = $this->getProducts();
+
+            // 통계 정보
+            $stats = $this->getStockInStats();
+        }
 
         return view($this->config['view'], [
             'stockInHistory' => $stockInHistory,
@@ -131,6 +141,12 @@ class StockInController extends Controller
      */
     protected function getStockInHistory()
     {
+        if (!DB::getSchemaBuilder()->hasTable('inventory_transactions') ||
+            !DB::getSchemaBuilder()->hasTable('inventory') ||
+            !DB::getSchemaBuilder()->hasTable('products')) {
+            return collect([]);
+        }
+
         return DB::table('inventory_transactions')
             ->leftJoin('inventory', 'inventory_transactions.inventory_item_id', '=', 'inventory.id')
             ->leftJoin('products', 'inventory.product_id', '=', 'products.id')
@@ -154,6 +170,10 @@ class StockInController extends Controller
      */
     protected function getProducts()
     {
+        if (!DB::getSchemaBuilder()->hasTable('products')) {
+            return collect([]);
+        }
+
         return DB::table('products')
             ->select('id', 'name', 'sku')
             ->orderBy('name')
@@ -165,6 +185,10 @@ class StockInController extends Controller
      */
     protected function getStockInStats()
     {
+        if (!DB::getSchemaBuilder()->hasTable('inventory_transactions')) {
+            return $this->getEmptyStats();
+        }
+
         $today = now()->format('Y-m-d');
         $thisMonth = now()->format('Y-m');
 
@@ -178,7 +202,7 @@ class StockInController extends Controller
                 ->where('type', 'inbound')
                 ->where('reason', 'stock_in')
                 ->whereDate('created_at', $today)
-                ->sum('quantity'),
+                ->sum('quantity') ?? 0,
             'month_count' => DB::table('inventory_transactions')
                 ->where('type', 'inbound')
                 ->where('reason', 'stock_in')
@@ -188,7 +212,20 @@ class StockInController extends Controller
                 ->where('type', 'inbound')
                 ->where('reason', 'stock_in')
                 ->where('created_at', 'like', $thisMonth . '%')
-                ->sum('quantity'),
+                ->sum('quantity') ?? 0,
+        ];
+    }
+
+    /**
+     * 빈 통계 정보 반환
+     */
+    protected function getEmptyStats()
+    {
+        return [
+            'today_count' => 0,
+            'today_quantity' => 0,
+            'month_count' => 0,
+            'month_quantity' => 0,
         ];
     }
 }

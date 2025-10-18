@@ -16,7 +16,7 @@ class IndexController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_testimonials',
+            'table' => 'store_testimonials',
             'view' => 'jiny-store::admin.testimonials.index',
             'title' => 'Testimonials 관리',
             'subtitle' => '고객 후기와 평가를 관리합니다.',
@@ -56,8 +56,8 @@ class IndexController extends Controller
     {
         return DB::table($this->config['table'])
             ->leftJoin('users', 'site_testimonials.user_id', '=', 'users.id')
-            ->leftJoin('site_products', function($join) {
-                $join->on('site_testimonials.item_id', '=', 'site_products.id')
+            ->leftJoin('store_products', function($join) {
+                $join->on('site_testimonials.item_id', '=', 'store_products.id')
                      ->where('site_testimonials.type', '=', 'product');
             })
             ->leftJoin('site_services', function($join) {
@@ -68,7 +68,7 @@ class IndexController extends Controller
                 'site_testimonials.*',
                 'users.name as user_name',
                 'users.email as user_email',
-                'site_products.title as product_title',
+                store_products.title as product_title',
                 'site_services.title as service_title'
             )
             ->whereNull('site_testimonials.deleted_at');

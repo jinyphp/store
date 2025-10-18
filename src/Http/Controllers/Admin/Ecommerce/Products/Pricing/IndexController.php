@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Admin\Products\Pricing;
+namespace Jiny\Store\Http\Controllers\Admin\Ecommerce\Products\Pricing;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -26,7 +26,7 @@ class IndexController extends Controller
     public function __invoke(Request $request, $productId)
     {
         // 상품 정보 조회
-        $product = DB::table('site_products')
+        $product = DB::table('store_products')
             ->where('id', $productId)
             ->whereNull('deleted_at')
             ->first();

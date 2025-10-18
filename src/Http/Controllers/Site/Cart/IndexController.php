@@ -18,30 +18,30 @@ class IndexController extends Controller
         $sessionId = $userId ? null : session()->getId();
 
         // 장바구니 아이템 조회
-        $cartItems = DB::table('site_cart')
-            ->leftJoin('site_products', function($join) {
-                $join->on('site_cart.item_id', '=', 'site_products.id')
-                     ->where('site_cart.item_type', '=', 'product');
+        $cartItems = DB::table('store_cart')
+            ->leftJoin('store_products', function($join) {
+                $join->on('store_cart.item_id', '=', 'store_products.id')
+                     ->where('store_cart.item_type', '=', 'product');
             })
             ->leftJoin('site_services', function($join) {
-                $join->on('site_cart.item_id', '=', 'site_services.id')
-                     ->where('site_cart.item_type', '=', 'service');
+                $join->on('store_cart.item_id', '=', 'site_services.id')
+                     ->where('store_cart.item_type', '=', 'service');
             })
             ->leftJoin('site_product_pricing', function($join) {
-                $join->on('site_cart.pricing_option_id', '=', 'site_product_pricing.id')
-                     ->where('site_cart.item_type', '=', 'product');
+                $join->on('store_cart.pricing_option_id', '=', 'site_product_pricing.id')
+                     ->where('store_cart.item_type', '=', 'product');
             })
             ->leftJoin('site_service_pricing', function($join) {
-                $join->on('site_cart.pricing_option_id', '=', 'site_service_pricing.id')
-                     ->where('site_cart.item_type', '=', 'service');
+                $join->on('store_cart.pricing_option_id', '=', 'site_service_pricing.id')
+                     ->where('store_cart.item_type', '=', 'service');
             })
             ->select(
-                'site_cart.*',
+                'store_cart.*',
                 // 상품 정보
-                'site_products.title as product_title',
-                'site_products.image as product_image',
-                'site_products.slug as product_slug',
-                'site_products.price as product_base_price',
+                store_products.title as product_title',
+                store_products.image as product_image',
+                store_products.slug as product_slug',
+                store_products.price as product_base_price',
                 // 서비스 정보
                 'site_services.title as service_title',
                 'site_services.image as service_image',
@@ -55,13 +55,13 @@ class IndexController extends Controller
             )
             ->where(function($query) use ($userId, $sessionId) {
                 if ($userId) {
-                    $query->where('site_cart.user_id', $userId);
+                    $query->where('store_cart.user_id', $userId);
                 } else {
-                    $query->where('site_cart.session_id', $sessionId);
+                    $query->where('store_cart.session_id', $sessionId);
                 }
             })
-            ->whereNull('site_cart.deleted_at')
-            ->orderBy('site_cart.created_at', 'desc')
+            ->whereNull('store_cart.deleted_at')
+            ->orderBy('store_cart.created_at', 'desc')
             ->get();
 
         // 사용자 통화 및 국가 정보 가져오기

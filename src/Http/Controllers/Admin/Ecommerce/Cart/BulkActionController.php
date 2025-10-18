@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Admin\Cart;
+namespace Jiny\Store\Http\Controllers\Admin\Ecommerce\Cart;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ class BulkActionController extends Controller
         $validated = $request->validate([
             'action' => 'required|in:delete',
             'items' => 'required|array|min:1',
-            'items.*' => 'integer|exists:site_cart,id'
+            'items.*' => 'integer|exists:store_cart,id'
         ]);
 
         try {
@@ -48,7 +48,7 @@ class BulkActionController extends Controller
     private function bulkDelete(array $itemIds)
     {
         // 삭제되지 않은 아이템만 필터링
-        $existingItems = DB::table('site_cart')
+        $existingItems = DB::table('store_cart')
             ->whereIn('id', $itemIds)
             ->whereNull('deleted_at')
             ->pluck('id')
@@ -62,7 +62,7 @@ class BulkActionController extends Controller
         }
 
         // 소프트 삭제 실행
-        $deletedCount = DB::table('site_cart')
+        $deletedCount = DB::table('store_cart')
             ->whereIn('id', $existingItems)
             ->whereNull('deleted_at')
             ->update([

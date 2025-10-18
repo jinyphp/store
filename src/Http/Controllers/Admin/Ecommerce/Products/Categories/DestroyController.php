@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Admin\Products\Categories;
+namespace Jiny\Store\Http\Controllers\Admin\Ecommerce\Products\Categories;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ class DestroyController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_product_categories',
+            'table' => 'store_categories',
             'redirect_route' => 'admin.site.products.categories.index',
         ];
     }
@@ -47,7 +47,7 @@ class DestroyController extends Controller
         }
 
         // 이 카테고리를 사용하는 상품이 있는지 확인
-        $hasProducts = DB::table('site_products')
+        $hasProducts = DB::table('store_products')
             ->where('category_id', $id)
             ->whereNull('deleted_at')
             ->exists();

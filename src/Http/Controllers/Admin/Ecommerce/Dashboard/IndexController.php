@@ -49,16 +49,16 @@ class IndexController extends Controller
     {
         try {
             // 주문 관련 통계 (실제 주문 테이블이 있다면 조정 필요)
-            $totalOrders = DB::table('site_cart')->count();
-            $todayOrders = DB::table('site_cart')
+            $totalOrders = DB::table('store_cart')->count();
+            $todayOrders = DB::table('store_cart')
                 ->whereDate('created_at', today())
                 ->count();
 
             // 매출 통계 (임시 데이터)
-            $totalSales = DB::table('site_cart')
+            $totalSales = DB::table('store_cart')
                 ->sum(DB::raw('CAST(price AS DECIMAL(10,2))')) ?? 0;
 
-            $todaySales = DB::table('site_cart')
+            $todaySales = DB::table('store_cart')
                 ->whereDate('created_at', today())
                 ->sum(DB::raw('CAST(price AS DECIMAL(10,2))')) ?? 0;
 
@@ -179,7 +179,7 @@ class IndexController extends Controller
     private function getRecentOrders()
     {
         try {
-            return DB::table('site_cart')
+            return DB::table('store_cart')
                 ->orderBy('created_at', 'desc')
                 ->limit(10)
                 ->get()
@@ -238,7 +238,7 @@ class IndexController extends Controller
             $salesData = [];
             for ($i = 6; $i >= 0; $i--) {
                 $date = now()->subDays($i);
-                $sales = DB::table('site_cart')
+                $sales = DB::table('store_cart')
                     ->whereDate('created_at', $date->format('Y-m-d'))
                     ->sum(DB::raw('CAST(price AS DECIMAL(10,2))')) ?? 0;
 

@@ -17,7 +17,7 @@ class CountController extends Controller
         $sessionId = $userId ? null : session()->getId();
 
         // 장바구니 아이템 개수 조회
-        $cartCount = DB::table('site_cart')
+        $cartCount = DB::table('store_cart')
             ->where(function($query) use ($userId, $sessionId) {
                 if ($userId) {
                     $query->where('user_id', $userId);

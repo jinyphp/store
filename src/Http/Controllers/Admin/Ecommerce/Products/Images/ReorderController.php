@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Admin\Products\Images;
+namespace Jiny\Store\Http\Controllers\Admin\Ecommerce\Products\Images;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -16,14 +16,14 @@ class ReorderController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_product_images',
+            'table' => 'store_product_images',
         ];
     }
 
     public function __invoke(Request $request, $productId)
     {
         // 상품 존재 확인
-        $product = DB::table('site_products')
+        $product = DB::table('store_products')
             ->where('id', $productId)
             ->whereNull('deleted_at')
             ->first();

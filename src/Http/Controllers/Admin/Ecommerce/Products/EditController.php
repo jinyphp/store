@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Admin\Products;
+namespace Jiny\Store\Http\Controllers\Admin\Ecommerce\Products;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ class EditController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_products',
+            'table' => 'store_products',
             'view' => 'jiny-store::admin.products.edit',
             'title' => 'Product 수정',
             'subtitle' => '상품 정보를 수정합니다.',
@@ -37,7 +37,7 @@ class EditController extends Controller
         }
 
         // 활성화된 카테고리 목록 조회
-        $categories = DB::table('site_product_categories')
+        $categories = DB::table('store_categories')
             ->whereNull('deleted_at')
             ->where('enable', true)
             ->orderBy('pos')

@@ -14,10 +14,10 @@ class JinyStoreServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Load package views
-        $this->loadViewsFrom(__DIR__.'/../../resources/views', $this->package);
+        $this->loadViewsFrom(__DIR__.'/../resources/views', $this->package);
 
         // Load package migrations
-        $this->loadMigrationsFrom(__DIR__.'/../../databases/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../databases/migrations');
 
         // Load package routes
         $this->loadRoutes();
@@ -25,17 +25,17 @@ class JinyStoreServiceProvider extends ServiceProvider
         // Publish configuration
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../../config/store.php' => config_path('store.php'),
+                __DIR__.'/../config/store.php' => config_path('store.php'),
             ], $this->package.'-config');
 
             // Publish views
             $this->publishes([
-                __DIR__.'/../../resources/views' => resource_path('views/vendor/'.$this->package),
+                __DIR__.'/../resources/views' => resource_path('views/vendor/'.$this->package),
             ], $this->package.'-views');
 
             // Publish migrations
             $this->publishes([
-                __DIR__.'/../../databases/migrations' => database_path('migrations'),
+                __DIR__.'/../databases/migrations' => database_path('migrations'),
             ], $this->package.'-migrations');
         }
     }
@@ -46,7 +46,7 @@ class JinyStoreServiceProvider extends ServiceProvider
     public function register(): void
     {
         // Merge configuration
-        $this->mergeConfigFrom(__DIR__.'/../../config/store.php', 'store');
+        $this->mergeConfigFrom(__DIR__.'/../config/store.php', 'store');
     }
 
     /**
@@ -57,11 +57,11 @@ class JinyStoreServiceProvider extends ServiceProvider
         // Load admin routes with admin middleware
         Route::middleware(['web', 'admin'])
             ->prefix('admin/store')
-            ->group(__DIR__.'/../../routes/admin.php');
+            ->group(__DIR__.'/../routes/admin.php');
 
         // Load web routes
         Route::middleware(['web'])
-            ->group(__DIR__.'/../../routes/web.php');
+            ->group(__DIR__.'/../routes/web.php');
     }
 
     /**

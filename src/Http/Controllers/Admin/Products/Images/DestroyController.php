@@ -17,7 +17,7 @@ class DestroyController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_product_images',
+            'table' => 'store_product_images',
             'soft_delete' => true, // 소프트 삭제 사용
         ];
     }
@@ -25,7 +25,7 @@ class DestroyController extends Controller
     public function __invoke(Request $request, $productId, $imageId)
     {
         // 상품 존재 확인
-        $product = DB::table('site_products')
+        $product = DB::table('store_products')
             ->where('id', $productId)
             ->whereNull('deleted_at')
             ->first();

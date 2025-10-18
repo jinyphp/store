@@ -17,7 +17,7 @@ class RemoveController extends Controller
         $sessionId = $userId ? null : session()->getId();
 
         // 장바구니 아이템 확인
-        $cartItem = DB::table('site_cart')
+        $cartItem = DB::table('store_cart')
             ->where('id', $cartId)
             ->where(function($query) use ($userId, $sessionId) {
                 if ($userId) {
@@ -37,7 +37,7 @@ class RemoveController extends Controller
         }
 
         // 소프트 삭제
-        DB::table('site_cart')
+        DB::table('store_cart')
             ->where('id', $cartId)
             ->update([
                 'deleted_at' => now(),
@@ -59,7 +59,7 @@ class RemoveController extends Controller
      */
     protected function getCartCount($userId, $sessionId)
     {
-        return DB::table('site_cart')
+        return DB::table('store_cart')
             ->where(function($query) use ($userId, $sessionId) {
                 if ($userId) {
                     $query->where('user_id', $userId);

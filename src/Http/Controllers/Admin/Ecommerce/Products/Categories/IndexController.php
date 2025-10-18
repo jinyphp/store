@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Admin\Products\Categories;
+namespace Jiny\Store\Http\Controllers\Admin\Ecommerce\Products\Categories;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ class IndexController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_product_categories',
+            'table' => 'store_categories',
             'view' => 'jiny-store::admin.products.categories.index',
             'title' => 'Product Categories 관리',
             'subtitle' => '상품 카테고리를 관리합니다.',
@@ -29,8 +29,8 @@ class IndexController extends Controller
         $query = $this->buildQuery();
         $query = $this->applyFilters($query, $request);
 
-        $categories = $query->orderBy('site_product_categories.pos', 'asc')
-            ->orderBy('site_product_categories.created_at', 'desc')
+        $categories = $query->orderBy('store_categories.pos', 'asc')
+            ->orderBy('store_categories.created_at', 'desc')
             ->paginate($this->config['per_page'])
             ->withQueryString();
 
@@ -46,12 +46,12 @@ class IndexController extends Controller
     protected function buildQuery()
     {
         return DB::table($this->config['table'])
-            ->leftJoin('site_product_categories as parent', 'site_product_categories.parent_id', '=', 'parent.id')
+            ->leftJoin('store_categories as parent', 'store_categories.parent_id', '=', 'parent.id')
             ->select(
-                'site_product_categories.*',
+                'store_categories.*',
                 'parent.title as parent_title'
             )
-            ->whereNull('site_product_categories.deleted_at');
+            ->whereNull('store_categories.deleted_at');
     }
 
     protected function applyFilters($query, Request $request)
@@ -59,21 +59,21 @@ class IndexController extends Controller
         if ($request->filled('search')) {
             $search = $request->get('search');
             $query->where(function ($q) use ($search) {
-                $q->where('site_product_categories.title', 'like', "%{$search}%")
-                  ->orWhere('site_product_categories.code', 'like', "%{$search}%")
-                  ->orWhere('site_product_categories.description', 'like', "%{$search}%");
+                $q->where('store_categories.title', 'like', "%{$search}%")
+                  ->orWhere('store_categories.code', 'like', "%{$search}%")
+                  ->orWhere('store_categories.description', 'like', "%{$search}%");
             });
         }
 
         if ($request->filled('enable') && $request->get('enable') !== 'all') {
-            $query->where('site_product_categories.enable', $request->get('enable') === '1');
+            $query->where('store_categories.enable', $request->get('enable') === '1');
         }
 
         if ($request->filled('parent_id') && $request->get('parent_id') !== 'all') {
             if ($request->get('parent_id') === 'null') {
-                $query->whereNull('site_product_categories.parent_id');
+                $query->whereNull('store_categories.parent_id');
             } else {
-                $query->where('site_product_categories.parent_id', $request->get('parent_id'));
+                $query->where('store_categories.parent_id', $request->get('parent_id'));
             }
         }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Admin\Products\Categories;
+namespace Jiny\Store\Http\Controllers\Admin\Ecommerce\Products\Categories;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ class ShowController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_product_categories',
+            'table' => 'store_categories',
             'view' => 'jiny-store::admin.products.categories.show',
             'title' => 'Product Category 상세보기',
             'subtitle' => '상품 카테고리의 상세 정보를 확인합니다.',
@@ -27,14 +27,14 @@ class ShowController extends Controller
     {
         // 카테고리 조회 (부모 정보 포함)
         $category = DB::table($this->config['table'])
-            ->leftJoin('site_product_categories as parent', 'site_product_categories.parent_id', '=', 'parent.id')
+            ->leftJoin('store_categories as parent', 'store_categories.parent_id', '=', 'parent.id')
             ->select(
-                'site_product_categories.*',
+                'store_categories.*',
                 'parent.title as parent_title',
                 'parent.id as parent_id_data'
             )
-            ->where('site_product_categories.id', $id)
-            ->whereNull('site_product_categories.deleted_at')
+            ->where('store_categories.id', $id)
+            ->whereNull('store_categories.deleted_at')
             ->first();
 
         if (!$category) {
@@ -60,7 +60,7 @@ class ShowController extends Controller
             ->get();
 
         // 이 카테고리에 속한 상품들 조회
-        $products = DB::table('site_products')
+        $products = DB::table('store_products')
             ->where('category_id', $id)
             ->whereNull('deleted_at')
             ->orderBy('created_at', 'desc')

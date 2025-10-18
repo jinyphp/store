@@ -27,7 +27,7 @@ class StoreController extends Controller
 
         // Validate item exists
         if ($validated['type'] === 'product') {
-            $exists = DB::table('site_products')
+            $exists = DB::table('store_products')
                 ->where('id', $validated['item_id'])
                 ->where('enable', true)
                 ->whereNull('deleted_at')
@@ -53,10 +53,10 @@ class StoreController extends Controller
         $validated['created_at'] = now();
         $validated['updated_at'] = now();
 
-        $id = DB::table('site_testimonials')->insertGetId($validated);
+        $id = DB::table('store_testimonials')->insertGetId($validated);
 
         // Get the created testimonial with basic info
-        $testimonial = DB::table('site_testimonials')
+        $testimonial = DB::table('store_testimonials')
             ->where('id', $id)
             ->first();
 

@@ -16,7 +16,7 @@ class EditController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_testimonials',
+            'table' => 'store_testimonials',
             'view' => 'jiny-store::admin.testimonials.edit',
             'title' => 'Testimonial 편집',
         ];
@@ -36,7 +36,7 @@ class EditController extends Controller
         }
 
         // Get products and services for selection
-        $products = DB::table('site_products')
+        $products = DB::table('store_products')
             ->select('id', 'title')
             ->where('enable', true)
             ->whereNull('deleted_at')

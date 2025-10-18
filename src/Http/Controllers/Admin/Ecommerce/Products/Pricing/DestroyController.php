@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Admin\Products\Pricing;
+namespace Jiny\Store\Http\Controllers\Admin\Ecommerce\Products\Pricing;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -24,7 +24,7 @@ class DestroyController extends Controller
     public function __invoke(Request $request, $productId, $pricingId)
     {
         // 상품 존재 확인
-        $product = DB::table('site_products')
+        $product = DB::table('store_products')
             ->where('id', $productId)
             ->whereNull('deleted_at')
             ->first();

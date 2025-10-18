@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Admin\Products\Categories;
+namespace Jiny\Store\Http\Controllers\Admin\Ecommerce\Products\Categories;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ class EditController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_product_categories',
+            'table' => 'store_categories',
             'view' => 'jiny-store::admin.products.categories.edit',
             'title' => 'Product Category 수정',
             'subtitle' => '상품 카테고리 정보를 수정합니다.',
@@ -27,14 +27,14 @@ class EditController extends Controller
     {
         // 카테고리 조회 (부모 정보 포함)
         $category = DB::table($this->config['table'])
-            ->leftJoin('site_product_categories as parent', 'site_product_categories.parent_id', '=', 'parent.id')
+            ->leftJoin('store_categories as parent', 'store_categories.parent_id', '=', 'parent.id')
             ->select(
-                'site_product_categories.*',
+                'store_categories.*',
                 'parent.title as parent_title',
                 'parent.id as parent_id_data'
             )
-            ->where('site_product_categories.id', $id)
-            ->whereNull('site_product_categories.deleted_at')
+            ->where('store_categories.id', $id)
+            ->whereNull('store_categories.deleted_at')
             ->first();
 
         if (!$category) {

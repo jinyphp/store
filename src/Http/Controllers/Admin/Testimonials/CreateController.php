@@ -24,7 +24,7 @@ class CreateController extends Controller
     public function __invoke(Request $request, $type = null, $itemId = null)
     {
         // Get products and services for selection
-        $products = DB::table('site_products')
+        $products = DB::table('store_products')
             ->select('id', 'title')
             ->where('enable', true)
             ->whereNull('deleted_at')
@@ -42,7 +42,7 @@ class CreateController extends Controller
         $selectedItem = null;
         if ($type && $itemId) {
             if ($type === 'product') {
-                $selectedItem = DB::table('site_products')
+                $selectedItem = DB::table('store_products')
                     ->where('id', $itemId)
                     ->first();
             } elseif ($type === 'service') {

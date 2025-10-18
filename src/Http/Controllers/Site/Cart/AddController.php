@@ -26,7 +26,7 @@ class AddController extends Controller
         $validated['quantity'] = $validated['quantity'] ?? 1;
 
         // 상품/서비스 존재 확인
-        $tableName = $validated['item_type'] === 'product' ? 'site_products' : 'site_services';
+        $tableName = $validated['item_type'] === 'product' ? 'store_products' : 'site_services';
         $item = DB::table($tableName)
             ->where('id', $validated['item_id'])
             ->where('enable', true)
@@ -49,7 +49,7 @@ class AddController extends Controller
                 $sessionId = $userId ? null : session()->getId();
                 $pricingOptionId = $validated['pricing_option_id'] ?? null;
 
-                $existingQuantity = DB::table('site_cart')
+                $existingQuantity = DB::table('store_cart')
                     ->where('item_type', $validated['item_type'])
                     ->where('item_id', $validated['item_id'])
                     ->where(function($query) use ($pricingOptionId) {
@@ -108,7 +108,7 @@ class AddController extends Controller
 
         // 이미 장바구니에 있는지 확인
         $pricingOptionId = $validated['pricing_option_id'] ?? null;
-        $existingCartItem = DB::table('site_cart')
+        $existingCartItem = DB::table('store_cart')
             ->where('item_type', $validated['item_type'])
             ->where('item_id', $validated['item_id'])
             ->where(function($query) use ($pricingOptionId) {
@@ -147,7 +147,7 @@ class AddController extends Controller
                 }
             }
 
-            DB::table('site_cart')
+            DB::table('store_cart')
                 ->where('id', $existingCartItem->id)
                 ->update([
                     'quantity' => $newQuantity,
@@ -157,7 +157,7 @@ class AddController extends Controller
             $message = '장바구니에 추가되었습니다. (기존 수량 업데이트)';
         } else {
             // 새 아이템 추가
-            DB::table('site_cart')->insert([
+            DB::table('store_cart')->insert([
                 'user_id' => $userId,
                 'session_id' => $sessionId,
                 'item_type' => $validated['item_type'],
@@ -187,7 +187,7 @@ class AddController extends Controller
      */
     protected function getCartCount($userId, $sessionId)
     {
-        return DB::table('site_cart')
+        return DB::table('store_cart')
             ->where(function($query) use ($userId, $sessionId) {
                 if ($userId) {
                     $query->where('user_id', $userId);

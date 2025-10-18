@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Admin\Products\Categories;
+namespace Jiny\Store\Http\Controllers\Admin\Ecommerce\Products\Categories;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ class CreateController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_product_categories',
+            'table' => 'store_categories',
             'view' => 'jiny-store::admin.products.categories.create',
             'title' => 'Product Category 추가',
             'subtitle' => '새로운 상품 카테고리를 추가합니다.',

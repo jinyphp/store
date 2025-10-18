@@ -69,7 +69,7 @@ class Product extends Controller
         // Get category if exists
         $category = null;
         if ($product->category_id) {
-            $category = DB::table('site_product_categories')
+            $category = DB::table('store_categories')
                 ->where('id', $product->category_id)
                 ->whereNull('deleted_at')
                 ->first();
@@ -86,7 +86,7 @@ class Product extends Controller
      */
     protected function findCategory($identifier)
     {
-        $query = DB::table('site_product_categories')
+        $query = DB::table('store_categories')
             ->whereNull('deleted_at')
             ->where('enable', true);
 
@@ -108,25 +108,25 @@ class Product extends Controller
      */
     protected function findProductInCategory($identifier, $categoryId)
     {
-        $query = DB::table('site_products')
-            ->leftJoin('site_product_categories', 'site_products.category_id', '=', 'site_product_categories.id')
+        $query = DB::table('store_products')
+            ->leftJoin('store_categories', 'store_products.category_id', '=', 'store_categories.id')
             ->select(
-                'site_products.*',
-                'site_product_categories.title as category_name',
-                'site_product_categories.slug as category_slug'
+                store_products.*',
+                'store_categories.title as category_name',
+                'store_categories.slug as category_slug'
             )
-            ->where('site_products.category_id', $categoryId)
-            ->where('site_products.enable', true)
-            ->whereNull('site_products.deleted_at');
+            ->where('store_products.category_id', $categoryId)
+            ->where('store_products.enable', true)
+            ->whereNull('store_products.deleted_at');
 
         // Try slug first, then ID
         if (is_numeric($identifier)) {
             $query->where(function ($q) use ($identifier) {
-                $q->where('site_products.slug', $identifier)
-                  ->orWhere('site_products.id', $identifier);
+                $q->where('store_products.slug', $identifier)
+                  ->orWhere('store_products.id', $identifier);
             });
         } else {
-            $query->where('site_products.slug', $identifier);
+            $query->where('store_products.slug', $identifier);
         }
 
         return $query->first();
@@ -137,24 +137,24 @@ class Product extends Controller
      */
     protected function findProduct($identifier)
     {
-        $query = DB::table('site_products')
-            ->leftJoin('site_product_categories', 'site_products.category_id', '=', 'site_product_categories.id')
+        $query = DB::table('store_products')
+            ->leftJoin('store_categories', 'store_products.category_id', '=', 'store_categories.id')
             ->select(
-                'site_products.*',
-                'site_product_categories.title as category_name',
-                'site_product_categories.slug as category_slug'
+                store_products.*',
+                'store_categories.title as category_name',
+                'store_categories.slug as category_slug'
             )
-            ->where('site_products.enable', true)
-            ->whereNull('site_products.deleted_at');
+            ->where('store_products.enable', true)
+            ->whereNull('store_products.deleted_at');
 
         // Try slug first, then ID
         if (is_numeric($identifier)) {
             $query->where(function ($q) use ($identifier) {
-                $q->where('site_products.slug', $identifier)
-                  ->orWhere('site_products.id', $identifier);
+                $q->where('store_products.slug', $identifier)
+                  ->orWhere('store_products.id', $identifier);
             });
         } else {
-            $query->where('site_products.slug', $identifier);
+            $query->where('store_products.slug', $identifier);
         }
 
         return $query->first();
@@ -165,7 +165,7 @@ class Product extends Controller
      */
     protected function incrementViewCount($productId)
     {
-        DB::table('site_products')
+        DB::table('store_products')
             ->where('id', $productId)
             ->increment('view_count');
     }
@@ -185,7 +185,7 @@ class Product extends Controller
             ->get();
 
         // Get image gallery
-        $images = DB::table('site_product_images')
+        $images = DB::table('store_product_images')
             ->where('product_id', $product->id)
             ->where('enable', true)
             ->whereNull('deleted_at')
@@ -199,7 +199,7 @@ class Product extends Controller
         }
 
         // Get testimonials for this product
-        $testimonials = DB::table('site_testimonials')
+        $testimonials = DB::table('store_testimonials')
             ->where('type', 'product')
             ->where('item_id', $product->id)
             ->where('enable', true)
@@ -213,7 +213,7 @@ class Product extends Controller
         // Get related products from same category
         $relatedProducts = collect();
         if ($product->category_id) {
-            $relatedProducts = DB::table('site_products')
+            $relatedProducts = DB::table('store_products')
                 ->where('category_id', $product->category_id)
                 ->where('id', '!=', $product->id)
                 ->where('enable', true)

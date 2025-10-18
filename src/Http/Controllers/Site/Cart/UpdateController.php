@@ -22,7 +22,7 @@ class UpdateController extends Controller
         $sessionId = $userId ? null : session()->getId();
 
         // 장바구니 아이템 확인
-        $cartItem = DB::table('site_cart')
+        $cartItem = DB::table('store_cart')
             ->where('id', $cartId)
             ->where(function($query) use ($userId, $sessionId) {
                 if ($userId) {
@@ -56,7 +56,7 @@ class UpdateController extends Controller
         }
 
         // 수량 업데이트
-        DB::table('site_cart')
+        DB::table('store_cart')
             ->where('id', $cartId)
             ->update([
                 'quantity' => $validated['quantity'],
@@ -78,7 +78,7 @@ class UpdateController extends Controller
      */
     protected function getCartCount($userId, $sessionId)
     {
-        return DB::table('site_cart')
+        return DB::table('store_cart')
             ->where(function($query) use ($userId, $sessionId) {
                 if ($userId) {
                     $query->where('user_id', $userId);

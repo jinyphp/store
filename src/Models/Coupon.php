@@ -3,12 +3,16 @@
 namespace Jiny\Store\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Jiny\Store\Traits\HasAssignments;
 use Carbon\Carbon;
 
 class Coupon extends Model
 {
-    use HasFactory;
+    use HasAssignments;
+
+    protected $table = 'store_coupons';
 
     protected $fillable = [
         'name',
@@ -16,227 +20,232 @@ class Coupon extends Model
         'description',
         'type',
         'value',
-        'minimum_order_amount',
-        'maximum_discount_amount',
+        'minimum_amount',
+        'maximum_discount',
         'usage_limit',
-        'usage_limit_per_customer',
-        'times_used',
-        'applicable_products',
-        'applicable_categories',
-        'excluded_products',
-        'stackable',
-        'auto_apply',
+        'usage_limit_per_user',
+        'used_count',
         'starts_at',
         'expires_at',
-        'status',
-        'created_by'
+        'is_active',
+        'conditions',
+        'metadata',
     ];
 
     protected $casts = [
         'value' => 'decimal:2',
-        'minimum_order_amount' => 'decimal:2',
-        'maximum_discount_amount' => 'decimal:2',
-        'usage_limit' => 'integer',
-        'usage_limit_per_customer' => 'integer',
-        'times_used' => 'integer',
-        'applicable_products' => 'array',
-        'applicable_categories' => 'array',
-        'excluded_products' => 'array',
-        'stackable' => 'boolean',
-        'auto_apply' => 'boolean',
+        'minimum_amount' => 'decimal:2',
+        'maximum_discount' => 'decimal:2',
         'starts_at' => 'datetime',
-        'expires_at' => 'datetime'
+        'expires_at' => 'datetime',
+        'is_active' => 'boolean',
+        'conditions' => 'array',
+        'metadata' => 'array',
     ];
 
-    // Relationships
-    public function usage()
+    /**
+     * 쿠폰 사용 내역 관계
+     */
+    public function usages(): HasMany
     {
         return $this->hasMany(CouponUsage::class);
     }
 
-    public function creator()
+    /**
+     * 쿠폰 배포 관계
+     */
+    public function distributions(): HasMany
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->hasMany(CouponDistribution::class);
     }
 
-    // Scopes
+    /**
+     * 개인화 쿠폰 관계
+     */
+    public function personalCoupons(): HasMany
+    {
+        return $this->hasMany(PersonalCoupon::class);
+    }
+
+    /**
+     * 쿠폰 카테고리 관계
+     */
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(CouponCategory::class, 'coupon_category_relations');
+    }
+
+    /**
+     * 활성 상태 스코프
+     */
     public function scopeActive($query)
     {
-        return $query->where('status', 'active')
-            ->where('starts_at', '<=', now())
-            ->where(function ($q) {
-                $q->whereNull('expires_at')
-                  ->orWhere('expires_at', '>', now());
-            });
+        return $query->where('is_active', true);
     }
 
+    /**
+     * 유효한 쿠폰 스코프
+     */
+    public function scopeValid($query)
+    {
+        $now = now();
+        return $query->where('is_active', true)
+                     ->where(function($q) use ($now) {
+                         $q->whereNull('starts_at')
+                           ->orWhere('starts_at', '<=', $now);
+                     })
+                     ->where(function($q) use ($now) {
+                         $q->whereNull('expires_at')
+                           ->orWhere('expires_at', '>=', $now);
+                     });
+    }
+
+    /**
+     * 코드로 쿠폰 찾기
+     */
     public function scopeByCode($query, $code)
     {
         return $query->where('code', $code);
     }
 
-    public function scopeAutoApply($query)
+    /**
+     * 타입별 스코프
+     */
+    public function scopeOfType($query, $type)
     {
-        return $query->where('auto_apply', true);
+        return $query->where('type', $type);
     }
 
-    public function scopeStackable($query)
+    /**
+     * 만료 예정 스코프
+     */
+    public function scopeExpiringSoon($query, $days = 7)
     {
-        return $query->where('stackable', true);
+        return $query->where('expires_at', '>=', now())
+                     ->where('expires_at', '<=', now()->addDays($days));
     }
 
-    // Helper methods
-    public function isActive()
+    /**
+     * 쿠폰 유효성 검사
+     */
+    public function isValid(): bool
     {
-        return $this->status === 'active' &&
-               $this->starts_at <= now() &&
-               ($this->expires_at === null || $this->expires_at > now());
-    }
-
-    public function isExpired()
-    {
-        return $this->expires_at !== null && $this->expires_at <= now();
-    }
-
-    public function hasUsageLeft()
-    {
-        if ($this->usage_limit === null) {
-            return true;
-        }
-
-        return $this->times_used < $this->usage_limit;
-    }
-
-    public function canBeUsedBy($userId = null, $sessionId = null)
-    {
-        if (!$this->isActive() || !$this->hasUsageLeft()) {
+        // 활성 상태 확인
+        if (!$this->is_active) {
             return false;
         }
 
-        if ($this->usage_limit_per_customer !== null) {
-            $query = CouponUsage::where('coupon_id', $this->id);
+        // 시작일 확인
+        if ($this->starts_at && $this->starts_at->isFuture()) {
+            return false;
+        }
 
-            if ($userId) {
-                $query->where('user_id', $userId);
-            } elseif ($sessionId) {
-                $query->where('session_id', $sessionId);
-            } else {
-                return true; // No tracking for guest without session
-            }
+        // 만료일 확인
+        if ($this->expires_at && $this->expires_at->isPast()) {
+            return false;
+        }
 
-            $usageCount = $query->count();
-            return $usageCount < $this->usage_limit_per_customer;
+        // 사용 제한 확인
+        if ($this->usage_limit && $this->used_count >= $this->usage_limit) {
+            return false;
         }
 
         return true;
     }
 
-    public function calculateDiscount($orderAmount, $items = [])
+    /**
+     * 특정 사용자가 사용 가능한지 확인
+     */
+    public function isAvailableForUser($userId): bool
     {
-        if (!$this->isActive() || $orderAmount < ($this->minimum_order_amount ?? 0)) {
+        if (!$this->isValid()) {
+            return false;
+        }
+
+        // 사용자별 사용 제한 확인
+        if ($this->usage_limit_per_user) {
+            $userUsageCount = $this->usages()
+                                   ->where('user_id', $userId)
+                                   ->count();
+
+            if ($userUsageCount >= $this->usage_limit_per_user) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * 할인 금액 계산
+     */
+    public function calculateDiscount($orderData): float
+    {
+        switch ($this->type) {
+            case 'fixed':
+                return min($this->value, $orderData['total']);
+
+            case 'percentage':
+                $discount = ($orderData['total'] * $this->value) / 100;
+                return $this->maximum_discount
+                    ? min($discount, $this->maximum_discount)
+                    : $discount;
+
+            case 'free_shipping':
+                return $orderData['shipping_cost'] ?? 0;
+
+            case 'buy_x_get_y':
+                return $this->calculateBuyXGetYDiscount($orderData);
+
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     * 쿠폰 사용 처리
+     */
+    public function use($userId, $orderData)
+    {
+        $discountAmount = $this->calculateDiscount($orderData);
+
+        // 사용 내역 생성
+        $usage = $this->usages()->create([
+            'user_id' => $userId,
+            'order_id' => $orderData['order_id'] ?? null,
+            'discount_amount' => $discountAmount,
+            'order_total' => $orderData['total'],
+            'applied_items' => $orderData['items'] ?? [],
+            'used_at' => now(),
+        ]);
+
+        // 사용 횟수 증가
+        $this->increment('used_count');
+
+        return $usage;
+    }
+
+    /**
+     * 남은 사용 횟수
+     */
+    public function getRemainingUsage(): ?int
+    {
+        if (!$this->usage_limit) {
+            return null;
+        }
+
+        return max(0, $this->usage_limit - $this->used_count);
+    }
+
+    /**
+     * 사용률 계산
+     */
+    public function getUsageRate(): float
+    {
+        if (!$this->usage_limit) {
             return 0;
         }
 
-        $discount = 0;
-
-        switch ($this->type) {
-            case 'percentage':
-                $discount = $orderAmount * ($this->value / 100);
-                break;
-
-            case 'fixed_amount':
-                $discount = $this->value;
-                break;
-
-            case 'free_shipping':
-                // This would need to be handled in the order calculation logic
-                $discount = 0;
-                break;
-
-            case 'buy_x_get_y':
-                // This would need more complex logic based on items
-                $discount = $this->calculateBuyXGetYDiscount($items);
-                break;
-        }
-
-        // Apply maximum discount limit
-        if ($this->maximum_discount_amount !== null) {
-            $discount = min($discount, $this->maximum_discount_amount);
-        }
-
-        return round($discount, 2);
-    }
-
-    protected function calculateBuyXGetYDiscount($items)
-    {
-        // Simplified buy X get Y logic
-        // This would need to be customized based on specific coupon rules
-        return 0;
-    }
-
-    public function recordUsage($userId, $orderAmount, $discountAmount, $customerEmail, $orderId = null, $sessionId = null, $orderItems = null)
-    {
-        // Create usage record
-        CouponUsage::create([
-            'coupon_id' => $this->id,
-            'user_id' => $userId,
-            'order_id' => $orderId,
-            'session_id' => $sessionId,
-            'discount_amount' => $discountAmount,
-            'order_amount' => $orderAmount,
-            'customer_email' => $customerEmail,
-            'order_items' => $orderItems,
-            'used_at' => now()
-        ]);
-
-        // Increment usage count
-        $this->increment('times_used');
-
-        // Auto-expire if usage limit reached
-        if ($this->usage_limit !== null && $this->times_used >= $this->usage_limit) {
-            $this->update(['status' => 'expired']);
-        }
-
-        return $this;
-    }
-
-    public static function getAutoApplicableCoupons($orderAmount, $userId = null, $sessionId = null)
-    {
-        return static::active()
-            ->autoApply()
-            ->get()
-            ->filter(function ($coupon) use ($orderAmount, $userId, $sessionId) {
-                return $coupon->canBeUsedBy($userId, $sessionId) &&
-                       $coupon->calculateDiscount($orderAmount) > 0;
-            });
-    }
-
-    public function getFormattedValueAttribute()
-    {
-        switch ($this->type) {
-            case 'percentage':
-                return $this->value . '%';
-            case 'fixed_amount':
-                return '₩' . number_format($this->value);
-            case 'free_shipping':
-                return '무료배송';
-            default:
-                return $this->value;
-        }
-    }
-
-    public function getStatusBadgeAttribute()
-    {
-        if ($this->status === 'active') {
-            if ($this->isExpired()) {
-                return '<span class="badge bg-warning">만료됨</span>';
-            }
-            if (!$this->hasUsageLeft()) {
-                return '<span class="badge bg-secondary">사용완료</span>';
-            }
-            return '<span class="badge bg-success">활성</span>';
-        }
-
-        return '<span class="badge bg-secondary">' . ucfirst($this->status) . '</span>';
+        return ($this->used_count / $this->usage_limit) * 100;
     }
 }

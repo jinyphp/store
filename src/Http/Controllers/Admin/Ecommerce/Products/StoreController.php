@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Admin\Products;
+namespace Jiny\Store\Http\Controllers\Admin\Ecommerce\Products;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -17,7 +17,7 @@ class StoreController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_products',
+            'table' => 'store_products',
             'redirect_route' => 'admin.site.products.index',
         ];
     }
@@ -28,7 +28,7 @@ class StoreController extends Controller
             'title' => 'required|max:255',
             'description' => 'nullable|string',
             'content' => 'nullable|string',
-            'category_id' => 'nullable|integer|exists:site_product_categories,id',
+            'category_id' => 'nullable|integer|exists:store_categories,id',
             'price' => 'nullable|numeric|min:0',
             'sale_price' => 'nullable|numeric|min:0',
             'image' => 'nullable|string|max:500',

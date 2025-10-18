@@ -16,7 +16,7 @@ class IndexController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_product_images',
+            'table' => 'store_product_images',
             'view' => 'jiny-store::admin.products.images.index',
             'title' => 'Product 이미지 갤러리',
             'subtitle' => '상품 이미지를 관리합니다.',
@@ -26,14 +26,14 @@ class IndexController extends Controller
     public function __invoke(Request $request, $productId)
     {
         // 상품 정보 조회 (카테고리 포함)
-        $product = DB::table('site_products')
-            ->leftJoin('site_product_categories', 'site_products.category_id', '=', 'site_product_categories.id')
+        $product = DB::table('store_products')
+            ->leftJoin('store_categories', 'store_products.category_id', '=', 'store_categories.id')
             ->select(
-                'site_products.*',
-                'site_product_categories.title as category_name'
+                'store_products.*',
+                'store_categories.title as category_name'
             )
-            ->where('site_products.id', $productId)
-            ->whereNull('site_products.deleted_at')
+            ->where('store_products.id', $productId)
+            ->whereNull('store_products.deleted_at')
             ->first();
 
         if (!$product) {

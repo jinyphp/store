@@ -25,7 +25,7 @@ class CreateController extends Controller
     public function __invoke(Request $request)
     {
         // 활성화된 카테고리 목록 조회
-        $categories = DB::table('site_product_categories')
+        $categories = DB::table('store_categories')
             ->whereNull('deleted_at')
             ->where('enable', true)
             ->orderBy('pos')

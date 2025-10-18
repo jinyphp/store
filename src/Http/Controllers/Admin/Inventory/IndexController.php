@@ -27,13 +27,20 @@ class IndexController extends Controller
     public function __invoke(Request $request)
     {
         $query = $this->buildQuery();
-        $query = $this->applyFilters($query, $request);
 
-        $inventories = $query->orderBy('site_inventory.updated_at', 'desc')
-            ->paginate($this->config['per_page'])
-            ->withQueryString();
+        // Handle case where tables don't exist
+        if ($query instanceof \Illuminate\Support\Collection) {
+            $inventories = $query; // Empty collection
+            $stats = $this->getEmptyStatistics();
+        } else {
+            $query = $this->applyFilters($query, $request);
 
-        $stats = $this->getStatistics();
+            $inventories = $query->orderBy('inventory.updated_at', 'desc')
+                ->paginate($this->config['per_page'])
+                ->withQueryString();
+
+            $stats = $this->getStatistics();
+        }
 
         return view($this->config['view'], [
             'inventories' => $inventories,
@@ -44,7 +51,12 @@ class IndexController extends Controller
 
     protected function buildQuery()
     {
-        return DB::table($this->config['table'])
+        // Check if tables exist before querying
+        if (!DB::getSchemaBuilder()->hasTable('inventory') || !DB::getSchemaBuilder()->hasTable('products')) {
+            return collect([]); // Return empty collection if tables don't exist
+        }
+
+        return DB::table('inventory')
             ->leftJoin('products', 'inventory.product_id', '=', 'products.id')
             ->select(
                 'inventory.*',
@@ -86,16 +98,30 @@ class IndexController extends Controller
 
     protected function getStatistics()
     {
-        $table = $this->config['table'];
+        // Check if inventory table exists
+        if (!DB::getSchemaBuilder()->hasTable('inventory')) {
+            return $this->getEmptyStatistics();
+        }
 
         return [
-            'total' => DB::table($table)->count(),
-            'in_stock' => DB::table($table)->where('quantity_on_hand', '>', 0)->count(),
-            'out_of_stock' => DB::table($table)->where('quantity_on_hand', '<=', 0)->count(),
-            'low_stock' => DB::table($table)->whereRaw('quantity_on_hand <= reorder_point')->count(),
-            'total_value' => DB::table($table)
+            'total' => DB::table('inventory')->count(),
+            'in_stock' => DB::table('inventory')->where('quantity_on_hand', '>', 0)->count(),
+            'out_of_stock' => DB::table('inventory')->where('quantity_on_hand', '<=', 0)->count(),
+            'low_stock' => DB::table('inventory')->whereRaw('quantity_on_hand <= reorder_point')->count(),
+            'total_value' => DB::table('inventory')
                 ->selectRaw('SUM(quantity_on_hand * COALESCE(last_cost, 0)) as total')
                 ->value('total') ?? 0,
+        ];
+    }
+
+    protected function getEmptyStatistics()
+    {
+        return [
+            'total' => 0,
+            'in_stock' => 0,
+            'out_of_stock' => 0,
+            'low_stock' => 0,
+            'total_value' => 0,
         ];
     }
 }

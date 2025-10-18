@@ -3,6 +3,11 @@
 use Illuminate\Support\Facades\Route;
 
 /**
+ * Store 메인 대시보드 라우트
+ */
+Route::get('/', \Jiny\Store\Http\Controllers\Admin\Dashboard\StoreIndexController::class)->name('admin.store.dashboard');
+
+/**
  * Cart (장바구니) 관리 라우트
  *
  * @description
@@ -23,113 +28,101 @@ Route::prefix('cart')->name('admin.store.cart.')->group(function () {
     // Route::get('/stats', \Jiny\Store\Http\Controllers\Admin\Cart\StatsController::class)->name('stats');
 });
 
-/**
- * Ecommerce (이커머스) 관리 라우트
- *
- * @description
- * 이커머스 시스템 전체를 관리하는 라우트입니다.
- * Single Action Controllers 방식으로 구현됨
- */
-Route::prefix('ecommerce')->name('admin.store.ecommerce.')->group(function () {
-    // 이커머스 대시보드
-    Route::get('/', \Jiny\Store\Http\Controllers\Admin\Dashboard\IndexController::class)->name('dashboard');
+// 주문 관리
+Route::prefix('orders')->name('admin.store.orders.')->group(function () {
+    Route::get('/', \Jiny\Store\Http\Controllers\Admin\Orders\IndexController::class)->name('index');
+    Route::get('/create', \Jiny\Store\Http\Controllers\Admin\Orders\CreateController::class)->name('create');
+    Route::post('/', \Jiny\Store\Http\Controllers\Admin\Orders\StoreController::class)->name('store');
+    Route::get('/{id}', \Jiny\Store\Http\Controllers\Admin\Orders\ShowController::class)->name('show')->where('id', '[0-9]+');
+    Route::post('/{id}', \Jiny\Store\Http\Controllers\Admin\Orders\ShowController::class)->name('update_status')->where('id', '[0-9]+');
 
-    // 주문 관리
-    Route::prefix('orders')->name('orders.')->group(function () {
-        Route::get('/', \Jiny\Store\Http\Controllers\Admin\Orders\IndexController::class)->name('index');
-        Route::get('/create', \Jiny\Store\Http\Controllers\Admin\Orders\CreateController::class)->name('create');
-        Route::post('/', \Jiny\Store\Http\Controllers\Admin\Orders\StoreController::class)->name('store');
-        Route::get('/{id}', \Jiny\Store\Http\Controllers\Admin\Orders\ShowController::class)->name('show')->where('id', '[0-9]+');
-        Route::post('/{id}', \Jiny\Store\Http\Controllers\Admin\Orders\ShowController::class)->name('update_status')->where('id', '[0-9]+');
+    // 단계별 주문 생성
+    Route::get('/step/{step?}', \Jiny\Store\Http\Controllers\Admin\Orders\StepController::class)->name('step')->where('step', '[1-4]');
+    Route::post('/step/{step}', \Jiny\Store\Http\Controllers\Admin\Orders\StepController::class)->name('step.submit')->where('step', '[1-4]');
+    Route::get('/reset', [\Jiny\Store\Http\Controllers\Admin\Orders\StepController::class, 'reset'])->name('reset');
+});
 
-        // 단계별 주문 생성
-        Route::get('/step/{step?}', \Jiny\Store\Http\Controllers\Admin\Orders\StepController::class)->name('step')->where('step', '[1-4]');
-        Route::post('/step/{step}', \Jiny\Store\Http\Controllers\Admin\Orders\StepController::class)->name('step.submit')->where('step', '[1-4]');
-        Route::get('/reset', [\Jiny\Store\Http\Controllers\Admin\Orders\StepController::class, 'reset'])->name('reset');
+// 프로모션 관리
+Route::prefix('promotions')->name('admin.store.promotions.')->group(function () {
+    Route::get('/', \Jiny\Store\Http\Controllers\Admin\Promotions\IndexController::class)->name('index');
+    Route::get('/create', \Jiny\Store\Http\Controllers\Admin\Promotions\CreateController::class)->name('create');
+    Route::post('/', \Jiny\Store\Http\Controllers\Admin\Promotions\StoreController::class)->name('store');
+    Route::get('/{id}', \Jiny\Store\Http\Controllers\Admin\Promotions\ShowController::class)->name('show')->where('id', '[0-9]+');
+    Route::get('/{id}/edit', \Jiny\Store\Http\Controllers\Admin\Promotions\EditController::class)->name('edit')->where('id', '[0-9]+');
+    Route::put('/{id}', \Jiny\Store\Http\Controllers\Admin\Promotions\UpdateController::class)->name('update')->where('id', '[0-9]+');
+    Route::delete('/{id}', \Jiny\Store\Http\Controllers\Admin\Promotions\DestroyController::class)->name('destroy')->where('id', '[0-9]+');
+});
+
+// 쿠폰 관리
+Route::prefix('coupons')->name('admin.store.coupons.')->group(function () {
+    Route::get('/', \Jiny\Store\Http\Controllers\Admin\Coupons\IndexController::class)->name('index');
+    Route::get('/create', \Jiny\Store\Http\Controllers\Admin\Coupons\CreateController::class)->name('create');
+    Route::post('/', \Jiny\Store\Http\Controllers\Admin\Coupons\StoreController::class)->name('store');
+    Route::get('/{coupon}', \Jiny\Store\Http\Controllers\Admin\Coupons\ShowController::class)->name('show')->where('coupon', '[0-9]+');
+    Route::get('/{coupon}/edit', \Jiny\Store\Http\Controllers\Admin\Coupons\EditController::class)->name('edit')->where('coupon', '[0-9]+');
+    Route::put('/{coupon}', \Jiny\Store\Http\Controllers\Admin\Coupons\UpdateController::class)->name('update')->where('coupon', '[0-9]+');
+    Route::delete('/{coupon}', \Jiny\Store\Http\Controllers\Admin\Coupons\DestroyController::class)->name('destroy')->where('coupon', '[0-9]+');
+});
+
+// 재고 관리
+Route::prefix('inventory')->name('admin.store.inventory.')->group(function () {
+    // 재고 대시보드 (누락된 라우트 추가)
+    Route::get('/dashboard', \Jiny\Store\Http\Controllers\Admin\Inventory\IndexController::class)->name('dashboard');
+
+    // 재고 입고 관리
+    Route::get('/stock-in', \Jiny\Store\Http\Controllers\Admin\Inventory\StockInController::class)->name('stock-in');
+    Route::post('/stock-in/process', [\Jiny\Store\Http\Controllers\Admin\Inventory\StockInController::class, 'process'])->name('stock-in.process');
+
+    // 재고 출고 관리
+    Route::get('/stock-out', \Jiny\Store\Http\Controllers\Admin\Inventory\StockOutController::class)->name('stock-out');
+    Route::post('/stock-out/process', [\Jiny\Store\Http\Controllers\Admin\Inventory\StockOutController::class, 'process'])->name('stock-out.process');
+
+    // 재고 알림 관리
+    Route::get('/alerts', \Jiny\Store\Http\Controllers\Admin\Inventory\AlertsController::class)->name('alerts');
+    Route::post('/alerts/update-threshold', [\Jiny\Store\Http\Controllers\Admin\Inventory\AlertsController::class, 'updateThreshold'])->name('alerts.update-threshold');
+    Route::post('/alerts/update-settings', [\Jiny\Store\Http\Controllers\Admin\Inventory\AlertsController::class, 'updateSettings'])->name('alerts.update-settings');
+
+    // 재고 CRUD
+    Route::get('/', \Jiny\Store\Http\Controllers\Admin\Inventory\IndexController::class)->name('index');
+    Route::get('/create', \Jiny\Store\Http\Controllers\Admin\Inventory\CreateController::class)->name('create');
+    Route::post('/', \Jiny\Store\Http\Controllers\Admin\Inventory\StoreController::class)->name('store');
+    Route::get('/{id}', \Jiny\Store\Http\Controllers\Admin\Inventory\ShowController::class)->name('show')->where(['id' => '[0-9]+']);
+    Route::get('/{id}/edit', \Jiny\Store\Http\Controllers\Admin\Inventory\EditController::class)->name('edit')->where(['id' => '[0-9]+']);
+    Route::put('/{id}', \Jiny\Store\Http\Controllers\Admin\Inventory\UpdateController::class)->name('update')->where(['id' => '[0-9]+']);
+    Route::delete('/{id}', \Jiny\Store\Http\Controllers\Admin\Inventory\DestroyController::class)->name('destroy')->where(['id' => '[0-9]+']);
+});
+
+// 배송 관리
+Route::prefix('shipping')->name('admin.store.shipping.')->group(function () {
+    // 배송 대시보드
+    Route::get('/', \Jiny\Store\Http\Controllers\Admin\Shipping\IndexController::class)->name('index');
+
+    // 배송 지역 관리
+    Route::prefix('zones')->name('zones.')->group(function () {
+        Route::get('/', \Jiny\Store\Http\Controllers\Admin\Shipping\Zones\IndexController::class)->name('index');
+        Route::get('/create', \Jiny\Store\Http\Controllers\Admin\Shipping\Zones\CreateController::class)->name('create');
     });
 
-    // 프로모션 관리
-    Route::prefix('promotions')->name('promotions.')->group(function () {
-        Route::get('/', \Jiny\Store\Http\Controllers\Admin\Promotions\IndexController::class)->name('index');
-        Route::get('/create', \Jiny\Store\Http\Controllers\Admin\Promotions\CreateController::class)->name('create');
-        Route::post('/', \Jiny\Store\Http\Controllers\Admin\Promotions\StoreController::class)->name('store');
-        Route::get('/{id}', \Jiny\Store\Http\Controllers\Admin\Promotions\ShowController::class)->name('show')->where('id', '[0-9]+');
-        Route::get('/{id}/edit', \Jiny\Store\Http\Controllers\Admin\Promotions\EditController::class)->name('edit')->where('id', '[0-9]+');
-        Route::put('/{id}', \Jiny\Store\Http\Controllers\Admin\Promotions\UpdateController::class)->name('update')->where('id', '[0-9]+');
-        Route::delete('/{id}', \Jiny\Store\Http\Controllers\Admin\Promotions\DestroyController::class)->name('destroy')->where('id', '[0-9]+');
+    // 배송 방식 관리
+    Route::prefix('methods')->name('methods.')->group(function () {
+        Route::get('/', \Jiny\Store\Http\Controllers\Admin\Shipping\Methods\IndexController::class)->name('index');
     });
 
-    // 쿠폰 관리
-    Route::prefix('coupons')->name('coupons.')->group(function () {
-        Route::get('/', \Jiny\Store\Http\Controllers\Admin\Coupons\IndexController::class)->name('index');
-        Route::get('/create', \Jiny\Store\Http\Controllers\Admin\Coupons\CreateController::class)->name('create');
-        Route::post('/', \Jiny\Store\Http\Controllers\Admin\Coupons\StoreController::class)->name('store');
-        Route::get('/{coupon}', \Jiny\Store\Http\Controllers\Admin\Coupons\ShowController::class)->name('show')->where('coupon', '[0-9]+');
-        Route::get('/{coupon}/edit', \Jiny\Store\Http\Controllers\Admin\Coupons\EditController::class)->name('edit')->where('coupon', '[0-9]+');
-        Route::put('/{coupon}', \Jiny\Store\Http\Controllers\Admin\Coupons\UpdateController::class)->name('update')->where('coupon', '[0-9]+');
-        Route::delete('/{coupon}', \Jiny\Store\Http\Controllers\Admin\Coupons\DestroyController::class)->name('destroy')->where('coupon', '[0-9]+');
+    // 배송 요금 관리
+    Route::prefix('rates')->name('rates.')->group(function () {
+        Route::get('/', \Jiny\Store\Http\Controllers\Admin\Shipping\Rates\IndexController::class)->name('index');
     });
 
-    // 재고 관리
-    Route::prefix('inventory')->name('inventory.')->group(function () {
-        // 재고 대시보드 (누락된 라우트 추가)
-        Route::get('/dashboard', \Jiny\Store\Http\Controllers\Admin\Inventory\IndexController::class)->name('dashboard');
-
-        // 재고 입고 관리
-        Route::get('/stock-in', \Jiny\Store\Http\Controllers\Admin\Inventory\StockInController::class)->name('stock-in');
-        Route::post('/stock-in/process', [\Jiny\Store\Http\Controllers\Admin\Inventory\StockInController::class, 'process'])->name('stock-in.process');
-
-        // 재고 출고 관리
-        Route::get('/stock-out', \Jiny\Store\Http\Controllers\Admin\Inventory\StockOutController::class)->name('stock-out');
-        Route::post('/stock-out/process', [\Jiny\Store\Http\Controllers\Admin\Inventory\StockOutController::class, 'process'])->name('stock-out.process');
-
-        // 재고 알림 관리
-        Route::get('/alerts', \Jiny\Store\Http\Controllers\Admin\Inventory\AlertsController::class)->name('alerts');
-        Route::post('/alerts/update-threshold', [\Jiny\Store\Http\Controllers\Admin\Inventory\AlertsController::class, 'updateThreshold'])->name('alerts.update-threshold');
-        Route::post('/alerts/update-settings', [\Jiny\Store\Http\Controllers\Admin\Inventory\AlertsController::class, 'updateSettings'])->name('alerts.update-settings');
-
-        // 재고 CRUD
-        Route::get('/', \Jiny\Store\Http\Controllers\Admin\Inventory\IndexController::class)->name('index');
-        Route::get('/create', \Jiny\Store\Http\Controllers\Admin\Inventory\CreateController::class)->name('create');
-        Route::post('/', \Jiny\Store\Http\Controllers\Admin\Inventory\StoreController::class)->name('store');
-        Route::get('/{id}', \Jiny\Store\Http\Controllers\Admin\Inventory\ShowController::class)->name('show')->where(['id' => '[0-9]+']);
-        Route::get('/{id}/edit', \Jiny\Store\Http\Controllers\Admin\Inventory\EditController::class)->name('edit')->where(['id' => '[0-9]+']);
-        Route::put('/{id}', \Jiny\Store\Http\Controllers\Admin\Inventory\UpdateController::class)->name('update')->where(['id' => '[0-9]+']);
-        Route::delete('/{id}', \Jiny\Store\Http\Controllers\Admin\Inventory\DestroyController::class)->name('destroy')->where(['id' => '[0-9]+']);
+    // 배송비 계산기
+    Route::prefix('calculator')->name('calculator.')->group(function () {
+        Route::get('/', \Jiny\Store\Http\Controllers\Admin\Shipping\Calculator\IndexController::class)->name('index');
+        Route::post('/', \Jiny\Store\Http\Controllers\Admin\Shipping\Calculator\IndexController::class)->name('calculate');
     });
+});
 
-    // 배송 관리
-    Route::prefix('shipping')->name('shipping.')->group(function () {
-        // 배송 대시보드
-        Route::get('/', \Jiny\Store\Http\Controllers\Admin\Shipping\IndexController::class)->name('index');
-
-        // 배송 지역 관리
-        Route::prefix('zones')->name('zones.')->group(function () {
-            Route::get('/', \Jiny\Store\Http\Controllers\Admin\Shipping\Zones\IndexController::class)->name('index');
-            Route::get('/create', \Jiny\Store\Http\Controllers\Admin\Shipping\Zones\CreateController::class)->name('create');
-        });
-
-        // 배송 방식 관리
-        Route::prefix('methods')->name('methods.')->group(function () {
-            Route::get('/', \Jiny\Store\Http\Controllers\Admin\Shipping\Methods\IndexController::class)->name('index');
-        });
-
-        // 배송 요금 관리
-        Route::prefix('rates')->name('rates.')->group(function () {
-            Route::get('/', \Jiny\Store\Http\Controllers\Admin\Shipping\Rates\IndexController::class)->name('index');
-        });
-
-        // 배송비 계산기
-        Route::prefix('calculator')->name('calculator.')->group(function () {
-            Route::get('/', \Jiny\Store\Http\Controllers\Admin\Shipping\Calculator\IndexController::class)->name('index');
-            Route::post('/', \Jiny\Store\Http\Controllers\Admin\Shipping\Calculator\IndexController::class)->name('calculate');
-        });
-    });
-
-    // 이커머스 설정
-    Route::prefix('settings')->name('settings.')->group(function () {
-        Route::get('/', \Jiny\Store\Http\Controllers\Admin\Settings\IndexController::class)->name('index');
-    });
+// 스토어 설정
+Route::prefix('settings')->name('admin.store.settings.')->group(function () {
+    Route::get('/', \Jiny\Store\Http\Controllers\Admin\Settings\IndexController::class)->name('index');
 });
 
 /**
@@ -241,15 +234,15 @@ Route::prefix('services')->name('admin.store.services.')->group(function () {
         Route::delete('/{id}', \Jiny\Store\Http\Controllers\Admin\Services\Categories\DestroyController::class)->name('destroy')->where(['id' => '[0-9]+']);
     });
 
-    // Service Pricing 관리
-    Route::prefix('{serviceId}/pricing')->name('pricing.')->where(['serviceId' => '[0-9]+'])->group(function () {
-        Route::get('/', \Jiny\Store\Http\Controllers\Admin\Services\Pricing\IndexController::class)->name('index');
-        Route::get('/create', \Jiny\Store\Http\Controllers\Admin\Services\Pricing\CreateController::class)->name('create');
-        Route::post('/', \Jiny\Store\Http\Controllers\Admin\Services\Pricing\StoreController::class)->name('store');
-        Route::get('/{id}/edit', \Jiny\Store\Http\Controllers\Admin\Services\Pricing\EditController::class)->name('edit')->where(['id' => '[0-9]+']);
-        Route::put('/{id}', \Jiny\Store\Http\Controllers\Admin\Services\Pricing\UpdateController::class)->name('update')->where(['id' => '[0-9]+']);
-        Route::delete('/{id}', \Jiny\Store\Http\Controllers\Admin\Services\Pricing\DestroyController::class)->name('destroy')->where(['id' => '[0-9]+']);
-    });
+    // Service Pricing 관리 - TEMPORARILY DISABLED (controllers not implemented)
+    // Route::prefix('{serviceId}/pricing')->name('pricing.')->where(['serviceId' => '[0-9]+'])->group(function () {
+    //     Route::get('/', \Jiny\Store\Http\Controllers\Admin\Services\Pricing\IndexController::class)->name('index');
+    //     Route::get('/create', \Jiny\Store\Http\Controllers\Admin\Services\Pricing\CreateController::class)->name('create');
+    //     Route::post('/', \Jiny\Store\Http\Controllers\Admin\Services\Pricing\StoreController::class)->name('store');
+    //     Route::get('/{id}/edit', \Jiny\Store\Http\Controllers\Admin\Services\Pricing\EditController::class)->name('edit')->where(['id' => '[0-9]+']);
+    //     Route::put('/{id}', \Jiny\Store\Http\Controllers\Admin\Services\Pricing\UpdateController::class)->name('update')->where(['id' => '[0-9]+']);
+    //     Route::delete('/{id}', \Jiny\Store\Http\Controllers\Admin\Services\Pricing\DestroyController::class)->name('destroy')->where(['id' => '[0-9]+']);
+    // });
 });
 
 /**

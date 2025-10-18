@@ -18,7 +18,7 @@ class StoreController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_product_images',
+            'table' => 'store_product_images',
             'upload_path' => 'products/images',
             'allowed_extensions' => ['jpg', 'jpeg', 'png', 'webp'],
             'max_file_size' => 5 * 1024 * 1024, // 5MB
@@ -28,7 +28,7 @@ class StoreController extends Controller
     public function __invoke(Request $request, $productId)
     {
         // 상품 존재 확인
-        $product = DB::table('site_products')
+        $product = DB::table('store_products')
             ->where('id', $productId)
             ->whereNull('deleted_at')
             ->first();

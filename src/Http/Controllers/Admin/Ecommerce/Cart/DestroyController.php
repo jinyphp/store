@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Admin\Cart;
+namespace Jiny\Store\Http\Controllers\Admin\Ecommerce\Cart;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -15,7 +15,7 @@ class DestroyController extends Controller
     {
         try {
             // 장바구니 아이템 존재 확인
-            $cartItem = DB::table('site_cart')
+            $cartItem = DB::table('store_cart')
                 ->where('id', $id)
                 ->whereNull('deleted_at')
                 ->first();
@@ -28,7 +28,7 @@ class DestroyController extends Controller
             }
 
             // 소프트 삭제 (deleted_at 설정)
-            DB::table('site_cart')
+            DB::table('store_cart')
                 ->where('id', $id)
                 ->update([
                     'deleted_at' => now(),

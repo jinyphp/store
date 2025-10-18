@@ -16,7 +16,7 @@ class DestroyController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_products',
+            'table' => 'store_products',
             'redirect_route' => 'admin.site.products.index',
         ];
     }

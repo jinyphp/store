@@ -9,6 +9,8 @@ class Product extends Model
 {
     use HasFactory;
 
+    protected $table = 'store_products';
+
     protected $fillable = [
         'name',
         'sku',

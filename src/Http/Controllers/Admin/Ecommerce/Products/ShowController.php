@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Admin\Products;
+namespace Jiny\Store\Http\Controllers\Admin\Ecommerce\Products;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ class ShowController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_products',
+            'table' => 'store_products',
             'view' => 'jiny-store::admin.products.show',
             'title' => 'Product 상세보기',
         ];
@@ -26,33 +26,33 @@ class ShowController extends Controller
     {
         // 상품 정보 조회 (카테고리 포함)
         $product = DB::table($this->config['table'])
-            ->leftJoin('site_product_categories', 'site_products.category_id', '=', 'site_product_categories.id')
+            ->leftJoin('store_categories', 'store_products.category_id', '=', 'store_categories.id')
             ->select(
-                'site_products.id',
-                'site_products.slug',
-                'site_products.title',
-                'site_products.description',
-                'site_products.content',
-                'site_products.price',
-                'site_products.sale_price',
-                'site_products.image',
-                'site_products.images',
-                'site_products.features',
-                'site_products.specifications',
-                'site_products.tags',
-                'site_products.meta_title',
-                'site_products.meta_description',
-                'site_products.enable',
-                'site_products.featured',
-                'site_products.category_id',
-                'site_products.view_count',
-                'site_products.created_at',
-                'site_products.updated_at',
-                'site_product_categories.title as category_name',
-                'site_product_categories.slug as category_slug'
+                'store_products.id',
+                'store_products.slug',
+                'store_products.title',
+                'store_products.description',
+                'store_products.content',
+                'store_products.price',
+                'store_products.sale_price',
+                'store_products.image',
+                'store_products.images',
+                'store_products.features',
+                'store_products.specifications',
+                'store_products.tags',
+                'store_products.meta_title',
+                'store_products.meta_description',
+                'store_products.enable',
+                'store_products.featured',
+                'store_products.category_id',
+                'store_products.view_count',
+                'store_products.created_at',
+                'store_products.updated_at',
+                'store_categories.title as category_name',
+                'store_categories.slug as category_slug'
             )
-            ->where('site_products.id', $id)
-            ->whereNull('site_products.deleted_at')
+            ->where('store_products.id', $id)
+            ->whereNull('store_products.deleted_at')
             ->first();
 
         if (!$product) {
@@ -70,7 +70,7 @@ class ShowController extends Controller
             ->get();
 
         // 이미지 갤러리 조회
-        $images = DB::table('site_product_images')
+        $images = DB::table('store_product_images')
             ->where('product_id', $id)
             ->whereNull('deleted_at')
             ->where('enable', true)

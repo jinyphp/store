@@ -16,7 +16,7 @@ class StoreController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_testimonials',
+            'table' => 'store_testimonials',
             'redirect_route' => 'admin.site.testimonials.index',
         ];
     }
@@ -42,7 +42,7 @@ class StoreController extends Controller
 
         // Validate item exists
         if ($validated['type'] === 'product') {
-            $exists = DB::table('site_products')
+            $exists = DB::table('store_products')
                 ->where('id', $validated['item_id'])
                 ->whereNull('deleted_at')
                 ->exists();

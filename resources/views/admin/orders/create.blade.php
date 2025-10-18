@@ -1,4 +1,4 @@
-@extends($layout ?? 'jiny-site::layouts.admin.sidebar')
+@extends($layout ?? 'jiny-store::layouts.admin.sidebar')
 
 @section('title', '수동 주문 생성')
 

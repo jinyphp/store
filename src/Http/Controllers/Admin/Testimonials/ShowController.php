@@ -16,7 +16,7 @@ class ShowController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_testimonials',
+            'table' => 'store_testimonials',
             'view' => 'jiny-store::admin.testimonials.show',
             'title' => 'Testimonial 상세보기',
         ];
@@ -26,8 +26,8 @@ class ShowController extends Controller
     {
         $testimonial = DB::table($this->config['table'])
             ->leftJoin('users', 'site_testimonials.user_id', '=', 'users.id')
-            ->leftJoin('site_products', function($join) {
-                $join->on('site_testimonials.item_id', '=', 'site_products.id')
+            ->leftJoin('store_products', function($join) {
+                $join->on('site_testimonials.item_id', '=', 'store_products.id')
                      ->where('site_testimonials.type', '=', 'product');
             })
             ->leftJoin('site_services', function($join) {
@@ -38,8 +38,8 @@ class ShowController extends Controller
                 'site_testimonials.*',
                 'users.name as user_name',
                 'users.email as user_email',
-                'site_products.title as product_title',
-                'site_products.slug as product_slug',
+                store_products.title as product_title',
+                store_products.slug as product_slug',
                 'site_services.title as service_title',
                 'site_services.slug as service_slug'
             )

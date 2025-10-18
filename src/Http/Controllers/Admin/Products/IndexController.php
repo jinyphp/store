@@ -24,7 +24,7 @@ class IndexController extends Controller
     protected function loadConfig()
     {
         $this->config = [
-            'table' => 'site_products',
+            'table' => 'store_products',
             'view' => 'jiny-store::admin.products.index',
             'title' => 'Products 관리',
             'subtitle' => '상품 정보를 관리합니다.',
@@ -37,7 +37,7 @@ class IndexController extends Controller
         $query = $this->buildQuery();
         $query = $this->applyFilters($query, $request);
 
-        $products = $query->orderBy('site_products.created_at', 'desc')
+        $products = $query->orderBy('store_products.created_at', 'desc')
             ->paginate($this->config['per_page'])
             ->withQueryString();
 
@@ -55,29 +55,29 @@ class IndexController extends Controller
     protected function buildQuery()
     {
         return DB::table($this->config['table'])
-            ->leftJoin('site_product_categories', 'site_products.category_id', '=', 'site_product_categories.id')
+            ->leftJoin('store_categories', 'store_products.category_id', '=', 'store_categories.id')
             ->leftJoin(
-                DB::raw('(SELECT product_id, COUNT(*) as pricing_count FROM site_product_pricing WHERE enable = 1 AND deleted_at IS NULL GROUP BY product_id) as pricing_stats'),
-                'site_products.id', '=', 'pricing_stats.product_id'
+                DB::raw('(SELECT product_id, COUNT(*) as pricing_count FROM store_product_pricing WHERE enable = 1 AND deleted_at IS NULL GROUP BY product_id) as pricing_stats'),
+                'store_products.id', '=', 'pricing_stats.product_id'
             )
             ->select(
-                'site_products.id',
-                'site_products.slug',
-                'site_products.title',
-                'site_products.description',
-                'site_products.price',
-                'site_products.sale_price',
-                'site_products.image',
-                'site_products.enable',
-                'site_products.featured',
-                'site_products.view_count',
-                'site_products.created_at',
-                'site_products.updated_at',
-                'site_product_categories.title as category_name',
-                'site_product_categories.slug as category_slug',
+                'store_products.id',
+                'store_products.slug',
+                'store_products.title',
+                'store_products.description',
+                'store_products.price',
+                'store_products.sale_price',
+                'store_products.image',
+                'store_products.enable',
+                'store_products.featured',
+                'store_products.view_count',
+                'store_products.created_at',
+                'store_products.updated_at',
+                'store_categories.title as category_name',
+                'store_categories.slug as category_slug',
                 DB::raw('COALESCE(pricing_stats.pricing_count, 0) as pricing_options_count')
             )
-            ->whereNull('site_products.deleted_at');
+            ->whereNull('store_products.deleted_at');
     }
 
     protected function applyFilters($query, Request $request)
@@ -85,22 +85,22 @@ class IndexController extends Controller
         if ($request->filled('search')) {
             $search = $request->get('search');
             $query->where(function ($q) use ($search) {
-                $q->where('site_products.title', 'like', "%{$search}%")
-                  ->orWhere('site_products.description', 'like', "%{$search}%")
-                  ->orWhere('site_product_categories.title', 'like', "%{$search}%");
+                $q->where('store_products.title', 'like', "%{$search}%")
+                  ->orWhere('store_products.description', 'like', "%{$search}%")
+                  ->orWhere('store_categories.title', 'like', "%{$search}%");
             });
         }
 
         if ($request->filled('category') && $request->get('category') !== 'all') {
-            $query->where('site_products.category_id', $request->get('category'));
+            $query->where('store_products.category_id', $request->get('category'));
         }
 
         if ($request->filled('enable') && $request->get('enable') !== 'all') {
-            $query->where('site_products.enable', $request->get('enable') === '1');
+            $query->where('store_products.enable', $request->get('enable') === '1');
         }
 
         if ($request->filled('featured') && $request->get('featured') !== 'all') {
-            $query->where('site_products.featured', $request->get('featured') === '1');
+            $query->where('store_products.featured', $request->get('featured') === '1');
         }
 
         return $query;
@@ -122,7 +122,7 @@ class IndexController extends Controller
 
     protected function getCategories()
     {
-        return DB::table('site_product_categories')
+        return DB::table('store_categories')
             ->whereNull('deleted_at')
             ->where('enable', true)
             ->orderBy('pos')

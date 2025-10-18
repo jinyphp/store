@@ -1,11 +1,9 @@
 <?php
 
-namespace Jiny\Site\Services;
+namespace Jiny\Store\Services;
 
-use Jiny\Site\Models\SiteCart;
-use Jiny\Site\Models\SiteCurrency;
-use Jiny\Site\Models\SiteProduct;
-use Jiny\Site\Models\SiteService;
+use Jiny\Store\Models\StoreCart;
+use Jiny\Store\Models\StoreCurrency;
 use Illuminate\Support\Collection;
 
 /**
@@ -37,7 +35,7 @@ class CartPricingService
             'total_tax' => 0,
             'total_amount' => 0,
             'currency' => $targetCurrency,
-            'currency_info' => SiteCurrency::findByCode($targetCurrency),
+            'currency_info' => StoreCurrency::findByCode($targetCurrency),
             'item_count' => $cartItems->count(),
             'total_quantity' => 0,
         ];
@@ -61,7 +59,7 @@ class CartPricingService
     /**
      * 개별 카트 아이템 가격 계산
      */
-    public function calculateCartItemPrice(SiteCart $cartItem, $targetCurrency = null, $userCountryCode = null)
+    public function calculateCartItemPrice(StoreCart $cartItem, $targetCurrency = null, $userCountryCode = null)
     {
         $targetCurrency = $targetCurrency ?: $this->baseCurrency;
         $pricingData = $cartItem->calculatePrice($targetCurrency, $userCountryCode);
@@ -91,7 +89,7 @@ class CartPricingService
      */
     protected function getCartItems($userId = null, $sessionId = null)
     {
-        return SiteCart::forUserOrSession($userId, $sessionId)
+        return StoreCart::forUserOrSession($userId, $sessionId)
                       ->with(['item', 'pricingOption'])
                       ->get();
     }
@@ -144,7 +142,7 @@ class CartPricingService
      */
     public function getMultiCurrencyPricing($userId = null, $sessionId = null, $currencies = null, $userCountryCode = null)
     {
-        $currencies = $currencies ?: SiteCurrency::getActiveCurrencies()->pluck('code')->toArray();
+        $currencies = $currencies ?: StoreCurrency::getActiveCurrencies()->pluck('code')->toArray();
         $result = [];
 
         foreach ($currencies as $currency) {
@@ -193,7 +191,7 @@ class CartPricingService
     protected function calculateNewItemPrice($itemType, $itemId, $quantity, $pricingOptionId, $targetCurrency, $userCountryCode)
     {
         // 임시 카트 아이템 생성 (저장하지 않음)
-        $tempCartItem = new SiteCart([
+        $tempCartItem = new StoreCart([
             'item_type' => $itemType,
             'item_id' => $itemId,
             'pricing_option_id' => $pricingOptionId,
@@ -261,7 +259,7 @@ class CartPricingService
     public function formatPrice($amount, $currencyCode = null)
     {
         $currencyCode = $currencyCode ?: $this->baseCurrency;
-        $currency = SiteCurrency::findByCode($currencyCode);
+        $currency = StoreCurrency::findByCode($currencyCode);
 
         if ($currency) {
             return $currency->formatAmountWithSymbol($amount);
@@ -295,7 +293,7 @@ class CartPricingService
             'total_tax' => 0,
             'total_amount' => 0,
             'currency' => $targetCurrency,
-            'currency_info' => SiteCurrency::findByCode($targetCurrency),
+            'currency_info' => StoreCurrency::findByCode($targetCurrency),
             'item_count' => 0,
             'total_quantity' => 0,
             'tax_summary' => [],

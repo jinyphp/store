@@ -26,12 +26,12 @@ class EditController extends Controller
     public function __invoke(Request $request, $id)
     {
         $inventory = DB::table($this->config['table'])
-            ->leftJoin('site_products', 'site_inventory.product_id', '=', 'site_products.id')
+            ->leftJoin('store_products', 'site_inventory.product_id', '=', 'store_products.id')
             ->leftJoin('site_product_variants', 'site_inventory.variant_id', '=', 'site_product_variants.id')
             ->select(
                 'site_inventory.*',
-                'site_products.name as product_name',
-                'site_products.sku as product_sku',
+                store_products.name as product_name',
+                store_products.sku as product_sku',
                 'site_product_variants.name as variant_name',
                 'site_product_variants.sku as variant_sku'
             )
@@ -46,7 +46,7 @@ class EditController extends Controller
         }
 
         // 상품 목록 조회
-        $products = DB::table('site_products')
+        $products = DB::table('store_products')
             ->whereNull('deleted_at')
             ->where('enable', true)
             ->orderBy('name')
@@ -54,14 +54,14 @@ class EditController extends Controller
 
         // 상품 변형 목록 조회
         $variants = DB::table('site_product_variants')
-            ->leftJoin('site_products', 'site_product_variants.product_id', '=', 'site_products.id')
+            ->leftJoin('store_products', 'site_product_variants.product_id', '=', 'store_products.id')
             ->select(
                 'site_product_variants.*',
-                'site_products.name as product_name'
+                store_products.name as product_name'
             )
             ->whereNull('site_product_variants.deleted_at')
             ->where('site_product_variants.enable', true)
-            ->orderBy('site_products.name')
+            ->orderBy('store_products.name')
             ->orderBy('site_product_variants.name')
             ->get();
 

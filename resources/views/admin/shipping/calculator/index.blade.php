@@ -1,5 +1,5 @@
 {{-- 배송비 계산기 --}}
-@extends($layout ?? 'jiny-site::layouts.admin.sidebar')
+@extends($layout ?? 'jiny-store::layouts.admin.sidebar')
 
 @section('title', $config['title'])
 

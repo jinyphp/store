@@ -9,6 +9,8 @@ class StockAlert extends Model
 {
     use HasFactory;
 
+    protected $table = 'store_stock_alerts';
+
     protected $fillable = [
         'product_id',
         'inventory_item_id',

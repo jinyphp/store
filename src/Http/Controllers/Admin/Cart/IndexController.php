@@ -22,30 +22,30 @@ class IndexController extends Controller
         $perPage = $request->get('per_page', 20);
 
         // 베이스 쿼리
-        $query = DB::table('site_cart')
-            ->leftJoin('site_products', function($join) {
-                $join->on('site_cart.item_id', '=', 'site_products.id')
-                     ->where('site_cart.item_type', '=', 'product');
+        $query = DB::table('store_cart')
+            ->leftJoin('store_products', function($join) {
+                $join->on('store_cart.item_id', '=', 'store_products.id')
+                     ->where('store_cart.item_type', '=', 'product');
             })
             ->leftJoin('site_services', function($join) {
-                $join->on('site_cart.item_id', '=', 'site_services.id')
-                     ->where('site_cart.item_type', '=', 'service');
+                $join->on('store_cart.item_id', '=', 'site_services.id')
+                     ->where('store_cart.item_type', '=', 'service');
             })
             ->leftJoin('site_product_pricing', function($join) {
-                $join->on('site_cart.pricing_option_id', '=', 'site_product_pricing.id')
-                     ->where('site_cart.item_type', '=', 'product');
+                $join->on('store_cart.pricing_option_id', '=', 'site_product_pricing.id')
+                     ->where('store_cart.item_type', '=', 'product');
             })
             ->leftJoin('site_service_pricing', function($join) {
-                $join->on('site_cart.pricing_option_id', '=', 'site_service_pricing.id')
-                     ->where('site_cart.item_type', '=', 'service');
+                $join->on('store_cart.pricing_option_id', '=', 'site_service_pricing.id')
+                     ->where('store_cart.item_type', '=', 'service');
             })
-            ->leftJoin('users', 'site_cart.user_id', '=', 'users.id')
+            ->leftJoin('users', 'store_cart.user_id', '=', 'users.id')
             ->select(
-                'site_cart.*',
+                'store_cart.*',
                 // 상품 정보
-                'site_products.title as product_title',
-                'site_products.price as product_price',
-                'site_products.sale_price as product_sale_price',
+                store_products.title as product_title',
+                store_products.price as product_price',
+                store_products.sale_price as product_sale_price',
                 // 서비스 정보
                 'site_services.title as service_title',
                 'site_services.price as service_price',
@@ -59,39 +59,39 @@ class IndexController extends Controller
                 'users.name as user_name',
                 'users.email as user_email'
             )
-            ->whereNull('site_cart.deleted_at');
+            ->whereNull('store_cart.deleted_at');
 
         // 필터링 적용
         if ($search) {
             $query->where(function($q) use ($search) {
-                $q->where('site_products.title', 'like', "%{$search}%")
+                $q->where('store_products.title', 'like', "%{$search}%")
                   ->orWhere('site_services.title', 'like', "%{$search}%")
                   ->orWhere('users.name', 'like', "%{$search}%")
                   ->orWhere('users.email', 'like', "%{$search}%")
-                  ->orWhere('site_cart.session_id', 'like', "%{$search}%");
+                  ->orWhere('store_cart.session_id', 'like', "%{$search}%");
             });
         }
 
         if ($user_type === 'guest') {
-            $query->whereNull('site_cart.user_id');
+            $query->whereNull('store_cart.user_id');
         } elseif ($user_type === 'member') {
-            $query->whereNotNull('site_cart.user_id');
+            $query->whereNotNull('store_cart.user_id');
         }
 
         if ($item_type) {
-            $query->where('site_cart.item_type', $item_type);
+            $query->where('store_cart.item_type', $item_type);
         }
 
         if ($dateFrom) {
-            $query->where('site_cart.created_at', '>=', $dateFrom . ' 00:00:00');
+            $query->where('store_cart.created_at', '>=', $dateFrom . ' 00:00:00');
         }
 
         if ($dateTo) {
-            $query->where('site_cart.created_at', '<=', $dateTo . ' 23:59:59');
+            $query->where('store_cart.created_at', '<=', $dateTo . ' 23:59:59');
         }
 
         // 정렬 및 페이지네이션
-        $cartItems = $query->orderBy('site_cart.created_at', 'desc')
+        $cartItems = $query->orderBy('store_cart.created_at', 'desc')
                           ->paginate($perPage);
 
         // 각 아이템의 정보 정리
@@ -158,37 +158,37 @@ class IndexController extends Controller
         $monthAgo = now()->subMonth()->startOfDay();
 
         return [
-            'total_items' => DB::table('site_cart')->whereNull('deleted_at')->count(),
-            'total_quantity' => DB::table('site_cart')->whereNull('deleted_at')->sum('quantity'),
-            'total_users' => DB::table('site_cart')
+            'total_items' => DB::table('store_cart')->whereNull('deleted_at')->count(),
+            'total_quantity' => DB::table('store_cart')->whereNull('deleted_at')->sum('quantity'),
+            'total_users' => DB::table('store_cart')
                 ->whereNull('deleted_at')
                 ->distinct()
                 ->count(DB::raw('COALESCE(user_id, session_id)')),
-            'today_items' => DB::table('site_cart')
+            'today_items' => DB::table('store_cart')
                 ->whereNull('deleted_at')
                 ->where('created_at', '>=', $today)
                 ->count(),
-            'week_items' => DB::table('site_cart')
+            'week_items' => DB::table('store_cart')
                 ->whereNull('deleted_at')
                 ->where('created_at', '>=', $weekAgo)
                 ->count(),
-            'month_items' => DB::table('site_cart')
+            'month_items' => DB::table('store_cart')
                 ->whereNull('deleted_at')
                 ->where('created_at', '>=', $monthAgo)
                 ->count(),
-            'member_items' => DB::table('site_cart')
+            'member_items' => DB::table('store_cart')
                 ->whereNull('deleted_at')
                 ->whereNotNull('user_id')
                 ->count(),
-            'guest_items' => DB::table('site_cart')
+            'guest_items' => DB::table('store_cart')
                 ->whereNull('deleted_at')
                 ->whereNull('user_id')
                 ->count(),
-            'product_items' => DB::table('site_cart')
+            'product_items' => DB::table('store_cart')
                 ->whereNull('deleted_at')
                 ->where('item_type', 'product')
                 ->count(),
-            'service_items' => DB::table('site_cart')
+            'service_items' => DB::table('store_cart')
                 ->whereNull('deleted_at')
                 ->where('item_type', 'service')
                 ->count(),
@@ -205,13 +205,13 @@ class IndexController extends Controller
 
         return [
             // 평균 장바구니 보관 기간
-            'avg_cart_duration' => DB::table('site_cart')
+            'avg_cart_duration' => DB::table('store_cart')
                 ->whereNull('deleted_at')
                 ->selectRaw('AVG(JULIANDAY("now") - JULIANDAY(created_at)) as avg_days')
                 ->value('avg_days'),
 
             // 회원별 평균 장바구니 아이템 수
-            'avg_items_per_user' => DB::table('site_cart')
+            'avg_items_per_user' => DB::table('store_cart')
                 ->whereNull('deleted_at')
                 ->whereNotNull('user_id')
                 ->selectRaw('AVG(quantity) as avg_quantity')
@@ -221,18 +221,18 @@ class IndexController extends Controller
             'week_growth_rate' => $this->calculateGrowthRate($sevenDaysAgo, 7),
 
             // 고가 상품 관심도 (10만원 이상)
-            'high_value_interest' => DB::table('site_cart')
-                ->leftJoin('site_products', function($join) {
-                    $join->on('site_cart.item_id', '=', 'site_products.id')
-                         ->where('site_cart.item_type', '=', 'product');
+            'high_value_interest' => DB::table('store_cart')
+                ->leftJoin('store_products', function($join) {
+                    $join->on('store_cart.item_id', '=', 'store_products.id')
+                         ->where('store_cart.item_type', '=', 'product');
                 })
                 ->leftJoin('site_services', function($join) {
-                    $join->on('site_cart.item_id', '=', 'site_services.id')
-                         ->where('site_cart.item_type', '=', 'service');
+                    $join->on('store_cart.item_id', '=', 'site_services.id')
+                         ->where('store_cart.item_type', '=', 'service');
                 })
-                ->whereNull('site_cart.deleted_at')
+                ->whereNull('store_cart.deleted_at')
                 ->where(function($query) {
-                    $query->where('site_products.price', '>=', 100000)
+                    $query->where('store_products.price', '>=', 100000)
                           ->orWhere('site_services.price', '>=', 100000);
                 })
                 ->count(),
@@ -245,45 +245,45 @@ class IndexController extends Controller
     private function getPopularItems()
     {
         // 상품 인기 순위
-        $popularProducts = DB::table('site_cart')
-            ->leftJoin('site_products', function($join) {
-                $join->on('site_cart.item_id', '=', 'site_products.id')
-                     ->where('site_cart.item_type', '=', 'product');
+        $popularProducts = DB::table('store_cart')
+            ->leftJoin('store_products', function($join) {
+                $join->on('store_cart.item_id', '=', 'store_products.id')
+                     ->where('store_cart.item_type', '=', 'product');
             })
-            ->whereNull('site_cart.deleted_at')
-            ->where('site_cart.item_type', 'product')
-            ->whereNotNull('site_products.title')
+            ->whereNull('store_cart.deleted_at')
+            ->where('store_cart.item_type', 'product')
+            ->whereNotNull('store_products.title')
             ->selectRaw('
-                site_cart.item_id,
-                site_products.title,
-                site_products.price,
+                store_cart.item_id,
+                'store_products.'title,
+                'store_products.'price,
                 COUNT(*) as cart_count,
-                SUM(site_cart.quantity) as total_quantity,
-                COUNT(DISTINCT COALESCE(site_cart.user_id, site_cart.session_id)) as unique_users
+                SUM(store_cart.quantity) as total_quantity,
+                COUNT(DISTINCT COALESCE(store_cart.user_id, store_cart.session_id)) as unique_users
             ')
-            ->groupBy('site_cart.item_id', 'site_products.title', 'site_products.price')
+            ->groupBy('store_cart.item_id', 'store_products.title', 'store_products.price')
             ->orderByDesc('cart_count')
             ->limit(10)
             ->get();
 
         // 서비스 인기 순위
-        $popularServices = DB::table('site_cart')
+        $popularServices = DB::table('store_cart')
             ->leftJoin('site_services', function($join) {
-                $join->on('site_cart.item_id', '=', 'site_services.id')
-                     ->where('site_cart.item_type', '=', 'service');
+                $join->on('store_cart.item_id', '=', 'site_services.id')
+                     ->where('store_cart.item_type', '=', 'service');
             })
-            ->whereNull('site_cart.deleted_at')
-            ->where('site_cart.item_type', 'service')
+            ->whereNull('store_cart.deleted_at')
+            ->where('store_cart.item_type', 'service')
             ->whereNotNull('site_services.title')
             ->selectRaw('
-                site_cart.item_id,
+                store_cart.item_id,
                 site_services.title,
                 site_services.price,
                 COUNT(*) as cart_count,
-                SUM(site_cart.quantity) as total_quantity,
-                COUNT(DISTINCT COALESCE(site_cart.user_id, site_cart.session_id)) as unique_users
+                SUM(store_cart.quantity) as total_quantity,
+                COUNT(DISTINCT COALESCE(store_cart.user_id, store_cart.session_id)) as unique_users
             ')
-            ->groupBy('site_cart.item_id', 'site_services.title', 'site_services.price')
+            ->groupBy('store_cart.item_id', 'site_services.title', 'site_services.price')
             ->orderByDesc('cart_count')
             ->limit(10)
             ->get();
@@ -301,25 +301,25 @@ class IndexController extends Controller
     {
         $thirtyDaysAgo = now()->subDays(30);
 
-        return DB::table('site_cart')
-            ->leftJoin('site_products', function($join) {
-                $join->on('site_cart.item_id', '=', 'site_products.id')
-                     ->where('site_cart.item_type', '=', 'product');
+        return DB::table('store_cart')
+            ->leftJoin('store_products', function($join) {
+                $join->on('store_cart.item_id', '=', 'store_products.id')
+                     ->where('store_cart.item_type', '=', 'product');
             })
             ->leftJoin('site_services', function($join) {
-                $join->on('site_cart.item_id', '=', 'site_services.id')
-                     ->where('site_cart.item_type', '=', 'service');
+                $join->on('store_cart.item_id', '=', 'site_services.id')
+                     ->where('store_cart.item_type', '=', 'service');
             })
-            ->leftJoin('users', 'site_cart.user_id', '=', 'users.id')
-            ->whereNull('site_cart.deleted_at')
-            ->where('site_cart.created_at', '<=', $thirtyDaysAgo)
+            ->leftJoin('users', 'store_cart.user_id', '=', 'users.id')
+            ->whereNull('store_cart.deleted_at')
+            ->where('store_cart.created_at', '<=', $thirtyDaysAgo)
             ->selectRaw('
-                site_cart.*,
-                COALESCE(site_products.title, site_services.title) as item_title,
-                COALESCE(site_products.price, site_services.price) as item_price,
+                store_cart.*,
+                COALESCE('store_products.'title, site_services.title) as item_title,
+                COALESCE('store_products.'price, site_services.price) as item_price,
                 users.name as user_name,
                 users.email as user_email,
-                JULIANDAY("now") - JULIANDAY(site_cart.created_at) as days_in_cart
+                JULIANDAY("now") - JULIANDAY(store_cart.created_at) as days_in_cart
             ')
             ->orderByDesc('days_in_cart')
             ->limit(20)
@@ -331,13 +331,13 @@ class IndexController extends Controller
      */
     private function calculateGrowthRate($periodStart, $days)
     {
-        $currentPeriod = DB::table('site_cart')
+        $currentPeriod = DB::table('store_cart')
             ->whereNull('deleted_at')
             ->where('created_at', '>=', $periodStart)
             ->count();
 
         $previousPeriodStart = $periodStart->copy()->subDays($days);
-        $previousPeriod = DB::table('site_cart')
+        $previousPeriod = DB::table('store_cart')
             ->whereNull('deleted_at')
             ->where('created_at', '>=', $previousPeriodStart)
             ->where('created_at', '<', $periodStart)

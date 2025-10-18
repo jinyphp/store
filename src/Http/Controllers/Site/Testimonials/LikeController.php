@@ -13,7 +13,7 @@ class LikeController extends Controller
 {
     public function __invoke(Request $request, $id)
     {
-        $testimonial = DB::table('site_testimonials')
+        $testimonial = DB::table('store_testimonials')
             ->where('id', $id)
             ->where('enable', true)
             ->whereNull('deleted_at')
@@ -45,7 +45,7 @@ class LikeController extends Controller
                 ->delete();
 
             // Decrement likes count
-            DB::table('site_testimonials')
+            DB::table('store_testimonials')
                 ->where('id', $id)
                 ->decrement('likes_count');
 
@@ -61,7 +61,7 @@ class LikeController extends Controller
             ]);
 
             // Increment likes count
-            DB::table('site_testimonials')
+            DB::table('store_testimonials')
                 ->where('id', $id)
                 ->increment('likes_count');
 
@@ -69,7 +69,7 @@ class LikeController extends Controller
         }
 
         // Get updated count
-        $likesCount = DB::table('site_testimonials')
+        $likesCount = DB::table('store_testimonials')
             ->where('id', $id)
             ->value('likes_count');
 

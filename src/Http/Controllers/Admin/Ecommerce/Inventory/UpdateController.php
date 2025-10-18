@@ -35,7 +35,7 @@ class UpdateController extends Controller
         }
 
         $validated = $request->validate([
-            'product_id' => 'required|exists:site_products,id',
+            'product_id' => 'required|exists:store_products,id',
             'variant_id' => 'nullable|exists:site_product_variants,id',
             'quantity' => 'required|integer|min:0',
             'reserved_quantity' => 'nullable|integer|min:0',
