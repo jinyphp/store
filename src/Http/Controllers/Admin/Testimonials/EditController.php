@@ -31,7 +31,7 @@ class EditController extends Controller
 
         if (!$testimonial) {
             return redirect()
-                ->route('admin.site.testimonials.index')
+                ->route('admin.store.testimonials.index')
                 ->with('error', 'Testimonial을 찾을 수 없습니다.');
         }
 
@@ -43,7 +43,7 @@ class EditController extends Controller
             ->orderBy('title')
             ->get();
 
-        $services = DB::table('site_services')
+        $services = DB::table('store_services')
             ->select('id', 'title')
             ->where('enable', true)
             ->whereNull('deleted_at')

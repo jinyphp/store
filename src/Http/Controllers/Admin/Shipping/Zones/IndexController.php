@@ -13,9 +13,9 @@ class IndexController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $query = DB::table('site_shipping_zones as sz')
-            ->leftJoin('site_shipping_zone_countries as szc', 'sz.id', '=', 'szc.shipping_zone_id')
-            ->leftJoin('site_shipping_rates as sr', 'sz.id', '=', 'sr.shipping_zone_id')
+        $query = DB::table('store_shipping_zones as sz')
+            ->leftJoin('store_shipping_zone_countries as szc', 'sz.id', '=', 'szc.shipping_zone_id')
+            ->leftJoin('store_shipping_rates as sr', 'sz.id', '=', 'sr.shipping_zone_id')
             ->select(
                 'sz.id',
                 'sz.name',

@@ -6,7 +6,7 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="h3 mb-0">새 주문 생성 - 1단계: 고객 정보</h1>
-                <a href="{{ route('admin.cms.ecommerce.orders.index') }}" class="btn btn-outline-secondary">
+                <a href="{{ route('admin.store.orders.index') }}" class="btn btn-outline-secondary">
                     <i class="fas fa-arrow-left me-2"></i>주문 목록으로
                 </a>
             </div>
@@ -53,7 +53,7 @@
                     <h5 class="card-title mb-0">고객 정보 입력</h5>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('admin.cms.ecommerce.orders.step', 1) }}">
+                    <form method="POST" action="{{ route('admin.store.orders.step', 1) }}">
                         @csrf
 
                         <div class="row mb-4">
@@ -101,7 +101,7 @@
                         </div>
 
                         <div class="d-flex justify-content-between mt-4">
-                            <a href="{{ route('admin.cms.ecommerce.orders.reset') }}" class="btn btn-outline-danger">
+                            <a href="{{ route('admin.store.orders.reset') }}" class="btn btn-outline-danger">
                                 <i class="fas fa-times me-2"></i>취소
                             </a>
                             <button type="submit" class="btn btn-primary">

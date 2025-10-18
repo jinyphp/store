@@ -1,11 +1,11 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Site\Cart;
+namespace Jiny\Store\Http\Controllers\Store\Cart;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Product;
+use Jiny\Store\Models\Product;
 
 /**
  * 장바구니 상품 추가 컨트롤러
@@ -26,7 +26,7 @@ class AddController extends Controller
         $validated['quantity'] = $validated['quantity'] ?? 1;
 
         // 상품/서비스 존재 확인
-        $tableName = $validated['item_type'] === 'product' ? 'store_products' : 'site_services';
+        $tableName = $validated['item_type'] === 'product' ? 'store_products' : 'store_services';
         $item = DB::table($tableName)
             ->where('id', $validated['item_id'])
             ->where('enable', true)

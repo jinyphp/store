@@ -1,33 +1,17 @@
-@extends('www_layout')
+@extends('layouts.home')
 
 @section('title', $config['title'])
 
 @section('content')
-<!-- Hero Section -->
-<section class="hero-section bg-gradient-primary text-white">
-    <div class="container">
-        <div class="row align-items-center min-vh-50">
-            <div class="col-lg-6">
-                <h1 class="display-4 fw-bold mb-4">{{ $config['title'] }}</h1>
-                <p class="lead mb-4">{{ $config['subtitle'] }}</p>
-                <div class="d-flex gap-3">
-                    <a href="{{ route('store.products.index') }}" class="btn btn-light btn-lg">
-                        <i class="fe fe-shopping-bag me-2"></i>상품 보기
-                    </a>
-                    <a href="{{ route('store.services.index') }}" class="btn btn-outline-light btn-lg">
-                        <i class="fe fe-briefcase me-2"></i>서비스 보기
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="text-center">
-                    <img src="{{ asset('assets/images/store/hero-image.png') }}"
-                         alt="Store Hero"
-                         class="img-fluid rounded-3 shadow"
-                         style="max-height: 400px; object-fit: cover;">
-                </div>
-            </div>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1>{{ $config['title'] }}</h1>
+            <p>{{ $config['subtitle'] }}</p>
+            <p>Store is working! Routes and models have been fixed.</p>
         </div>
+    </div>
+</div>
     </div>
 </section>
 

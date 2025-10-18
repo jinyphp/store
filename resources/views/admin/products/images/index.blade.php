@@ -12,7 +12,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('admin.site.products.index') }}" class="text-decoration-none">
+                                <a href="{{ route('admin.store.products.index') }}" class="text-decoration-none">
                                     상품 목록
                                 </a>
                             </li>
@@ -25,7 +25,7 @@
                     <p class="text-muted mb-0">{{ $config['subtitle'] }}</p>
                 </div>
                 <div>
-                    <a href="{{ route('admin.site.products.show', $product->id) }}" class="btn btn-outline-secondary me-2">
+                    <a href="{{ route('admin.store.products.show', $product->id) }}" class="btn btn-outline-secondary me-2">
                         <i class="fe fe-arrow-left me-2"></i>상품으로 돌아가기
                     </a>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal">
@@ -717,7 +717,7 @@ function updateImageOrder() {
         pos: index + 1
     }));
 
-    fetch(`/admin/site/products/{{ $product->id }}/images/reorder`, {
+    fetch(`/admin/store/products/{{ $product->id }}/images/reorder`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -746,7 +746,7 @@ function viewImage(url, title) {
 
 // 이미지 편집
 function editImage(id) {
-    fetch(`/admin/site/products/{{ $product->id }}/images/${id}`)
+    fetch(`/admin/store/products/{{ $product->id }}/images/${id}`)
         .then(response => response.json())
         .then(data => {
             document.getElementById('edit_title').value = data.title || '';
@@ -757,7 +757,7 @@ function editImage(id) {
             document.getElementById('edit_is_featured').checked = data.is_featured;
             document.getElementById('edit_enable').checked = data.enable;
 
-            document.getElementById('editForm').action = `/admin/site/products/{{ $product->id }}/images/${id}`;
+            document.getElementById('editForm').action = `/admin/store/products/{{ $product->id }}/images/${id}`;
             new bootstrap.Modal(document.getElementById('editModal')).show();
         })
         .catch(error => {
@@ -768,7 +768,7 @@ function editImage(id) {
 
 // 대표 이미지 토글
 function toggleFeatured(id) {
-    fetch(`/admin/site/products/{{ $product->id }}/images/${id}/toggle-featured`, {
+    fetch(`/admin/store/products/{{ $product->id }}/images/${id}/toggle-featured`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -789,7 +789,7 @@ function toggleFeatured(id) {
 
 // 활성/비활성 토글
 function toggleEnable(id) {
-    fetch(`/admin/site/products/{{ $product->id }}/images/${id}/toggle-enable`, {
+    fetch(`/admin/store/products/{{ $product->id }}/images/${id}/toggle-enable`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -810,7 +810,7 @@ function toggleEnable(id) {
 
 // 이미지 삭제
 function deleteImage(id) {
-    document.getElementById('deleteForm').action = `/admin/site/products/{{ $product->id }}/images/${id}`;
+    document.getElementById('deleteForm').action = `/admin/store/products/{{ $product->id }}/images/${id}`;
     new bootstrap.Modal(document.getElementById('deleteModal')).show();
 }
 
@@ -860,7 +860,7 @@ document.getElementById('uploadForm').addEventListener('submit', function(e) {
         progressDiv.classList.add('d-none');
     });
 
-    xhr.open('POST', `/admin/site/products/{{ $product->id }}/images`);
+    xhr.open('POST', `/admin/store/products/{{ $product->id }}/images`);
     xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
     xhr.send(formData);
 });
@@ -1028,7 +1028,7 @@ function uploadFile(file) {
         }, 3000);
     });
 
-    xhr.open('POST', `/admin/site/products/{{ $product->id }}/images`);
+    xhr.open('POST', `/admin/store/products/{{ $product->id }}/images`);
     xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
     xhr.send(formData);
 }

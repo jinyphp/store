@@ -29,7 +29,7 @@ class IndexController extends Controller
         $product = DB::table('store_products')
             ->leftJoin('store_categories', 'store_products.category_id', '=', 'store_categories.id')
             ->select(
-                store_products.*',
+                'store_products.*',
                 'store_categories.title as category_name'
             )
             ->where('store_products.id', $productId)

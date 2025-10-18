@@ -10,12 +10,12 @@
             <h2 class="h3 mb-0">새 쿠폰 생성</h2>
             <p class="text-muted">새로운 할인 쿠폰을 생성합니다.</p>
         </div>
-        <a href="{{ route('admin.cms.ecommerce.coupons.index') }}" class="btn btn-outline-secondary">
+        <a href="{{ route('admin.store.coupons.index') }}" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left me-2"></i>목록으로
         </a>
     </div>
 
-    <form action="{{ route('admin.cms.ecommerce.coupons.store') }}" method="POST">
+    <form action="{{ route('admin.store.coupons.store') }}" method="POST">
         @csrf
         <div class="row">
             <div class="col-lg-8">
@@ -222,7 +222,7 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-check-lg me-2"></i>쿠폰 생성
                             </button>
-                            <a href="{{ route('admin.cms.ecommerce.coupons.index') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('admin.store.coupons.index') }}" class="btn btn-outline-secondary">
                                 취소
                             </a>
                         </div>

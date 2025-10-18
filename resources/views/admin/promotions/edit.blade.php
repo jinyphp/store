@@ -6,7 +6,7 @@
         <div class="col-12">
             <h1 class="h3 mb-4">프로모션 수정</h1>
 
-            <form method="POST" action="{{ route('admin.cms.ecommerce.promotions.update', $promotion->id) }}">
+            <form method="POST" action="{{ route('admin.store.promotions.update', $promotion->id) }}">
                 @csrf
                 @method('PUT')
 

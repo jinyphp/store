@@ -17,7 +17,7 @@
                                 <a href="{{ route('admin.home') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('admin.cms.ecommerce.dashboard') }}">Ecommerce</a>
+                                <a href="{{ route('admin.store.dashboard') }}">Ecommerce</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">Shipping</li>
                         </ol>

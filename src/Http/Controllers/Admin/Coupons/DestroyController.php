@@ -4,7 +4,7 @@ namespace Jiny\Store\Http\Controllers\Admin\Coupons;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use App\Models\Coupon;
+use Jiny\Store\Models\Coupon;
 
 class DestroyController extends Controller
 {
@@ -14,14 +14,14 @@ class DestroyController extends Controller
         if ($coupon->times_used > 0) {
             $coupon->update(['status' => 'inactive']);
             return redirect()
-                ->route('admin.cms.ecommerce.coupons.index')
+                ->route('admin.store.coupons.index')
                 ->with('success', '사용 기록이 있는 쿠폰을 비활성화했습니다.');
         }
 
         $coupon->delete();
 
         return redirect()
-            ->route('admin.cms.ecommerce.coupons.index')
+            ->route('admin.store.coupons.index')
             ->with('success', '쿠폰이 성공적으로 삭제되었습니다.');
     }
 }

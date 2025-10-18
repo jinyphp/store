@@ -10,7 +10,7 @@ class SiteServiceCategory extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'site_service_categories';
+    protected $table = 'store_categories';
 
     protected $fillable = [
         'enable',

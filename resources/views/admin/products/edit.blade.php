@@ -13,7 +13,7 @@
                     <p class="text-muted mb-0">상품 정보를 수정합니다.</p>
                 </div>
                 <div>
-                    <a href="{{ route('admin.site.products.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('admin.store.products.index') }}" class="btn btn-outline-secondary">
                         <i class="fe fe-arrow-left me-2"></i>목록으로
                     </a>
                 </div>
@@ -22,7 +22,7 @@
     </div>
 
     <!-- 상품 수정 폼 -->
-    <form method="POST" action="{{ route('admin.site.products.update', $product->id) }}">
+    <form method="POST" action="{{ route('admin.store.products.update', $product->id) }}">
         @csrf
         @method('PUT')
 
@@ -195,7 +195,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <a href="{{ route('admin.site.products.pricing.index', $product->id) }}" class="btn btn-outline-warning btn-sm">
+                            <a href="{{ route('admin.store.products.pricing.index', $product->id) }}" class="btn btn-outline-warning btn-sm">
                                 <i class="fe fe-tag me-2"></i>가격 옵션 관리
                             </a>
                             <div class="form-text mt-2">다양한 가격 옵션을 설정하고 관리하세요.</div>
@@ -384,10 +384,10 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="fe fe-save me-2"></i>변경사항 저장
                             </button>
-                            <a href="{{ route('admin.site.products.show', $product->id) }}" class="btn btn-outline-info">
+                            <a href="{{ route('admin.store.products.show', $product->id) }}" class="btn btn-outline-info">
                                 <i class="fe fe-eye me-2"></i>상품 보기
                             </a>
-                            <a href="{{ route('admin.site.products.index') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('admin.store.products.index') }}" class="btn btn-outline-secondary">
                                 <i class="fe fe-x me-2"></i>취소
                             </a>
                         </div>

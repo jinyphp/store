@@ -11,7 +11,7 @@ class SiteProductPricing extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'site_product_pricing';
+    protected $table = 'store_product_pricing';
 
     protected $fillable = [
         'product_id',

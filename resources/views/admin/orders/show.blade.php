@@ -17,17 +17,17 @@
                                 <a href="{{ route('admin.home') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('admin.cms.ecommerce.dashboard') }}">Ecommerce</a>
+                                <a href="{{ route('admin.store.dashboard') }}">Store</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('admin.cms.ecommerce.orders.index') }}">Orders</a>
+                                <a href="{{ route('admin.store.orders.index') }}">Orders</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $order->order_number }}</li>
                         </ol>
                     </nav>
                 </div>
                 <div class="d-flex align-items-center gap-2">
-                    <a href="{{ route('admin.cms.ecommerce.orders.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('admin.store.orders.index') }}" class="btn btn-outline-secondary">
                         <i class="fe fe-arrow-left me-2"></i>목록으로
                     </a>
                     <div class="dropdown">

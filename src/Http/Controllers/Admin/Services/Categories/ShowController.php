@@ -16,7 +16,7 @@ class ShowController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_service_categories',
+            'table' => 'store_categories',
             'view' => 'jiny-store::admin.services.categories.show',
             'title' => 'Service Category 상세보기',
         ];
@@ -25,13 +25,13 @@ class ShowController extends Controller
     public function __invoke(Request $request, $id)
     {
         $category = DB::table($this->config['table'])
-            ->leftJoin('site_service_categories as parent', 'site_service_categories.parent_id', '=', 'parent.id')
+            ->leftJoin('store_categories as parent', 'store_categories.parent_id', '=', 'parent.id')
             ->select(
-                'site_service_categories.*',
+                'store_categories.*',
                 'parent.title as parent_title'
             )
-            ->where('site_service_categories.id', $id)
-            ->whereNull('site_service_categories.deleted_at')
+            ->where('store_categories.id', $id)
+            ->whereNull('store_categories.deleted_at')
             ->first();
 
         if (!$category) {
@@ -49,7 +49,7 @@ class ShowController extends Controller
             ->get();
 
         // 이 카테고리에 속한 서비스 개수
-        $servicesCount = DB::table('site_services')
+        $servicesCount = DB::table('store_services')
             ->where('category_id', $id)
             ->whereNull('deleted_at')
             ->count();

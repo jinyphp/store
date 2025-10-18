@@ -13,7 +13,7 @@
                     <p class="text-muted mb-0">Testimonial 정보를 수정합니다.</p>
                 </div>
                 <div>
-                    <a href="{{ route('admin.site.testimonials.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('admin.store.testimonials.index') }}" class="btn btn-outline-secondary">
                         <i class="fe fe-arrow-left me-2"></i>목록으로
                     </a>
                 </div>
@@ -22,7 +22,7 @@
     </div>
 
     <!-- Testimonial 수정 폼 -->
-    <form method="POST" action="{{ route('admin.site.testimonials.update', $testimonial->id) }}">
+    <form method="POST" action="{{ route('admin.store.testimonials.update', $testimonial->id) }}">
         @csrf
         @method('PUT')
 
@@ -258,7 +258,7 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="fe fe-save me-2"></i>Testimonial 수정
                             </button>
-                            <a href="{{ route('admin.site.testimonials.index') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('admin.store.testimonials.index') }}" class="btn btn-outline-secondary">
                                 <i class="fe fe-x me-2"></i>취소
                             </a>
                         </div>

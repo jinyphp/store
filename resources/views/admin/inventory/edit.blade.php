@@ -13,10 +13,10 @@
                     <p class="text-muted mb-0">{{ $config['subtitle'] }}</p>
                 </div>
                 <div>
-                    <a href="{{ route('admin.site.ecommerce.inventory.show', $inventory->id) }}" class="btn btn-outline-info me-2">
+                    <a href="{{ route('admin.store.ecommerce.inventory.show', $inventory->id) }}" class="btn btn-outline-info me-2">
                         <i class="fe fe-eye me-2"></i>상세 보기
                     </a>
-                    <a href="{{ route('admin.site.ecommerce.inventory.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('admin.store.ecommerce.inventory.index') }}" class="btn btn-outline-secondary">
                         <i class="fe fe-arrow-left me-2"></i>재고 목록
                     </a>
                 </div>
@@ -25,7 +25,7 @@
     </div>
 
     <!-- 재고 수정 폼 -->
-    <form method="POST" action="{{ route('admin.site.ecommerce.inventory.update', $inventory->id) }}">
+    <form method="POST" action="{{ route('admin.store.ecommerce.inventory.update', $inventory->id) }}">
         @csrf
         @method('PUT')
 
@@ -286,10 +286,10 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="fe fe-save me-2"></i>재고 수정
                             </button>
-                            <a href="{{ route('admin.site.ecommerce.inventory.show', $inventory->id) }}" class="btn btn-outline-info">
+                            <a href="{{ route('admin.store.ecommerce.inventory.show', $inventory->id) }}" class="btn btn-outline-info">
                                 <i class="fe fe-eye me-2"></i>상세 보기
                             </a>
-                            <a href="{{ route('admin.site.ecommerce.inventory.index') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('admin.store.ecommerce.inventory.index') }}" class="btn btn-outline-secondary">
                                 <i class="fe fe-x me-2"></i>취소
                             </a>
                         </div>

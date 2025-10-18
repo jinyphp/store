@@ -6,7 +6,7 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="h3 mb-0">새 주문 생성 - 4단계: 결제/완료</h1>
-                <a href="{{ route('admin.cms.ecommerce.orders.index') }}" class="btn btn-outline-secondary">
+                <a href="{{ route('admin.store.orders.index') }}" class="btn btn-outline-secondary">
                     <i class="fas fa-arrow-left me-2"></i>주문 목록으로
                 </a>
             </div>
@@ -48,7 +48,7 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <form method="POST" action="{{ route('admin.cms.ecommerce.orders.step', 4) }}" id="paymentForm">
+            <form method="POST" action="{{ route('admin.store.orders.step', 4) }}" id="paymentForm">
                 @csrf
 
                 <!-- 주문 상태 -->
@@ -126,7 +126,7 @@
                 </div>
 
                 <div class="d-flex justify-content-between mt-4">
-                    <a href="{{ route('admin.cms.ecommerce.orders.step', 3) }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('admin.store.orders.step', 3) }}" class="btn btn-outline-secondary">
                         <i class="fas fa-arrow-left me-2"></i>이전 단계
                     </a>
                     <button type="submit" class="btn btn-success btn-lg">

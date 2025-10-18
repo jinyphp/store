@@ -4,7 +4,7 @@ namespace Jiny\Store\Http\Controllers\Admin\Promotions;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use App\Models\Promotion;
+use Jiny\Store\Models\Promotion;
 use Illuminate\Support\Facades\Validator;
 
 class UpdateController extends Controller
@@ -48,7 +48,7 @@ class UpdateController extends Controller
 
         $promotion->update($data);
 
-        return redirect()->route('admin.cms.ecommerce.promotions.show', $promotion->id)
+        return redirect()->route('admin.store.promotions.show', $promotion->id)
             ->with('success', '프로모션이 성공적으로 수정되었습니다.');
     }
 }

@@ -16,7 +16,7 @@ class ShowController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_services',
+            'table' => 'store_services',
             'view' => 'jiny-store::admin.services.show',
             'title' => 'Service 상세보기',
         ];

@@ -15,10 +15,10 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('admin.cms.ecommerce.dashboard') }}">대시보드</a>
+                                <a href="{{ route('admin.store.dashboard') }}">대시보드</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('admin.cms.ecommerce.shipping.index') }}">배송 관리</a>
+                                <a href="{{ route('admin.store.shipping.index') }}">배송 관리</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">배송 요금</li>
                         </ol>
@@ -28,10 +28,10 @@
                     <a href="#" class="me-3 text-body">
                         <i class="fe fe-download me-2"></i>내보내기
                     </a>
-                    <a href="{{ route('admin.cms.ecommerce.shipping.calculator.index') }}" class="me-2 btn btn-outline-primary">
+                    <a href="{{ route('admin.store.shipping.calculator.index') }}" class="me-2 btn btn-outline-primary">
                         <i class="fe fe-calculator me-2"></i>계산기
                     </a>
-                    <a href="{{ route('admin.cms.ecommerce.shipping.index') }}" class="me-2 btn btn-outline-secondary">
+                    <a href="{{ route('admin.store.shipping.index') }}" class="me-2 btn btn-outline-secondary">
                         <i class="fe fe-home me-2"></i>배송 대시보드
                     </a>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRateModal">

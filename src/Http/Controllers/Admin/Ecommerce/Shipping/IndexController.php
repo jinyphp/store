@@ -53,13 +53,13 @@ class IndexController extends Controller
      */
     private function getShippingStats(): array
     {
-        $totalZones = DB::table('site_shipping_zones')->where('enable', true)->count();
-        $totalMethods = DB::table('site_shipping_methods')->where('enable', true)->count();
-        $totalRates = DB::table('site_shipping_rates')->where('enable', true)->count();
-        $totalCountries = DB::table('site_shipping_zone_countries')->where('enable', true)->count();
+        $totalZones = DB::table('store_shipping_zones')->where('enable', true)->count();
+        $totalMethods = DB::table('store_shipping_methods')->where('enable', true)->count();
+        $totalRates = DB::table('store_shipping_rates')->where('enable', true)->count();
+        $totalCountries = DB::table('store_shipping_zone_countries')->where('enable', true)->count();
 
         // 평균 배송비 계산 (KRW 기준)
-        $avgShippingCost = DB::table('site_shipping_rates')
+        $avgShippingCost = DB::table('store_shipping_rates')
             ->where('enable', true)
             ->where('currency', 'KRW')
             ->avg('base_cost') ?: 0;
@@ -88,9 +88,9 @@ class IndexController extends Controller
      */
     private function getZoneStats()
     {
-        return DB::table('site_shipping_zones as sz')
-            ->leftJoin('site_shipping_zone_countries as szc', 'sz.id', '=', 'szc.shipping_zone_id')
-            ->leftJoin('site_shipping_rates as sr', 'sz.id', '=', 'sr.shipping_zone_id')
+        return DB::table('store_shipping_zones as sz')
+            ->leftJoin('store_shipping_zone_countries as szc', 'sz.id', '=', 'szc.shipping_zone_id')
+            ->leftJoin('store_shipping_rates as sr', 'sz.id', '=', 'sr.shipping_zone_id')
             ->select(
                 'sz.id',
                 'sz.name',
@@ -110,8 +110,8 @@ class IndexController extends Controller
      */
     private function getMethodStats()
     {
-        return DB::table('site_shipping_methods as sm')
-            ->leftJoin('site_shipping_rates as sr', 'sm.id', '=', 'sr.shipping_method_id')
+        return DB::table('store_shipping_methods as sm')
+            ->leftJoin('store_shipping_rates as sr', 'sm.id', '=', 'sr.shipping_method_id')
             ->select(
                 'sm.id',
                 'sm.name',
@@ -134,8 +134,8 @@ class IndexController extends Controller
      */
     private function getCountriesForFilter()
     {
-        return DB::table('site_shipping_zone_countries as szc')
-            ->leftJoin('site_shipping_zones as sz', 'szc.shipping_zone_id', '=', 'sz.id')
+        return DB::table('store_shipping_zone_countries as szc')
+            ->leftJoin('store_shipping_zones as sz', 'szc.shipping_zone_id', '=', 'sz.id')
             ->leftJoin('site_countries as sc', 'szc.country_code', '=', 'sc.code')
             ->where('szc.enable', true)
             ->where('sz.enable', true)
@@ -149,7 +149,7 @@ class IndexController extends Controller
      */
     private function getShippingMethodsForFilter()
     {
-        $methods = DB::table('site_shipping_methods')
+        $methods = DB::table('store_shipping_methods')
             ->where('enable', true)
             ->orderBy('order')
             ->get(['id', 'name', 'name_ko', 'code']);
@@ -171,10 +171,10 @@ class IndexController extends Controller
      */
     private function getShippingRatesForList($request)
     {
-        $query = DB::table('site_shipping_rates as sr')
-            ->leftJoin('site_shipping_zones as sz', 'sr.shipping_zone_id', '=', 'sz.id')
-            ->leftJoin('site_shipping_methods as sm', 'sr.shipping_method_id', '=', 'sm.id')
-            ->leftJoin('site_shipping_zone_countries as szc', 'sz.id', '=', 'szc.shipping_zone_id')
+        $query = DB::table('store_shipping_rates as sr')
+            ->leftJoin('store_shipping_zones as sz', 'sr.shipping_zone_id', '=', 'sz.id')
+            ->leftJoin('store_shipping_methods as sm', 'sr.shipping_method_id', '=', 'sm.id')
+            ->leftJoin('store_shipping_zone_countries as szc', 'sz.id', '=', 'szc.shipping_zone_id')
             ->leftJoin('site_countries as sc', 'szc.country_code', '=', 'sc.code')
             ->select(
                 'sr.*',

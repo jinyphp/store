@@ -14,13 +14,13 @@ return new class extends Migration
     public function up()
     {
         // 상품 가격 옵션 테이블
-        Schema::create('site_product_pricing', function (Blueprint $table) {
+        Schema::create('store_product_pricing', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
 
             $table->unsignedBigInteger('product_id');
-            $table->foreign('product_id')->references('id')->on('site_products')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('store_products')->onDelete('cascade');
 
             $table->boolean('enable')->default(true);
             $table->integer('pos')->default(0); // 정렬 순서
@@ -45,13 +45,13 @@ return new class extends Migration
         });
 
         // 서비스 가격 옵션 테이블
-        Schema::create('site_service_pricing', function (Blueprint $table) {
+        Schema::create('store_service_pricing', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
 
             $table->unsignedBigInteger('service_id');
-            $table->foreign('service_id')->references('id')->on('site_services')->onDelete('cascade');
+            $table->foreign('service_id')->references('id')->on('store_services')->onDelete('cascade');
 
             $table->boolean('enable')->default(true);
             $table->integer('pos')->default(0); // 정렬 순서
@@ -84,7 +84,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('site_service_pricing');
-        Schema::dropIfExists('site_product_pricing');
+        Schema::dropIfExists('store_service_pricing');
+        Schema::dropIfExists('store_product_pricing');
     }
 };

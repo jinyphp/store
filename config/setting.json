@@ -1,0 +1,94 @@
+{
+    "store": {
+        "name": "Test Store Updated",
+        "email": "test@updated.com",
+        "phone": "+82-2-1234-5678",
+        "address": "서울특별시 강남구 테헤란로 123"
+    },
+    "currency": {
+        "base_currency": "USD",
+        "display_currencies": [
+            "KRW",
+            "USD",
+            "EUR"
+        ],
+        "auto_currency_detection": true,
+        "currency_decimals": 0
+    },
+    "tax": {
+        "calculation": "exclusive",
+        "display": "both",
+        "default_rate": 0.1,
+        "based_on": "shipping_address",
+        "shipping_tax_calculation": true
+    },
+    "order": {
+        "number_prefix": "ORD-",
+        "number_format": "YYYYMMDD-NNN",
+        "auto_confirm": false,
+        "stock_reduction": "on_payment",
+        "allow_guest_checkout": true,
+        "require_phone_number": true
+    },
+    "shipping": {
+        "default_country": "KR",
+        "calculation": "per_order",
+        "free_threshold": 50000
+    },
+    "inventory": {
+        "track_inventory": true,
+        "allow_backorders": false,
+        "low_stock_threshold": 10,
+        "out_of_stock_message": "품절",
+        "show_stock_quantity": false
+    },
+    "price": {
+        "display_format": "{symbol} {amount}",
+        "thousand_separator": ",",
+        "decimal_separator": ".",
+        "hide_zero_decimals": true
+    },
+    "customer": {
+        "registration": "required",
+        "email_verification": true,
+        "phone_verification": false,
+        "allow_reviews": true,
+        "review_moderation": true
+    },
+    "payment": {
+        "methods": [
+            "credit_card",
+            "bank_transfer",
+            "paypal"
+        ],
+        "currency": "KRW",
+        "gateway": "stripe",
+        "auto_capture": false
+    },
+    "email": {
+        "new_order": true,
+        "order_confirmation": true,
+        "order_shipped": true,
+        "order_delivered": true,
+        "order_cancelled": true,
+        "low_stock": true
+    },
+    "security": {
+        "session_timeout": 30,
+        "max_login_attempts": 5,
+        "password_reset_expiry": 60,
+        "require_ssl": true
+    },
+    "api": {
+        "enabled": false,
+        "rate_limit": 100,
+        "webhook_enabled": false,
+        "webhook_secret": null
+    },
+    "advanced": {
+        "cache_enabled": true,
+        "cache_duration": 3600,
+        "debug_mode": false,
+        "maintenance_mode": false
+    }
+}

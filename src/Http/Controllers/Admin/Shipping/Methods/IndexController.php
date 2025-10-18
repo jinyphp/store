@@ -13,8 +13,8 @@ class IndexController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $query = DB::table('site_shipping_methods as sm')
-            ->leftJoin('site_shipping_rates as sr', 'sm.id', '=', 'sr.shipping_method_id')
+        $query = DB::table('store_shipping_methods as sm')
+            ->leftJoin('store_shipping_rates as sr', 'sm.id', '=', 'sr.shipping_method_id')
             ->select(
                 'sm.id',
                 'sm.name',
@@ -121,10 +121,10 @@ class IndexController extends Controller
      */
     private function getMethodStats(): array
     {
-        $totalMethods = DB::table('site_shipping_methods')->count();
-        $activeMethods = DB::table('site_shipping_methods')->where('enable', true)->count();
-        $trackableMethods = DB::table('site_shipping_methods')->where('trackable', true)->count();
-        $signatureMethods = DB::table('site_shipping_methods')->where('requires_signature', true)->count();
+        $totalMethods = DB::table('store_shipping_methods')->count();
+        $activeMethods = DB::table('store_shipping_methods')->where('enable', true)->count();
+        $trackableMethods = DB::table('store_shipping_methods')->where('trackable', true)->count();
+        $signatureMethods = DB::table('store_shipping_methods')->where('requires_signature', true)->count();
 
         return [
             'total' => $totalMethods,

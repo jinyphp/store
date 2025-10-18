@@ -85,7 +85,7 @@ class ExchangeRateService
             $inverseRate = 1 / $newRate;
 
             // 기존 환율 정보 가져오기
-            $existingRate = DB::table('site_exchange_rates')
+            $existingRate = DB::table('store_exchange_rates')
                 ->where('from_currency', $fromCurrency)
                 ->where('to_currency', $toCurrency)
                 ->first();
@@ -112,13 +112,13 @@ class ExchangeRateService
             ];
 
             if ($existingRate) {
-                DB::table('site_exchange_rates')
+                DB::table('store_exchange_rates')
                     ->where('id', $existingRate->id)
                     ->update($rateData);
                 $action = 'update';
             } else {
                 $rateData['created_at'] = now();
-                DB::table('site_exchange_rates')->insert($rateData);
+                DB::table('store_exchange_rates')->insert($rateData);
                 $action = 'create';
             }
 
@@ -327,7 +327,7 @@ class ExchangeRateService
      */
     protected function getActiveCurrencies()
     {
-        return DB::table('site_currencies')
+        return DB::table('store_currencies')
             ->where('enable', true)
             ->orderBy('order')
             ->get();
@@ -338,7 +338,7 @@ class ExchangeRateService
      */
     public function getRate(string $fromCurrency, string $toCurrency): ?float
     {
-        $rate = DB::table('site_exchange_rates')
+        $rate = DB::table('store_exchange_rates')
             ->where('from_currency', $fromCurrency)
             ->where('to_currency', $toCurrency)
             ->where('is_active', true)
@@ -383,7 +383,7 @@ class ExchangeRateService
      */
     public function checkAndUpdateExpiredRates(): array
     {
-        $expiredRates = DB::table('site_exchange_rates')
+        $expiredRates = DB::table('store_exchange_rates')
             ->where('is_active', true)
             ->where('expires_at', '<=', now())
             ->get();

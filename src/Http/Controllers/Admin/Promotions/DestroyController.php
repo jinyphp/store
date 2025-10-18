@@ -4,7 +4,7 @@ namespace Jiny\Store\Http\Controllers\Admin\Promotions;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use App\Models\Promotion;
+use Jiny\Store\Models\Promotion;
 
 class DestroyController extends Controller
 {
@@ -15,7 +15,7 @@ class DestroyController extends Controller
         $promotionName = $promotion->name;
         $promotion->delete();
 
-        return redirect()->route('admin.cms.ecommerce.promotions.index')
+        return redirect()->route('admin.store.promotions.index')
             ->with('success', "프로모션 '{$promotionName}'이(가) 성공적으로 삭제되었습니다.");
     }
 }

@@ -4,7 +4,7 @@ namespace Jiny\Store\Http\Controllers\Admin\Orders;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use App\Models\Order;
+use Jiny\Store\Models\Order;
 
 class ShowController extends Controller
 {

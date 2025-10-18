@@ -1,11 +1,11 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Site\Cart;
+namespace Jiny\Store\Http\Controllers\Store\Cart;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Jiny\Site\Helpers\CurrencyHelper;
+use Jiny\Store\Helpers\CurrencyHelper;
 
 /**
  * 장바구니 목록 컨트롤러
@@ -23,8 +23,8 @@ class IndexController extends Controller
                 $join->on('store_cart.item_id', '=', 'store_products.id')
                      ->where('store_cart.item_type', '=', 'product');
             })
-            ->leftJoin('site_services', function($join) {
-                $join->on('store_cart.item_id', '=', 'site_services.id')
+            ->leftJoin('store_services', function($join) {
+                $join->on('store_cart.item_id', '=', 'store_services.id')
                      ->where('store_cart.item_type', '=', 'service');
             })
             ->leftJoin('site_product_pricing', function($join) {
@@ -38,15 +38,15 @@ class IndexController extends Controller
             ->select(
                 'store_cart.*',
                 // 상품 정보
-                store_products.title as product_title',
-                store_products.image as product_image',
-                store_products.slug as product_slug',
-                store_products.price as product_base_price',
+                'store_products.title as product_title',
+                'store_products.image as product_image',
+                'store_products.slug as product_slug',
+                'store_products.price as product_base_price',
                 // 서비스 정보
-                'site_services.title as service_title',
-                'site_services.image as service_image',
-                'site_services.slug as service_slug',
-                'site_services.price as service_base_price',
+                'store_services.title as service_title',
+                'store_services.image as service_image',
+                'store_services.slug as service_slug',
+                'store_services.price as service_base_price',
                 // 가격 옵션 정보
                 'site_product_pricing.name as product_pricing_name',
                 'site_product_pricing.price as product_pricing_price',
@@ -115,7 +115,7 @@ class IndexController extends Controller
             'base_currency' => $baseCurrency,
             'user_country' => $userCountry,
             'exchange_rate' => CurrencyHelper::getExchangeRate($baseCurrency, $userCurrency),
-            'currency_symbol' => DB::table('site_currencies')->where('code', $userCurrency)->value('symbol') ?? $userCurrency
+            'currency_symbol' => DB::table('store_currencies')->where('code', $userCurrency)->value('symbol') ?? $userCurrency
         ];
 
         // 다중 통화 가격 표시 (선택적)

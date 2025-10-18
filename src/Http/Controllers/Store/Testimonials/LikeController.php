@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Site\Testimonials;
+namespace Jiny\Store\Http\Controllers\Store\Testimonials;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;

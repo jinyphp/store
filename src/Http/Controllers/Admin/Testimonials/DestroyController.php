@@ -17,7 +17,7 @@ class DestroyController extends Controller
     {
         $this->config = [
             'table' => 'store_testimonials',
-            'redirect_route' => 'admin.site.testimonials.index',
+            'redirect_route' => 'admin.store.testimonials.index',
         ];
     }
 

@@ -10,7 +10,7 @@
             <h2 class="h3 mb-0">쿠폰 관리</h2>
             <p class="text-muted">할인 쿠폰을 생성하고 관리합니다.</p>
         </div>
-        <a href="{{ route('admin.cms.ecommerce.coupons.create') }}" class="btn btn-primary">
+        <a href="{{ route('admin.store.coupons.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-lg me-2"></i>새 쿠폰 생성
         </a>
     </div>
@@ -82,7 +82,7 @@
     <!-- Filters and Search -->
     <div class="card mb-4">
         <div class="card-body">
-            <form method="GET" action="{{ route('admin.cms.ecommerce.coupons.index') }}" class="row g-3">
+            <form method="GET" action="{{ route('admin.store.coupons.index') }}" class="row g-3">
                 <div class="col-md-4">
                     <label for="search" class="form-label">검색</label>
                     <input type="text" class="form-control" id="search" name="search"
@@ -119,7 +119,7 @@
                     <button type="submit" class="btn btn-primary me-2">
                         <i class="bi bi-search me-1"></i>검색
                     </button>
-                    <a href="{{ route('admin.cms.ecommerce.coupons.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('admin.store.coupons.index') }}" class="btn btn-outline-secondary">
                         <i class="bi bi-arrow-clockwise me-1"></i>초기화
                     </a>
                 </div>
@@ -203,15 +203,15 @@
                                 <td>{{ $coupon->expires_at ? $coupon->expires_at->format('Y-m-d') : '무제한' }}</td>
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <a href="{{ route('admin.cms.ecommerce.coupons.show', $coupon) }}"
+                                        <a href="{{ route('admin.store.coupons.show', $coupon) }}"
                                            class="btn btn-sm btn-outline-primary" title="보기">
                                             <i class="bi bi-eye"></i>
                                         </a>
-                                        <a href="{{ route('admin.cms.ecommerce.coupons.edit', $coupon) }}"
+                                        <a href="{{ route('admin.store.coupons.edit', $coupon) }}"
                                            class="btn btn-sm btn-outline-warning" title="수정">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        <form action="{{ route('admin.cms.ecommerce.coupons.destroy', $coupon) }}"
+                                        <form action="{{ route('admin.store.coupons.destroy', $coupon) }}"
                                               method="POST" class="d-inline"
                                               onsubmit="return confirm('정말 삭제하시겠습니까?')">
                                             @csrf
@@ -237,7 +237,7 @@
                     <i class="bi bi-ticket-perforated text-muted" style="font-size: 3rem;"></i>
                     <h5 class="mt-3">쿠폰이 없습니다</h5>
                     <p class="text-muted">새로운 할인 쿠폰을 생성해보세요.</p>
-                    <a href="{{ route('admin.cms.ecommerce.coupons.create') }}" class="btn btn-primary">
+                    <a href="{{ route('admin.store.coupons.create') }}" class="btn btn-primary">
                         <i class="bi bi-plus-lg me-2"></i>첫 번째 쿠폰 생성
                     </a>
                 </div>

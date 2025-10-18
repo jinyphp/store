@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Site\Testimonials;
+namespace Jiny\Store\Http\Controllers\Store\Testimonials;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -33,7 +33,7 @@ class StoreController extends Controller
                 ->whereNull('deleted_at')
                 ->exists();
         } else {
-            $exists = DB::table('site_services')
+            $exists = DB::table('store_services')
                 ->where('id', $validated['item_id'])
                 ->where('enable', true)
                 ->whereNull('deleted_at')

@@ -16,7 +16,7 @@ class CreateController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_service_categories',
+            'table' => 'store_categories',
             'view' => 'jiny-store::admin.services.categories.create',
             'title' => 'Service Category 추가',
             'subtitle' => '새로운 서비스 카테고리를 추가합니다.',

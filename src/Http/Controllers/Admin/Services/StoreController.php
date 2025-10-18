@@ -17,7 +17,7 @@ class StoreController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_services',
+            'table' => 'store_services',
             'redirect_route' => 'admin.site.services.index',
         ];
     }
@@ -28,7 +28,7 @@ class StoreController extends Controller
             'title' => 'required|max:255',
             'description' => 'nullable|string',
             'content' => 'nullable|string',
-            'category_id' => 'nullable|integer|exists:site_service_categories,id',
+            'category_id' => 'nullable|integer|exists:store_categories,id',
             'price' => 'nullable|numeric|min:0',
             'duration' => 'nullable|string|max:100',
             'image' => 'nullable|string|max:500',

@@ -13,13 +13,13 @@
                     <p class="text-muted mb-0">상품의 상세 정보를 확인합니다.</p>
                 </div>
                 <div>
-                    <a href="{{ route('admin.site.products.index') }}" class="btn btn-outline-secondary me-2">
+                    <a href="{{ route('admin.store.products.index') }}" class="btn btn-outline-secondary me-2">
                         <i class="fe fe-arrow-left me-2"></i>목록으로
                     </a>
                     <a href="@if(isset($product->category_slug) && $product->category_slug)/product/{{ $product->category_slug }}/{{ $product->slug ?: $product->id }}@elseif(isset($product->category_id) && $product->category_id)/product/{{ $product->category_id }}/{{ $product->slug ?: $product->id }}@else/product/{{ $product->slug ?: $product->id }}@endif" class="btn btn-outline-info me-2" target="_blank">
                         <i class="fe fe-external-link me-2"></i>사이트에서 보기
                     </a>
-                    <a href="{{ route('admin.site.products.edit', $product->id) }}" class="btn btn-primary">
+                    <a href="{{ route('admin.store.products.edit', $product->id) }}" class="btn btn-primary">
                         <i class="fe fe-edit me-2"></i>수정
                     </a>
                 </div>
@@ -71,7 +71,7 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">가격 옵션 ({{ $pricingOptions->count() }}개)</h5>
-                        <a href="{{ route('admin.site.products.pricing.index', $product->id) }}"
+                        <a href="{{ route('admin.store.products.pricing.index', $product->id) }}"
                            class="btn btn-outline-warning btn-sm">
                             <i class="fe fe-tag me-1"></i>관리
                         </a>
@@ -135,7 +135,7 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">이미지 갤러리 ({{ $images->count() }}개)</h5>
-                        <a href="{{ route('admin.site.products.images.index', $product->id) }}"
+                        <a href="{{ route('admin.store.products.images.index', $product->id) }}"
                            class="btn btn-outline-success btn-sm">
                             <i class="fe fe-image me-1"></i>관리
                         </a>
@@ -308,16 +308,16 @@
                             <i class="fe fe-external-link me-2"></i>사이트에서 보기
                         </a>
                         <hr>
-                        <a href="{{ route('admin.site.products.edit', $product->id) }}" class="btn btn-primary">
+                        <a href="{{ route('admin.store.products.edit', $product->id) }}" class="btn btn-primary">
                             <i class="fe fe-edit me-2"></i>수정
                         </a>
-                        <a href="{{ route('admin.site.products.images.index', $product->id) }}" class="btn btn-outline-success">
+                        <a href="{{ route('admin.store.products.images.index', $product->id) }}" class="btn btn-outline-success">
                             <i class="fe fe-image me-2"></i>이미지 갤러리 관리
                         </a>
-                        <a href="{{ route('admin.site.products.pricing.index', $product->id) }}" class="btn btn-outline-warning">
+                        <a href="{{ route('admin.store.products.pricing.index', $product->id) }}" class="btn btn-outline-warning">
                             <i class="fe fe-tag me-2"></i>가격 옵션 관리
                         </a>
-                        <a href="{{ route('admin.site.testimonials.item', ['type' => 'product', 'itemId' => $product->id]) }}" class="btn btn-outline-purple">
+                        <a href="{{ route('admin.store.testimonials.item', ['type' => 'product', 'itemId' => $product->id]) }}" class="btn btn-outline-purple">
                             <i class="fe fe-message-square me-2"></i>고객 후기 관리
                         </a>
                         <hr>
@@ -348,7 +348,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                <form id="deleteForm" method="POST" action="{{ route('admin.site.products.destroy', $product->id) }}" style="display: inline;">
+                <form id="deleteForm" method="POST" action="{{ route('admin.store.products.destroy', $product->id) }}" style="display: inline;">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">삭제</button>

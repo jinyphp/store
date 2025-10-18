@@ -30,9 +30,9 @@ class ShowController extends Controller
             ->leftJoin('site_product_variants', 'site_inventory.variant_id', '=', 'site_product_variants.id')
             ->select(
                 'site_inventory.*',
-                store_products.name as product_name',
-                store_products.sku as product_sku',
-                store_products.description as product_description',
+                'store_products.name as product_name',
+                'store_products.sku as product_sku',
+                'store_products.description as product_description',
                 'site_product_variants.name as variant_name',
                 'site_product_variants.sku as variant_sku'
             )

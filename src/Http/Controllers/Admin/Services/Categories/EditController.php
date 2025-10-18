@@ -16,7 +16,7 @@ class EditController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_service_categories',
+            'table' => 'store_categories',
             'view' => 'jiny-store::admin.services.categories.edit',
             'title' => 'Service Category 수정',
         ];

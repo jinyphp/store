@@ -4,7 +4,7 @@ namespace Jiny\Store\Http\Controllers\Admin\Orders;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use App\Models\Order;
+use Jiny\Store\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -17,7 +17,7 @@ class StepController extends Controller
 
         // 유효한 스텝 범위 확인
         if ($step < 1 || $step > 4) {
-            return redirect()->route('admin.cms.ecommerce.orders.step', 1);
+            return redirect()->route('admin.store.orders.step', 1);
         }
 
         // POST 요청 처리 (폼 제출)
@@ -41,7 +41,7 @@ class StepController extends Controller
             case 2:
                 // 1단계 완료 확인
                 if (!isset($stepData['customer'])) {
-                    return redirect()->route('admin.cms.ecommerce.orders.step', 1)
+                    return redirect()->route('admin.store.orders.step', 1)
                         ->with('error', '고객 정보를 먼저 입력해주세요.');
                 }
                 return view('jiny-store::admin.orders.steps.products', compact('step', 'stepData'));
@@ -50,7 +50,7 @@ class StepController extends Controller
                 // 1,2단계 완료 확인
                 if (!isset($stepData['customer']) || !isset($stepData['products'])) {
                     $missingStep = !isset($stepData['customer']) ? 1 : 2;
-                    return redirect()->route('admin.cms.ecommerce.orders.step', $missingStep)
+                    return redirect()->route('admin.store.orders.step', $missingStep)
                         ->with('error', '이전 단계를 먼저 완료해주세요.');
                 }
                 return view('jiny-store::admin.orders.steps.shipping', compact('step', 'stepData'));
@@ -59,13 +59,13 @@ class StepController extends Controller
                 // 1,2,3단계 완료 확인
                 if (!isset($stepData['customer']) || !isset($stepData['products']) || !isset($stepData['shipping'])) {
                     $missingStep = !isset($stepData['customer']) ? 1 : (!isset($stepData['products']) ? 2 : 3);
-                    return redirect()->route('admin.cms.ecommerce.orders.step', $missingStep)
+                    return redirect()->route('admin.store.orders.step', $missingStep)
                         ->with('error', '이전 단계를 먼저 완료해주세요.');
                 }
                 return view('jiny-store::admin.orders.steps.payment', compact('step', 'stepData'));
 
             default:
-                return redirect()->route('admin.cms.ecommerce.orders.step', 1);
+                return redirect()->route('admin.store.orders.step', 1);
         }
     }
 
@@ -81,7 +81,7 @@ class StepController extends Controller
             case 4:
                 return $this->handlePaymentStep($request);
             default:
-                return redirect()->route('admin.cms.ecommerce.orders.step', 1);
+                return redirect()->route('admin.store.orders.step', 1);
         }
     }
 
@@ -104,7 +104,7 @@ class StepController extends Controller
         $stepData['customer'] = $validator->validated();
         Session::put('order_step_data', $stepData);
 
-        return redirect()->route('admin.cms.ecommerce.orders.step', 2)
+        return redirect()->route('admin.store.orders.step', 2)
             ->with('success', '고객 정보가 저장되었습니다.');
     }
 
@@ -136,7 +136,7 @@ class StepController extends Controller
 
         Session::put('order_step_data', $stepData);
 
-        return redirect()->route('admin.cms.ecommerce.orders.step', 3)
+        return redirect()->route('admin.store.orders.step', 3)
             ->with('success', '상품 정보가 저장되었습니다.');
     }
 
@@ -208,7 +208,7 @@ class StepController extends Controller
 
         Session::put('order_step_data', $stepData);
 
-        return redirect()->route('admin.cms.ecommerce.orders.step', 4)
+        return redirect()->route('admin.store.orders.step', 4)
             ->with('success', '배송 정보가 저장되었습니다.');
     }
 
@@ -258,7 +258,7 @@ class StepController extends Controller
             // 세션 정리
             Session::forget('order_step_data');
 
-            return redirect()->route('admin.cms.ecommerce.orders.show', $order->id)
+            return redirect()->route('admin.store.orders.show', $order->id)
                 ->with('success', '주문이 성공적으로 생성되었습니다.');
 
         } catch (\Exception $e) {
@@ -271,7 +271,7 @@ class StepController extends Controller
     public function reset()
     {
         Session::forget('order_step_data');
-        return redirect()->route('admin.cms.ecommerce.orders.step', 1)
+        return redirect()->route('admin.store.orders.step', 1)
             ->with('success', '주문 생성이 초기화되었습니다.');
     }
 }

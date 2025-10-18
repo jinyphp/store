@@ -6,7 +6,7 @@
         <div class="col-12">
             <h1 class="h3 mb-4">프로모션 생성</h1>
 
-            <form method="POST" action="{{ route('admin.cms.ecommerce.promotions.store') }}">
+            <form method="POST" action="{{ route('admin.store.promotions.store') }}">
                 @csrf
 
                 <div class="mb-3">

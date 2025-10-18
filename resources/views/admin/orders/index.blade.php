@@ -17,7 +17,7 @@
                                 <a href="{{ route('admin.home') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('admin.cms.ecommerce.dashboard') }}">Ecommerce</a>
+                                <a href="{{ route('admin.store.dashboard') }}">Store</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">Orders</li>
                         </ol>
@@ -27,7 +27,7 @@
                     <a href="#" class="me-3 text-body">
                         <i class="fe fe-download me-2"></i>Export
                     </a>
-                    <a href="{{ route('admin.cms.ecommerce.orders.create') }}" class="btn btn-primary">
+                    <a href="{{ route('admin.store.orders.create') }}" class="btn btn-primary">
                         <i class="fe fe-plus me-2"></i>수동 주문 생성
                     </a>
                 </div>
@@ -182,7 +182,7 @@
                                             <input type="checkbox" class="form-check-input" value="{{ $order->id }}">
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.cms.ecommerce.orders.show', $order->id) }}" class="fw-bold text-decoration-none">
+                                            <a href="{{ route('admin.store.orders.show', $order->id) }}" class="fw-bold text-decoration-none">
                                                 {{ $order->order_number }}
                                             </a>
                                         </td>
@@ -287,7 +287,7 @@
                                                     액션
                                                 </button>
                                                 <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" href="{{ route('admin.cms.ecommerce.orders.show', $order->id) }}"><i class="fe fe-eye me-2"></i>상세보기</a></li>
+                                                    <li><a class="dropdown-item" href="{{ route('admin.store.orders.show', $order->id) }}"><i class="fe fe-eye me-2"></i>상세보기</a></li>
                                                     <li><a class="dropdown-item" href="#"><i class="fe fe-edit me-2"></i>수정</a></li>
                                                     <li><a class="dropdown-item" href="#"><i class="fe fe-printer me-2"></i>인쇄</a></li>
                                                     <li><hr class="dropdown-divider"></li>

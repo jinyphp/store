@@ -12,7 +12,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('admin.site.testimonials.index') }}">Testimonials</a>
+                                <a href="{{ route('admin.store.testimonials.index') }}">Testimonials</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">상세보기</li>
                         </ol>
@@ -21,10 +21,10 @@
                     <p class="text-muted mb-0">Testimonial 상세 정보를 확인하고 관리할 수 있습니다.</p>
                 </div>
                 <div class="d-flex gap-2">
-                    <a href="{{ route('admin.site.testimonials.edit', $testimonial->id) }}" class="btn btn-primary">
+                    <a href="{{ route('admin.store.testimonials.edit', $testimonial->id) }}" class="btn btn-primary">
                         <i class="fe fe-edit me-2"></i>수정
                     </a>
-                    <a href="{{ route('admin.site.testimonials.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('admin.store.testimonials.index') }}" class="btn btn-outline-secondary">
                         <i class="fe fe-arrow-left me-2"></i>목록으로
                     </a>
                 </div>
@@ -233,7 +233,7 @@
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
-                        <a href="{{ route('admin.site.testimonials.edit', $testimonial->id) }}" class="btn btn-primary">
+                        <a href="{{ route('admin.store.testimonials.edit', $testimonial->id) }}" class="btn btn-primary">
                             <i class="fe fe-edit me-2"></i>수정하기
                         </a>
 
@@ -335,7 +335,7 @@
 function deleteTestimonial(id) {
     const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
     const form = document.getElementById('deleteForm');
-    form.action = `/admin/site/testimonials/${id}`;
+    form.action = `/admin/store/testimonials/${id}`;
     modal.show();
 }
 
@@ -345,7 +345,7 @@ function toggleStatus(id, field) {
         return;
     }
 
-    fetch(`/admin/site/testimonials/${id}`, {
+    fetch(`/admin/store/testimonials/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

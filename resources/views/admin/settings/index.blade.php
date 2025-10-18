@@ -1,4 +1,4 @@
-@extends('jiny-admin::layouts.app')
+@extends($layout ?? 'jiny-store::layouts.admin.sidebar')
 
 @section('title', $config['title'])
 
@@ -17,7 +17,7 @@
                                 <a href="{{ route('admin.home') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('admin.cms.ecommerce.dashboard') }}">Ecommerce</a>
+                                <a href="{{ route('admin.store.dashboard') }}">Ecommerce</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">Settings</li>
                         </ol>
@@ -27,7 +27,7 @@
                     <button type="button" class="btn btn-outline-secondary me-2">
                         <i class="fe fe-download me-2"></i>설정 백업
                     </button>
-                    <button type="button" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary" id="saveSettingsBtn">
                         <i class="fe fe-save me-2"></i>설정 저장
                     </button>
                 </div>
@@ -406,9 +406,8 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // 설정 저장 버튼 클릭 이벤트
-    document.querySelector('.btn-primary')?.addEventListener('click', function() {
-        // 실제 구현에서는 AJAX로 설정 저장
-        alert('설정이 저장되었습니다. (데모)');
+    document.getElementById('saveSettingsBtn')?.addEventListener('click', function() {
+        saveSettings();
     });
 
     // 설정 백업 버튼 클릭 이벤트
@@ -417,5 +416,130 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('설정 백업을 다운로드합니다. (데모)');
     });
 });
+
+// 설정 저장 함수
+function saveSettings() {
+    const btn = document.getElementById('saveSettingsBtn');
+    const originalText = btn.innerHTML;
+
+    // 버튼 비활성화 및 로딩 표시
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fe fe-loader fe-spin me-2"></i>저장 중...';
+
+    // 모든 폼 데이터 수집
+    const formData = new FormData();
+
+    // 일반 설정
+    const storeNameInput = document.querySelector('input[value="{{ $settings["store_name"] }}"]');
+    if (storeNameInput) formData.append('store_name', storeNameInput.value);
+
+    const storeEmailInput = document.querySelector('input[value="{{ $settings["store_email"] }}"]');
+    if (storeEmailInput) formData.append('store_email', storeEmailInput.value);
+
+    const storePhoneInput = document.querySelector('input[value="{{ $settings["store_phone"] }}"]');
+    if (storePhoneInput) formData.append('store_phone', storePhoneInput.value);
+
+    const storeAddressTextarea = document.querySelector('textarea');
+    if (storeAddressTextarea) formData.append('store_address', storeAddressTextarea.value);
+
+    // 통화 설정
+    const baseCurrencySelect = document.querySelector('select[name="base_currency"]');
+    if (baseCurrencySelect) formData.append('base_currency', baseCurrencySelect.value);
+
+    const currencyDecimalsSelect = document.querySelector('select[name="currency_decimals"]');
+    if (currencyDecimalsSelect) formData.append('currency_decimals', currencyDecimalsSelect.value);
+
+    const autoCurrencyCheckbox = document.getElementById('autoCurrency');
+    if (autoCurrencyCheckbox) formData.append('auto_currency_detection', autoCurrencyCheckbox.checked ? '1' : '0');
+
+    // 세금 설정
+    const taxCalculationSelect = document.querySelector('select[name="tax_calculation"]');
+    if (taxCalculationSelect) formData.append('tax_calculation', taxCalculationSelect.value);
+
+    const taxDisplaySelect = document.querySelector('select[name="tax_display"]');
+    if (taxDisplaySelect) formData.append('tax_display', taxDisplaySelect.value);
+
+    const taxBasedOnSelect = document.querySelector('select[name="tax_based_on"]');
+    if (taxBasedOnSelect) formData.append('tax_based_on', taxBasedOnSelect.value);
+
+    const defaultTaxRateInput = document.querySelector('input[step="0.01"]');
+    if (defaultTaxRateInput) formData.append('default_tax_rate', defaultTaxRateInput.value);
+
+    const shippingTaxCheckbox = document.getElementById('shippingTax');
+    if (shippingTaxCheckbox) formData.append('shipping_tax_calculation', shippingTaxCheckbox.checked ? '1' : '0');
+
+    // 주문 설정
+    const orderNumberPrefixInput = document.querySelector('input[value="{{ $settings["order_number_prefix"] }}"]');
+    if (orderNumberPrefixInput) formData.append('order_number_prefix', orderNumberPrefixInput.value);
+
+    const orderNumberFormatSelect = document.querySelector('select[name="order_number_format"]');
+    if (orderNumberFormatSelect) formData.append('order_number_format', orderNumberFormatSelect.value);
+
+    const stockReductionSelect = document.querySelector('select[name="order_stock_reduction"]');
+    if (stockReductionSelect) formData.append('order_stock_reduction', stockReductionSelect.value);
+
+    const autoConfirmCheckbox = document.getElementById('autoConfirm');
+    if (autoConfirmCheckbox) formData.append('order_auto_confirm', autoConfirmCheckbox.checked ? '1' : '0');
+
+    const guestCheckoutCheckbox = document.getElementById('guestCheckout');
+    if (guestCheckoutCheckbox) formData.append('allow_guest_checkout', guestCheckoutCheckbox.checked ? '1' : '0');
+
+    const requirePhoneCheckbox = document.getElementById('requirePhone');
+    if (requirePhoneCheckbox) formData.append('require_phone_number', requirePhoneCheckbox.checked ? '1' : '0');
+
+    // CSRF 토큰 추가
+    formData.append('_token', document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '');
+
+    // AJAX 요청
+    fetch('{{ route("admin.store.settings.save") }}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // 성공 메시지 표시
+            showNotification('success', data.message);
+        } else {
+            // 오류 메시지 표시
+            showNotification('error', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('설정 저장 오류:', error);
+        showNotification('error', '설정 저장 중 오류가 발생했습니다.');
+    })
+    .finally(() => {
+        // 버튼 복원
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    });
+}
+
+// 알림 표시 함수
+function showNotification(type, message) {
+    // 간단한 alert로 대체 (실제로는 toast나 다른 UI 컴포넌트 사용)
+    if (type === 'success') {
+        alert('✅ ' + message);
+    } else {
+        alert('❌ ' + message);
+    }
+}
 </script>
+@endpush
+
+@push('styles')
+<style>
+.fe-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+</style>
 @endpush

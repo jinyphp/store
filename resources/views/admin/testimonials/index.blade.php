@@ -22,7 +22,7 @@
                     @endif
                 </div>
                 <div>
-                    <a href="{{ route('admin.site.testimonials.create', $type && $itemId ? ['type' => $type, 'itemId' => $itemId] : []) }}" class="btn btn-primary">
+                    <a href="{{ route('admin.store.testimonials.create', $type && $itemId ? ['type' => $type, 'itemId' => $itemId] : []) }}" class="btn btn-primary">
                         <i class="fe fe-plus me-2"></i>새 Testimonial 등록
                     </a>
                 </div>
@@ -139,7 +139,7 @@
     <!-- 필터 -->
     <div class="card mb-4">
         <div class="card-body">
-            <form method="GET" action="{{ route('admin.site.testimonials.index', $type && $itemId ? ['type' => $type, 'itemId' => $itemId] : []) }}">
+            <form method="GET" action="{{ route('admin.store.testimonials.index', $type && $itemId ? ['type' => $type, 'itemId' => $itemId] : []) }}">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
@@ -245,7 +245,7 @@
                                             </div>
                                         @endif
                                         <div>
-                                            <a href="{{ route('admin.site.testimonials.show', $testimonial->id) }}"
+                                            <a href="{{ route('admin.store.testimonials.show', $testimonial->id) }}"
                                                class="text-decoration-none">
                                                 <strong>{{ $testimonial->headline }}</strong>
                                             </a>
@@ -306,12 +306,12 @@
                                 </td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
-                                        <a href="{{ route('admin.site.testimonials.show', $testimonial->id) }}"
+                                        <a href="{{ route('admin.store.testimonials.show', $testimonial->id) }}"
                                            class="btn btn-outline-info"
                                            title="상세보기">
                                             <i class="fe fe-eye"></i>
                                         </a>
-                                        <a href="{{ route('admin.site.testimonials.edit', $testimonial->id) }}"
+                                        <a href="{{ route('admin.store.testimonials.edit', $testimonial->id) }}"
                                            class="btn btn-outline-primary"
                                            title="수정">
                                             <i class="fe fe-edit"></i>
@@ -347,7 +347,7 @@
                     <i class="fe fe-message-square fe-3x text-muted mb-3"></i>
                     <h5 class="text-muted">등록된 Testimonial이 없습니다</h5>
                     <p class="text-muted">새로운 고객 후기를 등록해보세요.</p>
-                    <a href="{{ route('admin.site.testimonials.create', $type && $itemId ? ['type' => $type, 'itemId' => $itemId] : []) }}" class="btn btn-primary">
+                    <a href="{{ route('admin.store.testimonials.create', $type && $itemId ? ['type' => $type, 'itemId' => $itemId] : []) }}" class="btn btn-primary">
                         <i class="fe fe-plus me-2"></i>새 Testimonial 등록
                     </a>
                 </div>
@@ -410,7 +410,7 @@
 function deleteTestimonial(id) {
     const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
     const form = document.getElementById('deleteForm');
-    form.action = `/admin/site/testimonials/${id}`;
+    form.action = `/admin/store/testimonials/${id}`;
     modal.show();
 }
 </script>

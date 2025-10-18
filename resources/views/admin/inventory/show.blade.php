@@ -13,10 +13,10 @@
                     <p class="text-muted mb-0">{{ $config['subtitle'] }}</p>
                 </div>
                 <div>
-                    <a href="{{ route('admin.site.ecommerce.inventory.edit', $inventory->id) }}" class="btn btn-primary me-2">
+                    <a href="{{ route('admin.store.ecommerce.inventory.edit', $inventory->id) }}" class="btn btn-primary me-2">
                         <i class="fe fe-edit me-2"></i>수정
                     </a>
-                    <a href="{{ route('admin.site.ecommerce.inventory.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('admin.store.ecommerce.inventory.index') }}" class="btn btn-outline-secondary">
                         <i class="fe fe-arrow-left me-2"></i>재고 목록
                     </a>
                 </div>
@@ -329,10 +329,10 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-grid gap-2">
-                        <a href="{{ route('admin.site.ecommerce.inventory.edit', $inventory->id) }}" class="btn btn-primary">
+                        <a href="{{ route('admin.store.ecommerce.inventory.edit', $inventory->id) }}" class="btn btn-primary">
                             <i class="fe fe-edit me-2"></i>재고 수정
                         </a>
-                        <a href="{{ route('admin.site.ecommerce.inventory.index') }}" class="btn btn-outline-secondary">
+                        <a href="{{ route('admin.store.ecommerce.inventory.index') }}" class="btn btn-outline-secondary">
                             <i class="fe fe-list me-2"></i>재고 목록
                         </a>
                         <hr class="my-2">
@@ -382,7 +382,7 @@
 function deleteInventory(id) {
     const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
     const form = document.getElementById('deleteForm');
-    form.action = `/admin/site/ecommerce/inventory/${id}`;
+    form.action = `/admin/store/ecommerce/inventory/${id}`;
     modal.show();
 }
 </script>

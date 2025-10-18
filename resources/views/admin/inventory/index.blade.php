@@ -13,7 +13,7 @@
                     <p class="text-muted mb-0">{{ $config['subtitle'] }}</p>
                 </div>
                 <div>
-                    <a href="{{ route('admin.site.ecommerce.inventory.create') }}" class="btn btn-primary">
+                    <a href="{{ route('admin.store.ecommerce.inventory.create') }}" class="btn btn-primary">
                         <i class="fe fe-plus me-2"></i>새 재고 추가
                     </a>
                 </div>
@@ -113,7 +113,7 @@
     <!-- 필터 -->
     <div class="card mb-4">
         <div class="card-body">
-            <form method="GET" action="{{ route('admin.site.ecommerce.inventory.index') }}">
+            <form method="GET" action="{{ route('admin.store.ecommerce.inventory.index') }}">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
@@ -150,7 +150,7 @@
                         <button type="submit" class="btn btn-outline-primary me-2">
                             <i class="fe fe-search me-1"></i>검색
                         </button>
-                        <a href="{{ route('admin.site.ecommerce.inventory.index') }}" class="btn btn-outline-secondary">
+                        <a href="{{ route('admin.store.ecommerce.inventory.index') }}" class="btn btn-outline-secondary">
                             <i class="fe fe-refresh-cw me-1"></i>초기화
                         </a>
                     </div>
@@ -188,7 +188,7 @@
                                 <td>{{ $inventory->id }}</td>
                                 <td>
                                     <div>
-                                        <a href="{{ route('admin.site.ecommerce.inventory.show', $inventory->id) }}"
+                                        <a href="{{ route('admin.store.ecommerce.inventory.show', $inventory->id) }}"
                                            class="text-decoration-none">
                                             <strong>{{ $inventory->product_name }}</strong>
                                         </a>
@@ -253,12 +253,12 @@
                                 </td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
-                                        <a href="{{ route('admin.site.ecommerce.inventory.show', $inventory->id) }}"
+                                        <a href="{{ route('admin.store.ecommerce.inventory.show', $inventory->id) }}"
                                            class="btn btn-outline-info"
                                            title="보기">
                                             <i class="fe fe-eye"></i>
                                         </a>
-                                        <a href="{{ route('admin.site.ecommerce.inventory.edit', $inventory->id) }}"
+                                        <a href="{{ route('admin.store.ecommerce.inventory.edit', $inventory->id) }}"
                                            class="btn btn-outline-primary"
                                            title="수정">
                                             <i class="fe fe-edit"></i>
@@ -294,7 +294,7 @@
                     <i class="fe fe-package fe-3x text-muted mb-3"></i>
                     <h5 class="text-muted">등록된 재고가 없습니다</h5>
                     <p class="text-muted">새 재고 항목을 추가해보세요.</p>
-                    <a href="{{ route('admin.site.ecommerce.inventory.create') }}" class="btn btn-primary">
+                    <a href="{{ route('admin.store.ecommerce.inventory.create') }}" class="btn btn-primary">
                         <i class="fe fe-plus me-2"></i>새 재고 추가
                     </a>
                 </div>
@@ -362,7 +362,7 @@
 function deleteInventory(id) {
     const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
     const form = document.getElementById('deleteForm');
-    form.action = `/admin/site/ecommerce/inventory/${id}`;
+    form.action = `/admin/store/ecommerce/inventory/${id}`;
     modal.show();
 }
 </script>

@@ -85,11 +85,11 @@ class IndexController extends Controller
     protected function buildQuery()
     {
         return DB::table($this->config['table'])
-            ->leftJoin('site_currencies', 'site_countries.currency_code', '=', 'site_currencies.code')
+            ->leftJoin('store_currencies', 'site_countries.currency_code', '=', 'store_currencies.code')
             ->select(
                 'site_countries.*',
-                'site_currencies.name as currency_name',
-                'site_currencies.symbol as currency_symbol'
+                'store_currencies.name as currency_name',
+                'store_currencies.symbol as currency_symbol'
             );
     }
 

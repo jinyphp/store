@@ -13,7 +13,7 @@
                     <p class="text-muted mb-0">{{ $config['subtitle'] }}</p>
                 </div>
                 <div>
-                    <a href="{{ route('admin.site.services.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('admin.store.services.index') }}" class="btn btn-outline-secondary">
                         <i class="fe fe-arrow-left me-2"></i>목록으로
                     </a>
                 </div>
@@ -22,7 +22,7 @@
     </div>
 
     <!-- 서비스 등록 폼 -->
-    <form method="POST" action="{{ route('admin.site.services.store') }}">
+    <form method="POST" action="{{ route('admin.store.services.store') }}">
         @csrf
 
         <div class="row">
@@ -289,7 +289,7 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="fe fe-save me-2"></i>서비스 등록
                             </button>
-                            <a href="{{ route('admin.site.services.index') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('admin.store.services.index') }}" class="btn btn-outline-secondary">
                                 <i class="fe fe-x me-2"></i>취소
                             </a>
                         </div>

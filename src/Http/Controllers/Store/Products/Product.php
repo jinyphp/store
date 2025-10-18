@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Site\Products;
+namespace Jiny\Store\Http\Controllers\Store\Products;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -111,7 +111,7 @@ class Product extends Controller
         $query = DB::table('store_products')
             ->leftJoin('store_categories', 'store_products.category_id', '=', 'store_categories.id')
             ->select(
-                store_products.*',
+                'store_products.*',
                 'store_categories.title as category_name',
                 'store_categories.slug as category_slug'
             )
@@ -140,7 +140,7 @@ class Product extends Controller
         $query = DB::table('store_products')
             ->leftJoin('store_categories', 'store_products.category_id', '=', 'store_categories.id')
             ->select(
-                store_products.*',
+                'store_products.*',
                 'store_categories.title as category_name',
                 'store_categories.slug as category_slug'
             )

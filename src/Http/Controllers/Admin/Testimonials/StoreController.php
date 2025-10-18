@@ -17,7 +17,7 @@ class StoreController extends Controller
     {
         $this->config = [
             'table' => 'store_testimonials',
-            'redirect_route' => 'admin.site.testimonials.index',
+            'redirect_route' => 'admin.store.testimonials.index',
         ];
     }
 
@@ -47,7 +47,7 @@ class StoreController extends Controller
                 ->whereNull('deleted_at')
                 ->exists();
         } else {
-            $exists = DB::table('site_services')
+            $exists = DB::table('store_services')
                 ->where('id', $validated['item_id'])
                 ->whereNull('deleted_at')
                 ->exists();
@@ -65,7 +65,7 @@ class StoreController extends Controller
         // Redirect to specific testimonials if came from product/service page
         if ($request->filled('return_to') && $request->get('return_to') === 'item') {
             return redirect()
-                ->route('admin.site.testimonials.index', ['type' => $validated['type'], 'itemId' => $validated['item_id']])
+                ->route('admin.store.testimonials.index', ['type' => $validated['type'], 'itemId' => $validated['item_id']])
                 ->with('success', 'Testimonial이 성공적으로 생성되었습니다.');
         }
 

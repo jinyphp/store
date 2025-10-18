@@ -27,8 +27,8 @@ class IndexController extends Controller
                 $join->on('store_cart.item_id', '=', 'store_products.id')
                      ->where('store_cart.item_type', '=', 'product');
             })
-            ->leftJoin('site_services', function($join) {
-                $join->on('store_cart.item_id', '=', 'site_services.id')
+            ->leftJoin('store_services', function($join) {
+                $join->on('store_cart.item_id', '=', 'store_services.id')
                      ->where('store_cart.item_type', '=', 'service');
             })
             ->leftJoin('site_product_pricing', function($join) {
@@ -43,13 +43,13 @@ class IndexController extends Controller
             ->select(
                 'store_cart.*',
                 // 상품 정보
-                store_products.title as product_title',
-                store_products.price as product_price',
-                store_products.sale_price as product_sale_price',
+                'store_products.title as product_title',
+                'store_products.price as product_price',
+                'store_products.sale_price as product_sale_price',
                 // 서비스 정보
-                'site_services.title as service_title',
-                'site_services.price as service_price',
-                'site_services.sale_price as service_sale_price',
+                'store_services.title as service_title',
+                'store_services.price as service_price',
+                'store_services.sale_price as service_sale_price',
                 // 가격 옵션 정보
                 'site_product_pricing.name as product_pricing_name',
                 'site_product_pricing.price as product_pricing_price',
@@ -65,7 +65,7 @@ class IndexController extends Controller
         if ($search) {
             $query->where(function($q) use ($search) {
                 $q->where('store_products.title', 'like', "%{$search}%")
-                  ->orWhere('site_services.title', 'like', "%{$search}%")
+                  ->orWhere('store_services.title', 'like', "%{$search}%")
                   ->orWhere('users.name', 'like', "%{$search}%")
                   ->orWhere('users.email', 'like', "%{$search}%")
                   ->orWhere('store_cart.session_id', 'like', "%{$search}%");
@@ -226,14 +226,14 @@ class IndexController extends Controller
                     $join->on('store_cart.item_id', '=', 'store_products.id')
                          ->where('store_cart.item_type', '=', 'product');
                 })
-                ->leftJoin('site_services', function($join) {
-                    $join->on('store_cart.item_id', '=', 'site_services.id')
+                ->leftJoin('store_services', function($join) {
+                    $join->on('store_cart.item_id', '=', 'store_services.id')
                          ->where('store_cart.item_type', '=', 'service');
                 })
                 ->whereNull('store_cart.deleted_at')
                 ->where(function($query) {
                     $query->where('store_products.price', '>=', 100000)
-                          ->orWhere('site_services.price', '>=', 100000);
+                          ->orWhere('store_services.price', '>=', 100000);
                 })
                 ->count(),
         ];
@@ -255,8 +255,8 @@ class IndexController extends Controller
             ->whereNotNull('store_products.title')
             ->selectRaw('
                 store_cart.item_id,
-                'store_products.'title,
-                'store_products.'price,
+                store_products.title,
+                store_products.price,
                 COUNT(*) as cart_count,
                 SUM(store_cart.quantity) as total_quantity,
                 COUNT(DISTINCT COALESCE(store_cart.user_id, store_cart.session_id)) as unique_users
@@ -268,22 +268,22 @@ class IndexController extends Controller
 
         // 서비스 인기 순위
         $popularServices = DB::table('store_cart')
-            ->leftJoin('site_services', function($join) {
-                $join->on('store_cart.item_id', '=', 'site_services.id')
+            ->leftJoin('store_services', function($join) {
+                $join->on('store_cart.item_id', '=', 'store_services.id')
                      ->where('store_cart.item_type', '=', 'service');
             })
             ->whereNull('store_cart.deleted_at')
             ->where('store_cart.item_type', 'service')
-            ->whereNotNull('site_services.title')
+            ->whereNotNull('store_services.title')
             ->selectRaw('
                 store_cart.item_id,
-                site_services.title,
-                site_services.price,
+                store_services.title,
+                store_services.price,
                 COUNT(*) as cart_count,
                 SUM(store_cart.quantity) as total_quantity,
                 COUNT(DISTINCT COALESCE(store_cart.user_id, store_cart.session_id)) as unique_users
             ')
-            ->groupBy('store_cart.item_id', 'site_services.title', 'site_services.price')
+            ->groupBy('store_cart.item_id', 'store_services.title', 'store_services.price')
             ->orderByDesc('cart_count')
             ->limit(10)
             ->get();
@@ -306,8 +306,8 @@ class IndexController extends Controller
                 $join->on('store_cart.item_id', '=', 'store_products.id')
                      ->where('store_cart.item_type', '=', 'product');
             })
-            ->leftJoin('site_services', function($join) {
-                $join->on('store_cart.item_id', '=', 'site_services.id')
+            ->leftJoin('store_services', function($join) {
+                $join->on('store_cart.item_id', '=', 'store_services.id')
                      ->where('store_cart.item_type', '=', 'service');
             })
             ->leftJoin('users', 'store_cart.user_id', '=', 'users.id')
@@ -315,8 +315,8 @@ class IndexController extends Controller
             ->where('store_cart.created_at', '<=', $thirtyDaysAgo)
             ->selectRaw('
                 store_cart.*,
-                COALESCE('store_products.'title, site_services.title) as item_title,
-                COALESCE('store_products.'price, site_services.price) as item_price,
+                COALESCE(store_products.title, store_services.title) as item_title,
+                COALESCE(store_products.price, store_services.price) as item_price,
                 users.name as user_name,
                 users.email as user_email,
                 JULIANDAY("now") - JULIANDAY(store_cart.created_at) as days_in_cart

@@ -13,9 +13,9 @@ class IndexController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $query = DB::table('site_shipping_rates as sr')
-            ->leftJoin('site_shipping_zones as sz', 'sr.shipping_zone_id', '=', 'sz.id')
-            ->leftJoin('site_shipping_methods as sm', 'sr.shipping_method_id', '=', 'sm.id')
+        $query = DB::table('store_shipping_rates as sr')
+            ->leftJoin('store_shipping_zones as sz', 'sr.shipping_zone_id', '=', 'sz.id')
+            ->leftJoin('store_shipping_methods as sm', 'sr.shipping_method_id', '=', 'sm.id')
             ->select(
                 'sr.id',
                 'sr.shipping_zone_id',
@@ -142,7 +142,7 @@ class IndexController extends Controller
      */
     private function getZones()
     {
-        return DB::table('site_shipping_zones')
+        return DB::table('store_shipping_zones')
             ->where('enable', true)
             ->orderBy('order')
             ->get(['id', 'name', 'name_ko']);
@@ -153,7 +153,7 @@ class IndexController extends Controller
      */
     private function getMethods()
     {
-        return DB::table('site_shipping_methods')
+        return DB::table('store_shipping_methods')
             ->where('enable', true)
             ->orderBy('order')
             ->get(['id', 'name', 'name_ko', 'code']);
@@ -164,7 +164,7 @@ class IndexController extends Controller
      */
     private function getCurrencies()
     {
-        return DB::table('site_shipping_rates')
+        return DB::table('store_shipping_rates')
             ->select('currency')
             ->distinct()
             ->whereNotNull('currency')
@@ -177,20 +177,20 @@ class IndexController extends Controller
      */
     private function getRateStats(): array
     {
-        $totalRates = DB::table('site_shipping_rates')->count();
-        $activeRates = DB::table('site_shipping_rates')->where('enable', true)->count();
+        $totalRates = DB::table('store_shipping_rates')->count();
+        $activeRates = DB::table('store_shipping_rates')->where('enable', true)->count();
 
-        $freeShippingRates = DB::table('site_shipping_rates')
+        $freeShippingRates = DB::table('store_shipping_rates')
             ->whereNotNull('free_shipping_threshold')
             ->where('free_shipping_threshold', '>', 0)
             ->count();
 
-        $avgBaseCost = DB::table('site_shipping_rates')
+        $avgBaseCost = DB::table('store_shipping_rates')
             ->where('enable', true)
             ->where('currency', 'KRW')
             ->avg('base_cost') ?: 0;
 
-        $currencies = DB::table('site_shipping_rates')
+        $currencies = DB::table('store_shipping_rates')
             ->select('currency')
             ->distinct()
             ->whereNotNull('currency')

@@ -4,7 +4,7 @@ namespace Jiny\Store\Http\Controllers\Admin\Orders;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use App\Models\Order;
+use Jiny\Store\Models\Order;
 use Illuminate\Support\Facades\Validator;
 
 class StoreController extends Controller
@@ -109,7 +109,7 @@ class StoreController extends Controller
             'order_items' => $data['items'],
         ]);
 
-        return redirect()->route('admin.cms.ecommerce.orders.show', $order->id)
+        return redirect()->route('admin.store.orders.show', $order->id)
             ->with('success', '주문이 성공적으로 생성되었습니다.');
     }
 }

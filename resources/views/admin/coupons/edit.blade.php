@@ -11,10 +11,10 @@
             <p class="text-muted">{{ $coupon->name }} 수정</p>
         </div>
         <div class="btn-group">
-            <a href="{{ route('admin.cms.ecommerce.coupons.show', $coupon) }}" class="btn btn-outline-info">
+            <a href="{{ route('admin.store.coupons.show', $coupon) }}" class="btn btn-outline-info">
                 <i class="bi bi-eye me-2"></i>보기
             </a>
-            <a href="{{ route('admin.cms.ecommerce.coupons.index') }}" class="btn btn-outline-secondary">
+            <a href="{{ route('admin.store.coupons.index') }}" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left me-2"></i>목록으로
             </a>
         </div>
@@ -28,7 +28,7 @@
         </div>
     @endif
 
-    <form action="{{ route('admin.cms.ecommerce.coupons.update', $coupon) }}" method="POST">
+    <form action="{{ route('admin.store.coupons.update', $coupon) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="row">
@@ -270,7 +270,7 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-check-lg me-2"></i>수정 완료
                             </button>
-                            <a href="{{ route('admin.cms.ecommerce.coupons.show', $coupon) }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('admin.store.coupons.show', $coupon) }}" class="btn btn-outline-secondary">
                                 취소
                             </a>
                         </div>

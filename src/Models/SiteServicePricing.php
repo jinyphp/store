@@ -11,7 +11,7 @@ class SiteServicePricing extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'site_service_pricing';
+    protected $table = 'store_service_pricing';
 
     protected $fillable = [
         'service_id',

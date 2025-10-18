@@ -13,7 +13,7 @@
                     <p class="text-muted mb-0">{{ $config['subtitle'] }}</p>
                 </div>
                 <div>
-                    <a href="{{ route('admin.cms.ecommerce.inventory.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('admin.store.inventory.index') }}" class="btn btn-outline-secondary">
                         <i class="fe fe-arrow-left me-2"></i>재고 목록으로
                     </a>
                 </div>
@@ -153,7 +153,7 @@
                                             <span class="badge bg-secondary">{{ $item->location }}</span>
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.cms.ecommerce.inventory.stock-in') }}"
+                                            <a href="{{ route('admin.store.inventory.stock-in') }}"
                                                class="btn btn-sm btn-outline-success"
                                                title="입고">
                                                 <i class="fe fe-plus"></i>
@@ -214,7 +214,7 @@
                                             </small>
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.cms.ecommerce.inventory.stock-in') }}"
+                                            <a href="{{ route('admin.store.inventory.stock-in') }}"
                                                class="btn btn-sm btn-outline-success"
                                                title="입고">
                                                 <i class="fe fe-plus"></i>
@@ -280,7 +280,7 @@
                                             <span class="badge bg-secondary">{{ $item->location }}</span>
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.cms.ecommerce.inventory.stock-out') }}"
+                                            <a href="{{ route('admin.store.inventory.stock-out') }}"
                                                class="btn btn-sm btn-outline-danger"
                                                title="출고">
                                                 <i class="fe fe-minus"></i>

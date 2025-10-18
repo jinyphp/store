@@ -55,23 +55,23 @@ class IndexController extends Controller
     protected function buildQuery()
     {
         return DB::table($this->config['table'])
-            ->leftJoin('users', 'site_testimonials.user_id', '=', 'users.id')
+            ->leftJoin('users', 'store_testimonials.user_id', '=', 'users.id')
             ->leftJoin('store_products', function($join) {
-                $join->on('site_testimonials.item_id', '=', 'store_products.id')
-                     ->where('site_testimonials.type', '=', 'product');
+                $join->on('store_testimonials.item_id', '=', 'store_products.id')
+                     ->where('store_testimonials.type', '=', 'product');
             })
-            ->leftJoin('site_services', function($join) {
-                $join->on('site_testimonials.item_id', '=', 'site_services.id')
-                     ->where('site_testimonials.type', '=', 'service');
+            ->leftJoin('store_services', function($join) {
+                $join->on('store_testimonials.item_id', '=', 'store_services.id')
+                     ->where('store_testimonials.type', '=', 'service');
             })
             ->select(
-                'site_testimonials.*',
+                'store_testimonials.*',
                 'users.name as user_name',
                 'users.email as user_email',
-                store_products.title as product_title',
-                'site_services.title as service_title'
+                'store_products.title as product_title',
+                'store_services.title as service_title'
             )
-            ->whereNull('site_testimonials.deleted_at');
+            ->whereNull('store_testimonials.deleted_at');
     }
 
     protected function applyFilters($query, Request $request)
@@ -79,31 +79,31 @@ class IndexController extends Controller
         if ($request->filled('search')) {
             $search = $request->get('search');
             $query->where(function ($q) use ($search) {
-                $q->where('site_testimonials.headline', 'like', "%{$search}%")
-                  ->orWhere('site_testimonials.content', 'like', "%{$search}%")
-                  ->orWhere('site_testimonials.name', 'like', "%{$search}%")
-                  ->orWhere('site_testimonials.company', 'like', "%{$search}%");
+                $q->where('store_testimonials.headline', 'like', "%{$search}%")
+                  ->orWhere('store_testimonials.content', 'like', "%{$search}%")
+                  ->orWhere('store_testimonials.name', 'like', "%{$search}%")
+                  ->orWhere('store_testimonials.company', 'like', "%{$search}%");
             });
         }
 
         if ($request->filled('type')) {
-            $query->where('site_testimonials.type', $request->get('type'));
+            $query->where('store_testimonials.type', $request->get('type'));
         }
 
         if ($request->filled('rating')) {
-            $query->where('site_testimonials.rating', $request->get('rating'));
+            $query->where('store_testimonials.rating', $request->get('rating'));
         }
 
         if ($request->filled('featured')) {
-            $query->where('site_testimonials.featured', $request->get('featured') === '1');
+            $query->where('store_testimonials.featured', $request->get('featured') === '1');
         }
 
         if ($request->filled('verified')) {
-            $query->where('site_testimonials.verified', $request->get('verified') === '1');
+            $query->where('store_testimonials.verified', $request->get('verified') === '1');
         }
 
         if ($request->filled('enable')) {
-            $query->where('site_testimonials.enable', $request->get('enable') === '1');
+            $query->where('store_testimonials.enable', $request->get('enable') === '1');
         }
 
         return $query;

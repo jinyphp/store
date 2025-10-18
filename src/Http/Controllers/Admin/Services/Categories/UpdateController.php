@@ -17,7 +17,7 @@ class UpdateController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_service_categories',
+            'table' => 'store_categories',
             'redirect_route' => 'admin.site.services.categories.index',
         ];
     }
@@ -36,13 +36,13 @@ class UpdateController extends Controller
         }
 
         $validated = $request->validate([
-            'code' => 'required|max:100|unique:site_service_categories,code,' . $id,
+            'code' => 'required|max:100|unique:store_categories,code,' . $id,
             'title' => 'required|max:255',
             'description' => 'nullable|string',
             'image' => 'nullable|string|max:500',
             'color' => 'nullable|string|max:7',
             'icon' => 'nullable|string|max:100',
-            'parent_id' => 'nullable|exists:site_service_categories,id',
+            'parent_id' => 'nullable|exists:store_categories,id',
             'pos' => 'nullable|integer|min:0',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',

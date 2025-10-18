@@ -37,7 +37,7 @@ class CreateController extends Controller
             ->leftJoin('store_products', 'site_product_variants.product_id', '=', 'store_products.id')
             ->select(
                 'site_product_variants.*',
-                store_products.name as product_name'
+                'store_products.name as product_name'
             )
             ->whereNull('site_product_variants.deleted_at')
             ->where('site_product_variants.enable', true)

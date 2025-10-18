@@ -16,7 +16,7 @@ class EditController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_services',
+            'table' => 'store_services',
             'view' => 'jiny-store::admin.services.edit',
             'title' => 'Service 수정',
             'subtitle' => '서비스 정보를 수정합니다.',
@@ -37,7 +37,7 @@ class EditController extends Controller
         }
 
         // 활성화된 서비스 카테고리 목록 조회
-        $categories = DB::table('site_service_categories')
+        $categories = DB::table('store_categories')
             ->whereNull('deleted_at')
             ->where('enable', true)
             ->orderBy('pos')

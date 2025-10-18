@@ -15,20 +15,20 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('admin.cms.ecommerce.dashboard') }}">대시보드</a>
+                                <a href="{{ route('admin.store.dashboard') }}">대시보드</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('admin.cms.ecommerce.shipping.index') }}">배송 관리</a>
+                                <a href="{{ route('admin.store.shipping.index') }}">배송 관리</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">배송비 계산기</li>
                         </ol>
                     </nav>
                 </div>
                 <div class="d-flex align-items-center">
-                    <a href="{{ route('admin.cms.ecommerce.shipping.rates.index') }}" class="me-2 btn btn-outline-primary">
+                    <a href="{{ route('admin.store.shipping.rates.index') }}" class="me-2 btn btn-outline-primary">
                         <i class="fe fe-dollar-sign me-2"></i>요금 관리
                     </a>
-                    <a href="{{ route('admin.cms.ecommerce.shipping.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('admin.store.shipping.index') }}" class="btn btn-outline-secondary">
                         <i class="fe fe-home me-2"></i>배송 대시보드
                     </a>
                 </div>
@@ -46,7 +46,7 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('admin.cms.ecommerce.shipping.calculator.calculate') }}">
+                    <form method="POST" action="{{ route('admin.store.shipping.calculator.calculate') }}">
                         @csrf
                         <div class="mb-3">
                             <label class="form-label">배송 국가 <span class="text-danger">*</span></label>

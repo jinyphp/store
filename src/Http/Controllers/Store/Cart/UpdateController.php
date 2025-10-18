@@ -1,18 +1,23 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Site\Cart;
+namespace Jiny\Store\Http\Controllers\Store\Cart;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Jiny\Store\Models\Product;
 
 /**
- * 장바구니 아이템 제거 컨트롤러
+ * 장바구니 수량 업데이트 컨트롤러
  */
-class RemoveController extends Controller
+class UpdateController extends Controller
 {
     public function __invoke(Request $request, $cartId)
     {
+        $validated = $request->validate([
+            'quantity' => 'required|integer|min:1|max:99'
+        ]);
+
         $userId = auth()->id();
         $sessionId = $userId ? null : session()->getId();
 
@@ -36,11 +41,25 @@ class RemoveController extends Controller
             ], 404);
         }
 
-        // 소프트 삭제
+        // 상품인 경우 재고 확인
+        if ($cartItem->item_type === 'product') {
+            $product = Product::find($cartItem->item_id);
+            if ($product && $product->track_inventory && !$product->isInStock($validated['quantity'])) {
+                $inventoryItem = $product->inventoryItem;
+                $availableStock = $inventoryItem ? $inventoryItem->quantity_available : 0;
+
+                return response()->json([
+                    'success' => false,
+                    'message' => "재고가 부족합니다. 현재 재고: {$availableStock}개, 요청 수량: {$validated['quantity']}개"
+                ], 400);
+            }
+        }
+
+        // 수량 업데이트
         DB::table('store_cart')
             ->where('id', $cartId)
             ->update([
-                'deleted_at' => now(),
+                'quantity' => $validated['quantity'],
                 'updated_at' => now()
             ]);
 
@@ -49,7 +68,7 @@ class RemoveController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => '상품이 장바구니에서 제거되었습니다.',
+            'message' => '수량이 업데이트되었습니다.',
             'cart_count' => $cartCount
         ]);
     }

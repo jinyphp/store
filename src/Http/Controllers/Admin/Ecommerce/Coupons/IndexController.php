@@ -4,7 +4,7 @@ namespace Jiny\Store\Http\Controllers\Admin\Coupons;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use App\Models\Coupon;
+use Jiny\Store\Models\Coupon;
 
 class IndexController extends Controller
 {

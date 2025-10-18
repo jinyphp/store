@@ -13,10 +13,10 @@
                     <p class="text-muted mb-0">{{ $product->title }} - {{ $config['subtitle'] }}</p>
                 </div>
                 <div>
-                    <a href="{{ route('admin.site.products.index') }}" class="btn btn-outline-secondary me-2">
+                    <a href="{{ route('admin.store.products.index') }}" class="btn btn-outline-secondary me-2">
                         <i class="fe fe-arrow-left me-2"></i>상품 목록
                     </a>
-                    <a href="{{ route('admin.site.products.pricing.create', $product->id) }}" class="btn btn-primary">
+                    <a href="{{ route('admin.store.products.pricing.create', $product->id) }}" class="btn btn-primary">
                         <i class="fe fe-plus me-2"></i>가격 옵션 추가
                     </a>
                 </div>
@@ -126,7 +126,7 @@
                                 </td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
-                                        <a href="{{ route('admin.site.products.pricing.edit', [$product->id, $pricing->id]) }}"
+                                        <a href="{{ route('admin.store.products.pricing.edit', [$product->id, $pricing->id]) }}"
                                            class="btn btn-outline-primary" title="수정">
                                             <i class="fe fe-edit"></i>
                                         </a>
@@ -146,7 +146,7 @@
                     <i class="fe fe-tag fe-3x text-muted mb-3"></i>
                     <h5 class="text-muted">등록된 가격 옵션이 없습니다</h5>
                     <p class="text-muted">새로운 가격 옵션을 추가해보세요.</p>
-                    <a href="{{ route('admin.site.products.pricing.create', $product->id) }}" class="btn btn-primary">
+                    <a href="{{ route('admin.store.products.pricing.create', $product->id) }}" class="btn btn-primary">
                         <i class="fe fe-plus me-2"></i>가격 옵션 추가
                     </a>
                 </div>
@@ -189,7 +189,7 @@
 function deletePricing(id) {
     const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
     const form = document.getElementById('deleteForm');
-    form.action = `/admin/site/products/{{ $product->id }}/pricing/${id}`;
+    form.action = `/admin/store/products/{{ $product->id }}/pricing/${id}`;
     modal.show();
 }
 </script>

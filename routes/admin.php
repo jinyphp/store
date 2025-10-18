@@ -8,6 +8,36 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', \Jiny\Store\Http\Controllers\Admin\Dashboard\StoreIndexController::class)->name('admin.store.dashboard');
 
 /**
+ * Ecommerce 대시보드 라우트 (호환성을 위한 별칭)
+ */
+Route::get('/ecommerce', \Jiny\Store\Http\Controllers\Admin\Dashboard\StoreIndexController::class)->name('admin.store.ecommerce.dashboard');
+
+/**
+ * Ecommerce 네임스페이스 별칭 라우트들 (호환성을 위함)
+ */
+Route::prefix('ecommerce')->name('admin.store.ecommerce.')->group(function () {
+    // 주문 관리 별칭
+    Route::get('/orders', \Jiny\Store\Http\Controllers\Admin\Orders\IndexController::class)->name('orders.index');
+
+    // 배송 관리 별칭
+    Route::get('/shipping', \Jiny\Store\Http\Controllers\Admin\Shipping\IndexController::class)->name('shipping.index');
+    Route::get('/shipping/zones', \Jiny\Store\Http\Controllers\Admin\Shipping\Zones\IndexController::class)->name('shipping.zones.index');
+    Route::get('/shipping/methods', \Jiny\Store\Http\Controllers\Admin\Shipping\Methods\IndexController::class)->name('shipping.methods.index');
+    Route::get('/shipping/rates', \Jiny\Store\Http\Controllers\Admin\Shipping\Rates\IndexController::class)->name('shipping.rates.index');
+    Route::get('/shipping/calculator', \Jiny\Store\Http\Controllers\Admin\Shipping\Calculator\IndexController::class)->name('shipping.calculator.index');
+
+    // 프로모션 관리 별칭
+    Route::get('/coupons', \Jiny\Store\Http\Controllers\Admin\Coupons\IndexController::class)->name('coupons.index');
+    Route::get('/promotions', \Jiny\Store\Http\Controllers\Admin\Promotions\IndexController::class)->name('promotions.index');
+
+    // 재고 관리 별칭
+    Route::get('/inventory/dashboard', \Jiny\Store\Http\Controllers\Admin\Inventory\IndexController::class)->name('inventory.dashboard');
+    Route::get('/inventory/stock-in', \Jiny\Store\Http\Controllers\Admin\Inventory\StockInController::class)->name('inventory.stock-in');
+    Route::get('/inventory/stock-out', \Jiny\Store\Http\Controllers\Admin\Inventory\StockOutController::class)->name('inventory.stock-out');
+    Route::get('/inventory/alerts', \Jiny\Store\Http\Controllers\Admin\Inventory\AlertsController::class)->name('inventory.alerts');
+});
+
+/**
  * Cart (장바구니) 관리 라우트
  *
  * @description
@@ -123,6 +153,7 @@ Route::prefix('shipping')->name('admin.store.shipping.')->group(function () {
 // 스토어 설정
 Route::prefix('settings')->name('admin.store.settings.')->group(function () {
     Route::get('/', \Jiny\Store\Http\Controllers\Admin\Settings\IndexController::class)->name('index');
+    Route::post('/save', [\Jiny\Store\Http\Controllers\Admin\Settings\IndexController::class, 'saveSettings'])->name('save');
 });
 
 /**

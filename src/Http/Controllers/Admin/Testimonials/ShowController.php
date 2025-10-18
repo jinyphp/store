@@ -25,31 +25,31 @@ class ShowController extends Controller
     public function __invoke(Request $request, $id)
     {
         $testimonial = DB::table($this->config['table'])
-            ->leftJoin('users', 'site_testimonials.user_id', '=', 'users.id')
+            ->leftJoin('users', 'store_testimonials.user_id', '=', 'users.id')
             ->leftJoin('store_products', function($join) {
-                $join->on('site_testimonials.item_id', '=', 'store_products.id')
-                     ->where('site_testimonials.type', '=', 'product');
+                $join->on('store_testimonials.item_id', '=', 'store_products.id')
+                     ->where('store_testimonials.type', '=', 'product');
             })
-            ->leftJoin('site_services', function($join) {
-                $join->on('site_testimonials.item_id', '=', 'site_services.id')
-                     ->where('site_testimonials.type', '=', 'service');
+            ->leftJoin('store_services', function($join) {
+                $join->on('store_testimonials.item_id', '=', 'store_services.id')
+                     ->where('store_testimonials.type', '=', 'service');
             })
             ->select(
-                'site_testimonials.*',
+                'store_testimonials.*',
                 'users.name as user_name',
                 'users.email as user_email',
-                store_products.title as product_title',
-                store_products.slug as product_slug',
-                'site_services.title as service_title',
-                'site_services.slug as service_slug'
+                'store_products.title as product_title',
+                'store_products.slug as product_slug',
+                'store_services.title as service_title',
+                'store_services.slug as service_slug'
             )
-            ->where('site_testimonials.id', $id)
-            ->whereNull('site_testimonials.deleted_at')
+            ->where('store_testimonials.id', $id)
+            ->whereNull('store_testimonials.deleted_at')
             ->first();
 
         if (!$testimonial) {
             return redirect()
-                ->route('admin.site.testimonials.index')
+                ->route('admin.store.testimonials.index')
                 ->with('error', 'Testimonial을 찾을 수 없습니다.');
         }
 

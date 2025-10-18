@@ -11,10 +11,10 @@
             <p class="text-muted">{{ $coupon->name }}</p>
         </div>
         <div class="btn-group">
-            <a href="{{ route('admin.cms.ecommerce.coupons.edit', $coupon) }}" class="btn btn-warning">
+            <a href="{{ route('admin.store.coupons.edit', $coupon) }}" class="btn btn-warning">
                 <i class="bi bi-pencil me-2"></i>수정
             </a>
-            <a href="{{ route('admin.cms.ecommerce.coupons.index') }}" class="btn btn-outline-secondary">
+            <a href="{{ route('admin.store.coupons.index') }}" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left me-2"></i>목록으로
             </a>
         </div>

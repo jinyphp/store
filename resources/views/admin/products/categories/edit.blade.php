@@ -12,7 +12,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('admin.site.products.categories.index') }}" class="text-decoration-none">
+                                <a href="{{ route('admin.store.products.categories.index') }}" class="text-decoration-none">
                                     상품 카테고리
                                 </a>
                             </li>
@@ -23,7 +23,7 @@
                     <p class="text-muted mb-0">{{ $config['subtitle'] }}</p>
                 </div>
                 <div>
-                    <a href="{{ route('admin.site.products.categories.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('admin.store.products.categories.index') }}" class="btn btn-outline-secondary">
                         <i class="fe fe-arrow-left me-2"></i>목록으로 돌아가기
                     </a>
                 </div>
@@ -38,7 +38,7 @@
                 <div class="card-header">
                     <h5 class="mb-0">카테고리 수정</h5>
                 </div>
-                <form action="{{ route('admin.site.products.categories.update', $category->id) }}" method="POST">
+                <form action="{{ route('admin.store.products.categories.update', $category->id) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="card-body">
@@ -246,7 +246,7 @@
 
                     <div class="card-footer">
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('admin.site.products.categories.index') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('admin.store.products.categories.index') }}" class="btn btn-outline-secondary">
                                 <i class="fe fe-arrow-left me-2"></i>취소
                             </a>
                             <button type="submit" class="btn btn-primary">
@@ -279,7 +279,7 @@
                     <div class="mb-3">
                         <label class="form-label text-muted small">현재 상위 카테고리</label>
                         <div>
-                            <a href="{{ route('admin.site.products.categories.edit', $category->parent->id) }}"
+                            <a href="{{ route('admin.store.products.categories.edit', $category->parent->id) }}"
                                class="text-decoration-none">
                                 {{ $category->parent->title }}
                             </a>
@@ -298,7 +298,7 @@
                         <div class="small">
                             @foreach($subCategories as $sub)
                                 <div class="mb-1">
-                                    <a href="{{ route('admin.site.products.categories.edit', $sub->id) }}"
+                                    <a href="{{ route('admin.store.products.categories.edit', $sub->id) }}"
                                        class="text-decoration-none">
                                         {{ $sub->name }}
                                     </a>

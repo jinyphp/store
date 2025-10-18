@@ -4,7 +4,7 @@ namespace Jiny\Store\Http\Controllers\Admin\Coupons;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use App\Models\Coupon;
+use Jiny\Store\Models\Coupon;
 
 class UpdateController extends Controller
 {
@@ -33,7 +33,7 @@ class UpdateController extends Controller
         $coupon->update($validated);
 
         return redirect()
-            ->route('admin.cms.ecommerce.coupons.index')
+            ->route('admin.store.coupons.index')
             ->with('success', '쿠폰이 성공적으로 수정되었습니다.');
     }
 }

@@ -31,7 +31,7 @@ class CreateController extends Controller
             ->orderBy('title')
             ->get();
 
-        $services = DB::table('site_services')
+        $services = DB::table('store_services')
             ->select('id', 'title')
             ->where('enable', true)
             ->whereNull('deleted_at')
@@ -46,7 +46,7 @@ class CreateController extends Controller
                     ->where('id', $itemId)
                     ->first();
             } elseif ($type === 'service') {
-                $selectedItem = DB::table('site_services')
+                $selectedItem = DB::table('store_services')
                     ->where('id', $itemId)
                     ->first();
             }

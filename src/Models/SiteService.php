@@ -10,7 +10,7 @@ class SiteService extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'site_services';
+    protected $table = 'store_services';
 
     protected $fillable = [
         'enable',

@@ -30,8 +30,8 @@ class EditController extends Controller
             ->leftJoin('site_product_variants', 'site_inventory.variant_id', '=', 'site_product_variants.id')
             ->select(
                 'site_inventory.*',
-                store_products.name as product_name',
-                store_products.sku as product_sku',
+                'store_products.name as product_name',
+                'store_products.sku as product_sku',
                 'site_product_variants.name as variant_name',
                 'site_product_variants.sku as variant_sku'
             )
@@ -57,7 +57,7 @@ class EditController extends Controller
             ->leftJoin('store_products', 'site_product_variants.product_id', '=', 'store_products.id')
             ->select(
                 'site_product_variants.*',
-                store_products.name as product_name'
+                'store_products.name as product_name'
             )
             ->whereNull('site_product_variants.deleted_at')
             ->where('site_product_variants.enable', true)

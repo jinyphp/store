@@ -16,7 +16,7 @@ class DestroyController extends Controller
     public function __construct()
     {
         $this->config = [
-            'table' => 'site_service_categories',
+            'table' => 'store_categories',
             'redirect_route' => 'admin.site.services.categories.index',
         ];
     }
@@ -47,7 +47,7 @@ class DestroyController extends Controller
         }
 
         // 이 카테고리를 사용하는 서비스가 있는지 확인
-        $hasServices = DB::table('site_services')
+        $hasServices = DB::table('store_services')
             ->where('category_id', $id)
             ->whereNull('deleted_at')
             ->exists();

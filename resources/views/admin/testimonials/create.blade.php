@@ -13,7 +13,7 @@
                     <p class="text-muted mb-0">새로운 고객 후기를 등록합니다.</p>
                 </div>
                 <div>
-                    <a href="{{ route('admin.site.testimonials.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('admin.store.testimonials.index') }}" class="btn btn-outline-secondary">
                         <i class="fe fe-arrow-left me-2"></i>목록으로
                     </a>
                 </div>
@@ -22,7 +22,7 @@
     </div>
 
     <!-- Testimonial 생성 폼 -->
-    <form method="POST" action="{{ route('admin.site.testimonials.store') }}">
+    <form method="POST" action="{{ route('admin.store.testimonials.store') }}">
         @csrf
         @if($selectedType && $selectedItemId)
             <input type="hidden" name="return_to" value="item">
@@ -268,7 +268,7 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="fe fe-save me-2"></i>Testimonial 등록
                             </button>
-                            <a href="{{ route('admin.site.testimonials.index') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('admin.store.testimonials.index') }}" class="btn btn-outline-secondary">
                                 <i class="fe fe-x me-2"></i>취소
                             </a>
                         </div>

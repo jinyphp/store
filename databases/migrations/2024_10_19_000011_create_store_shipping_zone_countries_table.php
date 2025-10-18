@@ -25,7 +25,11 @@ return new class extends Migration
 
             $table->index(['shipping_zone_id']);
             $table->index(['enable']);
-            $table->foreign('country_code')->references('code')->on('site_countries')->onDelete('cascade');
+
+            // site_countries 테이블이 존재할 때만 외래키 제약조건 추가
+            if (Schema::hasTable('site_countries')) {
+                $table->foreign('country_code')->references('code')->on('site_countries')->onDelete('cascade');
+            }
         });
 
         $this->insertDefaultZoneCountries();
@@ -33,6 +37,11 @@ return new class extends Migration
 
     private function insertDefaultZoneCountries()
     {
+        // site_countries 테이블이 존재하지 않으면 스킵
+        if (!Schema::hasTable('site_countries')) {
+            return;
+        }
+
         $domesticZone = DB::table('store_shipping_zones')->where('name', 'Domestic')->first();
         $asiaZone = DB::table('store_shipping_zones')->where('name', 'Asia')->first();
         $northAmericaZone = DB::table('store_shipping_zones')->where('name', 'North America')->first();

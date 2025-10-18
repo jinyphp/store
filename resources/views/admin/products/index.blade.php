@@ -13,7 +13,7 @@
                     <p class="text-muted mb-0">{{ $config['subtitle'] }}</p>
                 </div>
                 <div>
-                    <a href="{{ route('admin.site.products.create') }}" class="btn btn-primary">
+                    <a href="{{ route('admin.store.products.create') }}" class="btn btn-primary">
                         <i class="fe fe-plus me-2"></i>새 상품 등록
                     </a>
                 </div>
@@ -130,7 +130,7 @@
     <!-- 필터 -->
     <div class="card mb-4">
         <div class="card-body">
-            <form method="GET" action="{{ route('admin.site.products.index') }}">
+            <form method="GET" action="{{ route('admin.store.products.index') }}">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
@@ -181,7 +181,7 @@
                         <button type="submit" class="btn btn-outline-primary me-2">
                             <i class="fe fe-search me-1"></i>검색
                         </button>
-                        <a href="{{ route('admin.site.products.index') }}" class="btn btn-outline-secondary">
+                        <a href="{{ route('admin.store.products.index') }}" class="btn btn-outline-secondary">
                             <i class="fe fe-refresh-cw me-1"></i>초기화
                         </a>
                     </div>
@@ -228,7 +228,7 @@
                                         @endif
                                         <div>
                                             <div class="d-flex align-items-center flex-wrap">
-                                                <a href="{{ route('admin.site.products.show', $product->id) }}"
+                                                <a href="{{ route('admin.store.products.show', $product->id) }}"
                                                    class="text-decoration-none">
                                                     <strong>{{ $product->title }}</strong>
                                                 </a>
@@ -288,7 +288,7 @@
                                 </td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
-                                        <a href="{{ route('admin.site.products.show', $product->id) }}"
+                                        <a href="{{ route('admin.store.products.show', $product->id) }}"
                                            class="btn btn-outline-info"
                                            title="관리자에서 보기">
                                             <i class="fe fe-eye"></i>
@@ -299,17 +299,17 @@
                                            target="_blank">
                                             <i class="fe fe-external-link"></i>
                                         </a>
-                                        <a href="{{ route('admin.site.products.edit', $product->id) }}"
+                                        <a href="{{ route('admin.store.products.edit', $product->id) }}"
                                            class="btn btn-outline-primary"
                                            title="수정">
                                             <i class="fe fe-edit"></i>
                                         </a>
-                                        <a href="{{ route('admin.site.products.images.index', $product->id) }}"
+                                        <a href="{{ route('admin.store.products.images.index', $product->id) }}"
                                            class="btn btn-outline-success"
                                            title="이미지 갤러리">
                                             <i class="fe fe-image"></i>
                                         </a>
-                                        <a href="{{ route('admin.site.products.pricing.index', $product->id) }}"
+                                        <a href="{{ route('admin.store.products.pricing.index', $product->id) }}"
                                            class="btn btn-outline-warning"
                                            title="가격 옵션">
                                             <i class="fe fe-tag"></i>
@@ -345,7 +345,7 @@
                     <i class="fe fe-package fe-3x text-muted mb-3"></i>
                     <h5 class="text-muted">등록된 상품이 없습니다</h5>
                     <p class="text-muted">새 상품을 등록해보세요.</p>
-                    <a href="{{ route('admin.site.products.create') }}" class="btn btn-primary">
+                    <a href="{{ route('admin.store.products.create') }}" class="btn btn-primary">
                         <i class="fe fe-plus me-2"></i>새 상품 등록
                     </a>
                 </div>
@@ -408,7 +408,7 @@
 function deleteProduct(id) {
     const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
     const form = document.getElementById('deleteForm');
-    form.action = `/admin/site/products/${id}`;
+    form.action = `/admin/store/products/${id}`;
     modal.show();
 }
 </script>

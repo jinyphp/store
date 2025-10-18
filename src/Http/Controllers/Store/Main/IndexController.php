@@ -1,6 +1,6 @@
 <?php
 
-namespace Jiny\Store\Http\Controllers\Site\Store;
+namespace Jiny\Store\Http\Controllers\Store\Main;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -39,7 +39,7 @@ class IndexController extends Controller
         $categories = $this->getCategories();
         $testimonials = $this->getRecentTestimonials();
 
-        return view($this->config['view'], [
+        return view('jiny-store::store.index', [
             'config' => $this->config,
             'featuredProducts' => $featuredProducts,
             'newArrivals' => $newArrivals,

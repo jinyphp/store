@@ -12,7 +12,7 @@
         "title": "재고 관리",
         "subtitle": "상품 재고 현황 및 관리",
         "view": "jiny-site::admin.inventory.index",
-        "route": "admin.cms.ecommerce.inventory.dashboard",
+        "route": "admin.store.inventory.dashboard",
         "filter": {
             "search": true,
             "location": true,
@@ -23,7 +23,7 @@
         },
         "breadcrumbs": [
             {"title": "대시보드", "route": "admin.cms.dashboard"},
-            {"title": "이커머스", "route": "admin.cms.ecommerce.dashboard"},
+            {"title": "이커머스", "route": "admin.store.dashboard"},
             {"title": "재고 관리", "active": true}
         ]
     },
@@ -31,11 +31,11 @@
         "title": "입고 관리",
         "subtitle": "상품 입고 처리 및 기록",
         "view": "jiny-site::admin.inventory.stock-in",
-        "route": "admin.cms.ecommerce.inventory.stock-in",
+        "route": "admin.store.inventory.stock-in",
         "breadcrumbs": [
             {"title": "대시보드", "route": "admin.cms.dashboard"},
-            {"title": "이커머스", "route": "admin.cms.ecommerce.dashboard"},
-            {"title": "재고 관리", "route": "admin.cms.ecommerce.inventory.dashboard"},
+            {"title": "이커머스", "route": "admin.store.dashboard"},
+            {"title": "재고 관리", "route": "admin.store.inventory.dashboard"},
             {"title": "입고 관리", "active": true}
         ],
         "transaction_type": "in",
@@ -51,11 +51,11 @@
         "title": "출고 관리",
         "subtitle": "상품 출고 처리 및 기록",
         "view": "jiny-site::admin.inventory.stock-out",
-        "route": "admin.cms.ecommerce.inventory.stock-out",
+        "route": "admin.store.inventory.stock-out",
         "breadcrumbs": [
             {"title": "대시보드", "route": "admin.cms.dashboard"},
-            {"title": "이커머스", "route": "admin.cms.ecommerce.dashboard"},
-            {"title": "재고 관리", "route": "admin.cms.ecommerce.inventory.dashboard"},
+            {"title": "이커머스", "route": "admin.store.dashboard"},
+            {"title": "재고 관리", "route": "admin.store.inventory.dashboard"},
             {"title": "출고 관리", "active": true}
         ],
         "transaction_type": "out",
@@ -72,11 +72,11 @@
         "title": "재고 알림 관리",
         "subtitle": "재고 부족, 품절 등 알림 관리",
         "view": "jiny-site::admin.inventory.alerts",
-        "route": "admin.cms.ecommerce.inventory.alerts",
+        "route": "admin.store.inventory.alerts",
         "breadcrumbs": [
             {"title": "대시보드", "route": "admin.cms.dashboard"},
-            {"title": "이커머스", "route": "admin.cms.ecommerce.dashboard"},
-            {"title": "재고 관리", "route": "admin.cms.ecommerce.inventory.dashboard"},
+            {"title": "이커머스", "route": "admin.store.dashboard"},
+            {"title": "재고 관리", "route": "admin.store.inventory.dashboard"},
             {"title": "재고 알림", "active": true}
         ],
         "pagination": {
@@ -128,19 +128,19 @@
     },
     "actions": {
         "stock_in": {
-            "route": "admin.cms.ecommerce.inventory.stock-in.process",
+            "route": "admin.store.inventory.stock-in.process",
             "method": "POST"
         },
         "stock_out": {
-            "route": "admin.cms.ecommerce.inventory.stock-out.process",
+            "route": "admin.store.inventory.stock-out.process",
             "method": "POST"
         },
         "alert_acknowledge": {
-            "route": "admin.cms.ecommerce.inventory.alerts.acknowledge",
+            "route": "admin.store.inventory.alerts.acknowledge",
             "method": "POST"
         },
         "alert_resolve": {
-            "route": "admin.cms.ecommerce.inventory.alerts.resolve",
+            "route": "admin.store.inventory.alerts.resolve",
             "method": "POST"
         }
     },

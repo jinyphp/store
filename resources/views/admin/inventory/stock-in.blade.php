@@ -13,7 +13,7 @@
                     <p class="text-muted mb-0">{{ $config['subtitle'] }}</p>
                 </div>
                 <div>
-                    <a href="{{ route('admin.cms.ecommerce.inventory.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('admin.store.inventory.index') }}" class="btn btn-outline-secondary">
                         <i class="fe fe-arrow-left me-2"></i>재고 목록으로
                     </a>
                 </div>
@@ -117,7 +117,7 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('admin.cms.ecommerce.inventory.stock-in.process') }}">
+                    <form method="POST" action="{{ route('admin.store.inventory.stock-in.process') }}">
                         @csrf
 
                         <div class="form-group mb-3">

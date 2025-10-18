@@ -5,7 +5,7 @@ namespace Jiny\Store\Http\Controllers\Admin\Settings;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Jiny\Site\Helpers\CurrencyHelper;
+use Jiny\Store\Helpers\CurrencyHelper;
 
 /**
  * 이커머스 설정 관리 컨트롤러
@@ -147,26 +147,26 @@ class IndexController extends Controller
      */
     protected function getExchangeRateInfo()
     {
-        $lastUpdate = DB::table('site_exchange_rates')->max('updated_at');
+        $lastUpdate = DB::table('store_exchange_rates')->max('updated_at');
 
-        $rates = DB::table('site_exchange_rates')
-            ->leftJoin('site_currencies as from_curr', 'site_exchange_rates.from_currency', '=', 'from_curr.code')
-            ->leftJoin('site_currencies as to_curr', 'site_exchange_rates.to_currency', '=', 'to_curr.code')
+        $rates = DB::table('store_exchange_rates')
+            ->leftJoin('store_currencies as from_curr', 'store_exchange_rates.from_currency', '=', 'from_curr.code')
+            ->leftJoin('store_currencies as to_curr', 'store_exchange_rates.to_currency', '=', 'to_curr.code')
             ->select(
-                'site_exchange_rates.*',
+                'store_exchange_rates.*',
                 'from_curr.name as from_currency_name',
                 'from_curr.symbol as from_currency_symbol',
                 'to_curr.name as to_currency_name',
                 'to_curr.symbol as to_currency_symbol'
             )
-            ->where('site_exchange_rates.is_active', true)
-            ->orderBy('site_exchange_rates.updated_at', 'desc')
+            ->where('store_exchange_rates.is_active', true)
+            ->orderBy('store_exchange_rates.updated_at', 'desc')
             ->limit(5)
             ->get();
 
         return [
             'last_update' => $lastUpdate,
-            'total_rates' => DB::table('site_exchange_rates')->where('is_active', true)->count(),
+            'total_rates' => DB::table('store_exchange_rates')->where('is_active', true)->count(),
             'auto_update_enabled' => true,
             'update_frequency' => 'hourly',
             'recent_rates' => $rates,

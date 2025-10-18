@@ -12,7 +12,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('admin.site.products.categories.index') }}" class="text-decoration-none">
+                                <a href="{{ route('admin.store.products.categories.index') }}" class="text-decoration-none">
                                     상품 카테고리
                                 </a>
                             </li>
@@ -23,10 +23,10 @@
                     <p class="text-muted mb-0">{{ $config['subtitle'] }}</p>
                 </div>
                 <div>
-                    <a href="{{ route('admin.site.products.categories.index') }}" class="btn btn-outline-secondary me-2">
+                    <a href="{{ route('admin.store.products.categories.index') }}" class="btn btn-outline-secondary me-2">
                         <i class="fe fe-arrow-left me-2"></i>목록으로 돌아가기
                     </a>
-                    <a href="{{ route('admin.site.products.categories.edit', $category->id) }}" class="btn btn-primary">
+                    <a href="{{ route('admin.store.products.categories.edit', $category->id) }}" class="btn btn-primary">
                         <i class="fe fe-edit me-2"></i>수정
                     </a>
                 </div>
@@ -60,7 +60,7 @@
                             <div class="mb-4">
                                 <label class="form-label text-muted small">상위 카테고리</label>
                                 <div>
-                                    <a href="{{ route('admin.site.products.categories.show', $category->parent->id) }}"
+                                    <a href="{{ route('admin.store.products.categories.show', $category->parent->id) }}"
                                        class="text-decoration-none">
                                         {{ $category->parent->title }}
                                     </a>
@@ -155,7 +155,7 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">하위 카테고리 ({{ $subCategories->count() }}개)</h5>
-                        <a href="{{ route('admin.site.products.categories.create') }}?parent_id={{ $category->id }}"
+                        <a href="{{ route('admin.store.products.categories.create') }}?parent_id={{ $category->id }}"
                            class="btn btn-sm btn-outline-primary">
                             <i class="fe fe-plus me-1"></i>하위 카테고리 추가
                         </a>
@@ -187,7 +187,7 @@
                                                      style="width: 24px; height: 24px; object-fit: cover;">
                                             @endif
                                             <div>
-                                                <a href="{{ route('admin.site.products.categories.show', $sub->id) }}"
+                                                <a href="{{ route('admin.store.products.categories.show', $sub->id) }}"
                                                    class="text-decoration-none fw-bold">
                                                     {{ $sub->title }}
                                                 </a>
@@ -214,11 +214,11 @@
                                     </td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
-                                            <a href="{{ route('admin.site.products.categories.show', $sub->id) }}"
+                                            <a href="{{ route('admin.store.products.categories.show', $sub->id) }}"
                                                class="btn btn-outline-info" title="보기">
                                                 <i class="fe fe-eye"></i>
                                             </a>
-                                            <a href="{{ route('admin.site.products.categories.edit', $sub->id) }}"
+                                            <a href="{{ route('admin.store.products.categories.edit', $sub->id) }}"
                                                class="btn btn-outline-primary" title="수정">
                                                 <i class="fe fe-edit"></i>
                                             </a>
@@ -239,7 +239,7 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">카테고리 상품 ({{ $products->count() }}개)</h5>
-                        <a href="{{ route('admin.site.products.create') }}?category_id={{ $category->id }}"
+                        <a href="{{ route('admin.store.products.create') }}?category_id={{ $category->id }}"
                            class="btn btn-sm btn-outline-primary">
                             <i class="fe fe-plus me-1"></i>상품 추가
                         </a>
@@ -273,7 +273,7 @@
                                                 </div>
                                             @endif
                                             <div>
-                                                <a href="{{ route('admin.site.products.show', $product->id) }}"
+                                                <a href="{{ route('admin.store.products.show', $product->id) }}"
                                                    class="text-decoration-none fw-bold">
                                                     {{ $product->title }}
                                                 </a>
@@ -307,11 +307,11 @@
                                     </td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
-                                            <a href="{{ route('admin.site.products.show', $product->id) }}"
+                                            <a href="{{ route('admin.store.products.show', $product->id) }}"
                                                class="btn btn-outline-info" title="보기">
                                                 <i class="fe fe-eye"></i>
                                             </a>
-                                            <a href="{{ route('admin.site.products.edit', $product->id) }}"
+                                            <a href="{{ route('admin.store.products.edit', $product->id) }}"
                                                class="btn btn-outline-primary" title="수정">
                                                 <i class="fe fe-edit"></i>
                                             </a>
@@ -360,7 +360,7 @@
                     @if($category->parent)
                         <div class="mb-2">
                             <small class="text-muted">상위:</small>
-                            <a href="{{ route('admin.site.products.categories.show', $category->parent->id) }}"
+                            <a href="{{ route('admin.store.products.categories.show', $category->parent->id) }}"
                                class="text-decoration-none">
                                 {{ $category->parent->title }}
                             </a>
@@ -378,7 +378,7 @@
                             <ul class="list-unstyled ms-3 mb-0">
                                 @foreach($subCategories as $sub)
                                 <li class="mb-1">
-                                    <a href="{{ route('admin.site.products.categories.show', $sub->id) }}"
+                                    <a href="{{ route('admin.store.products.categories.show', $sub->id) }}"
                                        class="text-decoration-none small">
                                         {{ $sub->title }}
                                     </a>
@@ -398,17 +398,17 @@
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
-                        <a href="{{ route('admin.site.products.categories.edit', $category->id) }}"
+                        <a href="{{ route('admin.store.products.categories.edit', $category->id) }}"
                            class="btn btn-outline-primary">
                             <i class="fe fe-edit me-2"></i>카테고리 수정
                         </a>
 
-                        <a href="{{ route('admin.site.products.categories.create') }}?parent_id={{ $category->id }}"
+                        <a href="{{ route('admin.store.products.categories.create') }}?parent_id={{ $category->id }}"
                            class="btn btn-outline-success">
                             <i class="fe fe-plus me-2"></i>하위 카테고리 추가
                         </a>
 
-                        <a href="{{ route('admin.site.products.create') }}?category_id={{ $category->id }}"
+                        <a href="{{ route('admin.store.products.create') }}?category_id={{ $category->id }}"
                            class="btn btn-outline-info">
                             <i class="fe fe-package me-2"></i>상품 추가
                         </a>
@@ -468,7 +468,7 @@
 function deleteCategory(id) {
     const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
     const form = document.getElementById('deleteForm');
-    form.action = `/admin/site/products/categories/${id}`;
+    form.action = `/admin/store/products/categories/${id}`;
     modal.show();
 }
 </script>
