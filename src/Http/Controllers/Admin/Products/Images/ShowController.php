@@ -59,7 +59,7 @@ class ShowController extends Controller
 
         // 일반 요청인 경우 이미지 상세 페이지로 리다이렉트 또는 갤러리 페이지로 이동
         return redirect()
-            ->route('admin.site.products.images.index', $productId)
+            ->route('admin.store.products.images.index', $productId)
             ->with('success', '이미지 상세 정보를 확인하세요.');
     }
 }

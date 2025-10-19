@@ -35,17 +35,23 @@ class IndexController extends Controller
         // 메인 페이지 데이터 수집
         $featuredProducts = $this->getFeaturedProducts();
         $newArrivals = $this->getNewArrivals();
-        $bestSellers = $this->getBestSellers();
+        $popularProducts = $this->getBestSellers();
         $categories = $this->getCategories();
         $testimonials = $this->getRecentTestimonials();
+        $featuredServices = collect([]);  // Empty collection for now
+        $latestProducts = $newArrivals;   // Use newArrivals as latestProducts
+        $banners = collect([]);           // Empty collection for now
 
-        return view('jiny-store::store.index', [
+        return view('jiny-store::store.main.index', [
             'config' => $this->config,
             'featuredProducts' => $featuredProducts,
             'newArrivals' => $newArrivals,
-            'bestSellers' => $bestSellers,
+            'popularProducts' => $popularProducts,
+            'latestProducts' => $latestProducts,
             'categories' => $categories,
             'testimonials' => $testimonials,
+            'featuredServices' => $featuredServices,
+            'banners' => $banners,
         ]);
     }
 

@@ -18,7 +18,7 @@ class StoreController extends Controller
     {
         $this->config = [
             'table' => 'store_categories',
-            'redirect_route' => 'admin.site.products.categories.index',
+            'redirect_route' => 'admin.store.products.categories.index',
         ];
     }
 

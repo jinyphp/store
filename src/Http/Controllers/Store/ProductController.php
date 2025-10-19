@@ -104,12 +104,12 @@ class ProductController extends Controller
     protected function buildProductQuery()
     {
         return DB::table('store_products')
-            ->leftJoin('store_product_categories', 'store_products.category_id', '=', 'store_product_categories.id')
+            ->leftJoin('store_categories', 'store_products.category_id', '=', 'store_categories.id')
             ->leftJoin('store_product_pricing', 'store_products.id', '=', 'store_product_pricing.product_id')
             ->select(
                 'store_products.*',
-                'store_product_categories.title as category_name',
-                'store_product_categories.slug as category_slug',
+                'store_categories.title as category_name',
+                'store_categories.slug as category_slug',
                 'store_product_pricing.price',
                 'store_product_pricing.sale_price',
                 'store_product_pricing.currency'
@@ -125,7 +125,7 @@ class ProductController extends Controller
     {
         // 카테고리 필터
         if ($request->filled('category')) {
-            $query->where('store_product_categories.slug', $request->get('category'));
+            $query->where('store_categories.slug', $request->get('category'));
         }
 
         // 가격 범위 필터
@@ -180,12 +180,12 @@ class ProductController extends Controller
     protected function getProductDetail($id)
     {
         return DB::table('store_products')
-            ->leftJoin('store_product_categories', 'store_products.category_id', '=', 'store_product_categories.id')
+            ->leftJoin('store_categories', 'store_products.category_id', '=', 'store_categories.id')
             ->leftJoin('store_product_pricing', 'store_products.id', '=', 'store_product_pricing.product_id')
             ->select(
                 'store_products.*',
-                'store_product_categories.title as category_name',
-                'store_product_categories.slug as category_slug',
+                'store_categories.title as category_name',
+                'store_categories.slug as category_slug',
                 'store_product_pricing.price',
                 'store_product_pricing.sale_price',
                 'store_product_pricing.currency'
@@ -279,9 +279,9 @@ class ProductController extends Controller
      */
     protected function getCategories()
     {
-        return DB::table('store_product_categories')
+        return DB::table('store_categories')
             ->where('enable', true)
-            ->orderBy('order', 'asc')
+            ->orderBy('pos', 'asc')
             ->get();
     }
 

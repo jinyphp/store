@@ -32,7 +32,7 @@ class EditController extends Controller
 
         if (!$product) {
             return redirect()
-                ->route('admin.site.products.index')
+                ->route('admin.store.products.index')
                 ->with('error', 'Product를 찾을 수 없습니다.');
         }
 
@@ -45,7 +45,7 @@ class EditController extends Controller
 
         if (!$pricing) {
             return redirect()
-                ->route('admin.site.products.pricing.index', $productId)
+                ->route('admin.store.products.pricing.index', $productId)
                 ->with('error', '가격 옵션을 찾을 수 없습니다.');
         }
 

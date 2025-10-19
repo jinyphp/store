@@ -101,7 +101,7 @@ class UpdateController extends Controller
 
             // 일반 응답
             return redirect()
-                ->route('admin.site.products.images.index', $productId)
+                ->route('admin.store.products.images.index', $productId)
                 ->with('success', '이미지 정보가 성공적으로 수정되었습니다.');
 
         } catch (\Exception $e) {

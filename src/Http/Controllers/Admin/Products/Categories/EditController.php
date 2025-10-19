@@ -39,7 +39,7 @@ class EditController extends Controller
 
         if (!$category) {
             return redirect()
-                ->route('admin.site.products.categories.index')
+                ->route('admin.store.products.categories.index')
                 ->with('error', 'Product Category를 찾을 수 없습니다.');
         }
 

@@ -62,10 +62,10 @@ class IndexController extends Controller
      */
     protected function getFeaturedCategories()
     {
-        return DB::table('store_product_categories')
+        return DB::table('store_categories')
             ->where('enable', true)
             ->where('featured', true)
-            ->orderBy('order', 'asc')
+            ->orderBy('pos', 'asc')
             ->limit(8)
             ->get();
     }
@@ -76,12 +76,12 @@ class IndexController extends Controller
     protected function getFeaturedProducts()
     {
         return DB::table('store_products')
-            ->leftJoin('store_product_categories', 'store_products.category_id', '=', 'store_product_categories.id')
-            ->select('store_products.*', 'store_product_categories.title as category_name')
+            ->leftJoin('store_categories', 'store_products.category_id', '=', 'store_categories.id')
+            ->select('store_products.*', 'store_categories.title as category_name')
             ->where('store_products.enable', true)
             ->where('store_products.featured', true)
             ->whereNull('store_products.deleted_at')
-            ->orderBy('store_products.order', 'asc')
+            ->orderBy('store_products.pos', 'asc')
             ->limit(12)
             ->get();
     }
@@ -92,19 +92,19 @@ class IndexController extends Controller
     protected function getPopularProducts()
     {
         return DB::table('store_products')
-            ->leftJoin('store_product_categories', 'store_products.category_id', '=', 'store_product_categories.id')
+            ->leftJoin('store_categories', 'store_products.category_id', '=', 'store_categories.id')
             ->leftJoin('store_order_items', function($join) {
                 $join->on('store_products.id', '=', 'store_order_items.product_id')
                      ->where('store_order_items.type', '=', 'product');
             })
             ->select(
                 'store_products.*',
-                'store_product_categories.title as category_name',
+                'store_categories.title as category_name',
                 DB::raw('COUNT(store_order_items.id) as order_count')
             )
             ->where('store_products.enable', true)
             ->whereNull('store_products.deleted_at')
-            ->groupBy('store_products.id', 'store_product_categories.title')
+            ->groupBy('store_products.id', 'store_categories.title')
             ->orderBy('order_count', 'desc')
             ->limit(8)
             ->get();
@@ -116,8 +116,8 @@ class IndexController extends Controller
     protected function getLatestProducts()
     {
         return DB::table('store_products')
-            ->leftJoin('store_product_categories', 'store_products.category_id', '=', 'store_product_categories.id')
-            ->select('store_products.*', 'store_product_categories.title as category_name')
+            ->leftJoin('store_categories', 'store_products.category_id', '=', 'store_categories.id')
+            ->select('store_products.*', 'store_categories.title as category_name')
             ->where('store_products.enable', true)
             ->whereNull('store_products.deleted_at')
             ->orderBy('store_products.created_at', 'desc')

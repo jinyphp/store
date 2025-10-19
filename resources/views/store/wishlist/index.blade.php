@@ -1,4 +1,4 @@
-@extends('jiny-store::layouts.store')
+@extends('jiny-store::layouts.app')
 
 @section('title', '찜목록')
 

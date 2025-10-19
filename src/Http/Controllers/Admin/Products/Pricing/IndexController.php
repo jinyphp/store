@@ -33,7 +33,7 @@ class IndexController extends Controller
 
         if (!$product) {
             return redirect()
-                ->route('admin.site.products.index')
+                ->route('admin.store.products.index')
                 ->with('error', 'Product를 찾을 수 없습니다.');
         }
 

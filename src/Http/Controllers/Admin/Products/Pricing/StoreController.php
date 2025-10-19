@@ -17,7 +17,7 @@ class StoreController extends Controller
     {
         $this->config = [
             'table' => 'site_product_pricing',
-            'redirect_route' => 'admin.site.products.pricing.index',
+            'redirect_route' => 'admin.store.products.pricing.index',
         ];
     }
 
@@ -31,7 +31,7 @@ class StoreController extends Controller
 
         if (!$product) {
             return redirect()
-                ->route('admin.site.products.index')
+                ->route('admin.store.products.index')
                 ->with('error', 'Product를 찾을 수 없습니다.');
         }
 

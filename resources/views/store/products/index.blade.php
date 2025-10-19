@@ -1,242 +1,237 @@
-@extends('jiny-store::layouts.store')
+@extends($layout ?? 'jiny-site::layouts.app')
 
-@section('title', $config['title'])
-
-@section('breadcrumb')
-<li class="breadcrumb-item active">상품</li>
-@endsection
+@section('title', 'Products')
+@section('description', '다양한 상품을 둘러보세요')
 
 @section('content')
-<div class="container py-4">
-    <div class="row">
-        <!-- Sidebar Filters -->
-        <div class="col-lg-3 mb-4">
+<div class="container py-5">
+    <!-- Header -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 mb-3">Products</h1>
+            <p class="lead text-muted">고품질의 다양한 상품을 만나보세요</p>
+        </div>
+    </div>
+
+    <!-- Categories Filter -->
+    <div class="row mb-4">
+        <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">필터</h5>
-                </div>
                 <div class="card-body">
-                    <form method="GET" action="{{ route('store.products.index') }}" id="filterForm">
-                        <!-- Search -->
-                        <div class="mb-4">
-                            <label class="form-label">검색</label>
-                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="상품명 검색...">
-                        </div>
-
-                        <!-- Categories -->
-                        @if($categories && $categories->count() > 0)
-                        <div class="mb-4">
-                            <label class="form-label">카테고리</label>
-                            <select class="form-select" name="category">
-                                <option value="">전체 카테고리</option>
-                                @foreach($categories as $category)
-                                <option value="{{ $category->slug }}" {{ request('category') === $category->slug ? 'selected' : '' }}>
-                                    {{ $category->title }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        @endif
-
-                        <!-- Price Range -->
-                        <div class="mb-4">
-                            <label class="form-label">가격 범위</label>
-                            @foreach($filters['price_ranges'] as $range)
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="price_range" 
-                                       value="{{ $range['min'] }}-{{ $range['max'] ?: 'max' }}"
-                                       id="price_{{ $loop->index }}"
-                                       {{ (request('price_min') == $range['min'] && request('price_max') == $range['max']) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="price_{{ $loop->index }}">
-                                    {{ $range['label'] }}
-                                </label>
+                    <form method="GET" action="{{ route('products.index') }}">
+                        <div class="row align-items-end">
+                            <div class="col-md-4 mb-3">
+                                <label for="search" class="form-label">검색</label>
+                                <input type="text" id="search" name="search" class="form-control"
+                                       placeholder="상품명으로 검색..." value="{{ request('search') }}">
                             </div>
-                            @endforeach
-                        </div>
-
-                        <!-- Custom Price Range -->
-                        <div class="mb-4">
-                            <label class="form-label">직접 입력</label>
-                            <div class="row g-2">
-                                <div class="col">
-                                    <input type="number" class="form-control" name="price_min" 
-                                           value="{{ request('price_min') }}" placeholder="최소 가격">
-                                </div>
-                                <div class="col">
-                                    <input type="number" class="form-control" name="price_max" 
-                                           value="{{ request('price_max') }}" placeholder="최대 가격">
-                                </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="category" class="form-label">카테고리</label>
+                                <select id="category" name="category" class="form-select">
+                                    <option value="">전체 카테고리</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->title }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="sort" class="form-label">정렬</label>
+                                <select id="sort" name="sort" class="form-select">
+                                    <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>최신순</option>
+                                    <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>인기순</option>
+                                    <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>가격 낮은순</option>
+                                    <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>가격 높은순</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fe fe-search me-1"></i>검색
+                                </button>
                             </div>
                         </div>
-
-                        <button type="submit" class="btn btn-primary w-100">필터 적용</button>
-                        <a href="{{ route('store.products.index') }}" class="btn btn-outline-secondary w-100 mt-2">초기화</a>
                     </form>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Products -->
-        <div class="col-lg-9">
-            <!-- Header -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <h2>상품 목록</h2>
-                    <p class="text-muted mb-0">총 {{ $products->total() }}개의 상품</p>
-                </div>
-                <div class="d-flex gap-2">
-                    <!-- Sort -->
-                    <select class="form-select" name="sort" onchange="this.form.submit()" form="filterForm">
-                        @foreach($filters['sort_options'] as $value => $label)
-                        <option value="{{ $value }}" {{ request('sort') === $value ? 'selected' : '' }}>
-                            {{ $label }}
-                        </option>
-                        @endforeach
-                    </select>
-                    
-                    <!-- View Toggle -->
-                    <div class="btn-group">
-                        <button class="btn btn-outline-secondary active" data-view="grid">
-                            <i data-feather="grid"></i>
-                        </button>
-                        <button class="btn btn-outline-secondary" data-view="list">
-                            <i data-feather="list"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Products Grid -->
-            @if($products->count() > 0)
-            <div class="row g-4" id="products-grid">
-                @foreach($products as $product)
-                <div class="col-lg-4 col-md-6 product-item">
-                    <div class="card product-card h-100">
+    <!-- Product Grid -->
+    @if($products->count() > 0)
+        <div class="row">
+            @foreach($products as $product)
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 product-card">
+                        <!-- Product Image -->
                         <div class="position-relative">
                             @if($product->image)
-                            <img src="{{ $product->image }}" 
-                                 alt="{{ $product->title }}" 
-                                 class="card-img-top" 
-                                 style="height: 250px; object-fit: cover;">
+                                <img src="{{ $product->image }}" class="card-img-top" alt="{{ $product->title }}"
+                                     style="height: 250px; object-fit: cover;">
                             @else
-                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 250px;">
-                                <i data-feather="image" class="text-muted"></i>
-                            </div>
+                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center"
+                                     style="height: 250px;">
+                                    <i class="fe fe-package text-muted" style="font-size: 3rem;"></i>
+                                </div>
                             @endif
-                            
-                            <!-- Wishlist Button -->
-                            <button class="wishlist-btn" onclick="addToWishlist('product', {{ $product->id }})">
-                                <i data-feather="heart"></i>
-                            </button>
-                            
-                            <!-- Sale Badge -->
+
+                            <!-- Badges -->
+                            @if($product->featured)
+                                <span class="position-absolute top-0 start-0 badge bg-warning m-2">추천</span>
+                            @endif
                             @if($product->sale_price && $product->sale_price < $product->price)
-                            <span class="badge bg-danger position-absolute top-0 start-0 m-2">
-                                {{ round((($product->price - $product->sale_price) / $product->price) * 100) }}% OFF
-                            </span>
+                                <span class="position-absolute top-0 end-0 badge bg-danger m-2">할인</span>
                             @endif
                         </div>
-                        
+
+                        <!-- Product Info -->
                         <div class="card-body d-flex flex-column">
-                            <h6 class="card-title">
-                                <a href="{{ route('store.products.show', $product->id) }}" class="text-decoration-none text-dark">
+                            <!-- Category -->
+                            @if($product->category_name)
+                                <div class="mb-2">
+                                    <span class="badge bg-light text-dark">{{ $product->category_name }}</span>
+                                </div>
+                            @endif
+
+                            <!-- Title -->
+                            <h5 class="card-title">
+                                <a href="@if($product->category_slug)/product/{{ $product->category_slug }}/{{ $product->slug ?: $product->id }}@else/product/{{ $product->slug ?: $product->id }}@endif"
+                                   class="text-decoration-none text-dark">
                                     {{ $product->title }}
                                 </a>
-                            </h6>
-                            
-                            @if($product->category_name)
-                            <small class="text-muted">{{ $product->category_name }}</small>
+                            </h5>
+
+                            <!-- Description -->
+                            @if($product->description)
+                                <p class="card-text text-muted small flex-grow-1">
+                                    {{ Str::limit($product->description, 100) }}
+                                </p>
                             @endif
-                            
-                            <p class="card-text flex-grow-1">{{ Str::limit($product->description, 100) }}</p>
-                            
+
                             <!-- Price -->
-                            <div class="mt-auto">
-                                @if($product->sale_price && $product->sale_price < $product->price)
-                                <div class="d-flex align-items-center gap-2 mb-2">
-                                    <span class="fw-bold text-danger">{{ number_format($product->sale_price) }}원</span>
-                                    <small class="text-muted text-decoration-line-through">{{ number_format($product->price) }}원</small>
-                                </div>
+                            <div class="mb-3">
+                                @if($product->price)
+                                    @if($product->sale_price && $product->sale_price < $product->price)
+                                        <div class="text-muted text-decoration-line-through small">
+                                            ₩{{ number_format($product->price) }}
+                                        </div>
+                                        <div class="h5 text-danger mb-0">
+                                            ₩{{ number_format($product->sale_price) }}
+                                        </div>
+                                    @else
+                                        <div class="h5 text-primary mb-0">
+                                            ₩{{ number_format($product->price) }}
+                                        </div>
+                                    @endif
                                 @else
-                                <div class="fw-bold mb-2">{{ number_format($product->price) }}원</div>
+                                    <div class="h6 text-muted">가격 문의</div>
                                 @endif
-                                
-                                <!-- Action Buttons -->
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-primary btn-sm" onclick="addToCart('product', {{ $product->id }})">
-                                        <i data-feather="shopping-cart" class="me-1" style="width: 16px; height: 16px;"></i>
-                                        장바구니 담기
-                                    </button>
-                                    <a href="{{ route('store.products.show', $product->id) }}" class="btn btn-outline-secondary btn-sm">
-                                        상세보기
+                            </div>
+
+                            <!-- Stats -->
+                            <div class="d-flex justify-content-between align-items-center text-muted small mb-3">
+                                <span><i class="fe fe-eye"></i> {{ number_format($product->view_count) }}</span>
+                                <span>{{ \Carbon\Carbon::parse($product->created_at)->format('Y.m.d') }}</span>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="mt-auto">
+                                <div class="d-grid gap-2 d-md-block">
+                                    <a href="@if($product->category_slug)/product/{{ $product->category_slug }}/{{ $product->slug ?: $product->id }}@else/product/{{ $product->slug ?: $product->id }}@endif"
+                                       class="btn btn-outline-primary">
+                                        자세히 보기
+                                    </a>
+                                    <a href="/contact/create?product={{ $product->id }}"
+                                       class="btn btn-primary">
+                                        문의하기
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                @endforeach
-            </div>
-
-            <!-- Pagination -->
-            <div class="d-flex justify-content-center mt-5">
-                {{ $products->appends(request()->query())->links('pagination::bootstrap-4') }}
-            </div>
-            @else
-            <!-- No Products -->
-            <div class="text-center py-5">
-                <i data-feather="search" style="width: 64px; height: 64px;" class="text-muted mb-3"></i>
-                <h5 class="text-muted">검색 결과가 없습니다</h5>
-                <p class="text-muted">다른 검색어나 필터를 시도해보세요.</p>
-                <a href="{{ route('store.products.index') }}" class="btn btn-primary">전체 상품 보기</a>
-            </div>
-            @endif
+            @endforeach
         </div>
-    </div>
+
+        <!-- Pagination -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-muted">
+                        전체 {{ $products->total() }}개 중 {{ $products->firstItem() }}~{{ $products->lastItem() }}개 표시
+                    </div>
+                    <div>
+                        {{ $products->appends(request()->query())->links('pagination::bootstrap-4') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    @else
+        <!-- Empty State -->
+        <div class="row">
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <i class="fe fe-package text-muted" style="font-size: 4rem;"></i>
+                    <h4 class="mt-3 text-muted">상품이 없습니다</h4>
+                    <p class="text-muted">검색 조건을 변경해보세요.</p>
+                    <a href="{{ route('products.index') }}" class="btn btn-primary">전체 상품 보기</a>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>
 @endsection
+
+@push('styles')
+<style>
+.product-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #dee2e6;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+}
+
+.product-card .card-img-top {
+    transition: transform 0.3s;
+}
+
+.product-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+.product-card .card-title a:hover {
+    color: #0d6efd !important;
+}
+
+@media (max-width: 768px) {
+    .product-card {
+        margin-bottom: 2rem;
+    }
+}
+</style>
+@endpush
 
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // View toggle functionality
-    const gridBtn = document.querySelector('[data-view="grid"]');
-    const listBtn = document.querySelector('[data-view="list"]');
-    const productsGrid = document.getElementById('products-grid');
-
-    gridBtn.addEventListener('click', function() {
-        gridBtn.classList.add('active');
-        listBtn.classList.remove('active');
-        productsGrid.className = 'row g-4';
-        document.querySelectorAll('.product-item').forEach(item => {
-            item.className = 'col-lg-4 col-md-6 product-item';
+    // Auto-submit form on sort change
+    const sortSelect = document.getElementById('sort');
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function() {
+            this.form.submit();
         });
-    });
+    }
 
-    listBtn.addEventListener('click', function() {
-        listBtn.classList.add('active');
-        gridBtn.classList.remove('active');
-        productsGrid.className = 'd-flex flex-column gap-3';
-        document.querySelectorAll('.product-item').forEach(item => {
-            item.className = 'product-item';
+    // Auto-submit form on category change
+    const categorySelect = document.getElementById('category');
+    if (categorySelect) {
+        categorySelect.addEventListener('change', function() {
+            this.form.submit();
         });
-    });
-
-    // Price range radio button handling
-    document.querySelectorAll('input[name="price_range"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            const [min, max] = this.value.split('-');
-            document.querySelector('input[name="price_min"]').value = min;
-            document.querySelector('input[name="price_max"]').value = max === 'max' ? '' : max;
-        });
-    });
-
-    // Auto-submit form on change
-    document.querySelectorAll('#filterForm select, #filterForm input[type="radio"]').forEach(element => {
-        element.addEventListener('change', function() {
-            document.getElementById('filterForm').submit();
-        });
-    });
+    }
 });
 </script>
 @endpush

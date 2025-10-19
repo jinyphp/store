@@ -98,7 +98,7 @@ class DestroyController extends Controller
 
             // 일반 응답
             return redirect()
-                ->route('admin.site.products.images.index', $productId)
+                ->route('admin.store.products.images.index', $productId)
                 ->with('success', $message);
 
         } catch (\Exception $e) {
